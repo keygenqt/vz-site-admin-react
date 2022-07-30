@@ -20,8 +20,8 @@ export function HomePage(props) {
             <Grid container spacing={3} rowSpacing={3}>
                 <Grid item xl={4} lg={6} md={6} sm={6} xs={6}>
                     <CardChart
-                        title={'$203k'}
-                        subheader={'Total Income'}
+                        title={'$500.00'}
+                        subheader={'Total Earning'}
                         icon={<AllInbox/>}
                         color={'primary'}
                     />
