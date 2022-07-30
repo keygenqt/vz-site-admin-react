@@ -12,7 +12,7 @@ export function ErrorPage(props) {
     });
 
     return (
-        <Container maxWidth={"sm"} className={"Page ErrorPage"}>
+        <Container maxWidth={"sm"} className={"ErrorPage"}>
             <Stack alignItems={"center"} spacing={2}>
                 <Zoom timeout={1000} in={true}>
                     <Typography variant="h3">

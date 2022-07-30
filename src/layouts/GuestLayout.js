@@ -7,9 +7,11 @@ export function GuestLayout(props) {
     const {route} = useContext(AppContext)
 
     return (
-        <div className={"App AppTable"}>
+        <div className={"AppTable"}>
             <div className={"AppTableRow"}>
-                <main className={"AppTableCell"}>
+                <main className={"AppTableCell"} style={{
+                    verticalAlign: 'middle'
+                }}>
                     {props.children}
                 </main>
             </div>

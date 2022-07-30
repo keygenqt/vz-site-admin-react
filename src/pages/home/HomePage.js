@@ -12,7 +12,7 @@ export function HomePage(props) {
     });
 
     return (
-        <Container maxWidth={"sm"} className={"Page HomePage"}>
+        <Container maxWidth={"sm"} className={"HomePage"}>
             <Stack alignItems={"center"} spacing={2}>
                 <Zoom timeout={1000} in={true}>
                     <Typography variant="h3">

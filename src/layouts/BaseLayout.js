@@ -1,36 +1,35 @@
 import * as React from 'react';
 import {useContext} from 'react';
 import {AppContext} from "../base";
+import {AppMenu, AppTopBar} from "../components";
 
 export function BaseLayout(props) {
 
     const {route} = useContext(AppContext)
+    // xl={2} lg={3} md={4} sm={5} xs={12}
 
     return (
-        <div className={"App AppTable"}>
+        <div className={"AppTable"}>
             <div className={"AppTableRow"}>
-                <header className={"AppTableCell"} style={{
-                    height: 100,
-                    backgroundColor: '#6cc2ff'
-                }}>
-                    HEADER
-                </header>
+                <div className={"AppTableCell"}>
+                    <AppTopBar/>
+                    <div className={"AppTable"} style={{
+                        height: 'calc(100% - 64px)'
+                    }}>
+                        <div className={"AppTableRow"}>
+                            <div className={"AppTableCell"} style={{width: 0}}>
+                                <AppMenu/>
+                            </div>
+                            <div className={"AppTableCell"}>
+                                <div className={"Page"}>
+                                    {props.children}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className={"AppTableRow"}>
-                <main className={"AppTableCell"} style={{
-                    verticalAlign: 'top'
-                }}>
-                    {props.children}
-                </main>
-            </div>
-            <div className={"AppTableRow"}>
-                <footer className={"AppTableCell"} style={{
-                    height: 300,
-                    backgroundColor: '#65a3ce'
-                }}>
-                    FOOTER
-                </footer>
-            </div>
+
         </div>
     );
 }
