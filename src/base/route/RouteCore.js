@@ -2,6 +2,7 @@ import * as React from "react";
 import {ScrollToTop} from "../../components";
 import {Route, Routes} from "react-router-dom";
 import {ErrorPage} from "../../pages";
+import {BaseLayout, GuestLayout} from "../../layouts";
 
 export default class RouteCore {
 
@@ -217,7 +218,11 @@ export default class RouteCore {
                     {pages}
                     <Route
                         path="*"
-                        element={<ErrorPage onError={onError} title={"Error | 404"}/>}
+                        element={
+                            <GuestLayout>
+                                <ErrorPage onError={onError} title={"Error | 404"}/>
+                            </GuestLayout>
+                        }
                     />
                 </Routes>
             </React.Fragment>

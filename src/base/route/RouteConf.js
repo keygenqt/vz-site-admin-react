@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Route} from "react-router-dom";
 import {HomePage} from "../../pages";
+import {BaseLayout} from "../../layouts";
 
 export const RouteConf = {
     delay: 200,
@@ -14,7 +15,11 @@ export const RouteConf = {
                         key={key}
                         exact
                         path={route}
-                        element={<HomePage title={title}/>}
+                        element={
+                            <BaseLayout>
+                                <HomePage title={title}/>
+                            </BaseLayout>
+                        }
                     />
                 }
             }

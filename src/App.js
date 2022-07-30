@@ -11,15 +11,9 @@ function App() {
     return (
         <ThemeProvider theme={AppTheme}>
             <React.Fragment>
-                <div className={"App AppTable"}>
-                    <div className={"AppTableRow"}>
-                        <main>
-                            {route.render(() => {
-                                console.log('page error')
-                            })}
-                        </main>
-                    </div>
-                </div>
+                {route.render(() => {
+                    console.log('page error')
+                })}
             </React.Fragment>
         </ThemeProvider>
     );
