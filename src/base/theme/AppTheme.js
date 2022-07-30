@@ -7,7 +7,17 @@ import {typography} from "./impl/typography.js";
 import colors from './../../assets/scss/colors.scss';
 
 export const AppTheme = createTheme({
-    shadows: "none",
+    shadows: [
+        'none',
+        'none',
+        'none',
+        'none',
+        'none',
+        'none',
+        'none',
+        'none',
+        'none'
+    ],
     palette: palette(colors),
     typography: typography(colors),
 });

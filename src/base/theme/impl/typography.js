@@ -7,6 +7,12 @@ export const typography = (colors) => {
         h4: {},
         h5: {},
         h6: {},
+        h7: {
+            fontWeight: 'bold'
+        },
+        h8: {
+            fontWeight: '200'
+        },
         subtitle1: {},
         subtitle2: {},
         button: {
@@ -14,14 +20,5 @@ export const typography = (colors) => {
         },
         caption: {},
         overline: {},
-        commonAvatar: {
-            cursor: 'pointer',
-            borderRadius: '8px'
-        },
-        largeAvatar: {
-            width: '44px',
-            height: '44px',
-            fontSize: '1.5rem'
-        }
     }
 }

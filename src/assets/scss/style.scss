@@ -39,7 +39,7 @@ a {
 
 .Page {
   background-color: $primaryLight;
-  border-radius: 10px;
+  border-radius: 8px;
   margin-left: 20px;
   margin-right: 20px;
   height: calc(100% - 60px);
@@ -54,7 +54,24 @@ a {
 
 .App .CardChart {
   position: relative;
-  border-radius: 10px;
+  border-radius: 7px;
+}
+
+.App .CardChart.normal {
+  height: 170px;
+}
+
+.App .CardChart.normal .MuiCardHeader-root {
+  padding-bottom: 10px;
+}
+
+.App .CardChart .CardChartAvatar.Small {
+  width: 30px;
+  height: 30px;
+}
+
+.App .CardChart .CardChartAvatar.Small svg {
+  font-size: 18px;
 }
 
 .App .CardChart:after {
@@ -80,61 +97,81 @@ a {
   opacity: 0.5;
 }
 
-.App .CardChart.Blue {
+.App .CardChart.primary {
   background-color: $primaryMain;
   color: white;
 }
 
-.App .CardChart.Blue:after {
+.App .CardChart.primary .CardChartAvatar {
+  background-color: $primary800;
+  color: white;
+}
+
+.App .CardChart.primary:after {
   background-color: $primary800;
 }
 
-.App .CardChart.Blue:before {
+.App .CardChart.primary:before {
   background-color: $primary800;
 }
 
-.App .CardChart.Purple {
+.App .CardChart.secondary {
   color: white;
   background-color: $secondaryMain;
 }
 
-.App .CardChart.Purple:after {
+.App .CardChart.secondary .CardChartAvatar {
+  background-color: $secondary800;
+  color: white;
+}
+
+.App .CardChart.secondary:after {
   background-color: $secondary800;
 }
 
-.App .CardChart.Purple:before {
+.App .CardChart.secondary:before {
   background-color: $secondary800;
 }
 
-.App .CardChart.BlueLite {
+.App .CardChart.blue {
   background-color: $paper;
 }
 
-.App .CardChart.BlueLite:after {
+.App .CardChart.blue .CardChartAvatar {
+  background-color: $primaryDark;
+  color: white;
+}
+
+.App .CardChart.blue:after {
   background-color: $primary200;
   bottom: -144px;
   right: -144px;
   top: auto;
 }
 
-.App .CardChart.BlueLite:before {
+.App .CardChart.blue:before {
   background-color: $primary200;
   top: -105px;
   right: -27px;
 }
 
-.App .CardChart.Yellow {
+.App .CardChart.yellow {
   background-color: $paper;
 }
 
-.App .CardChart.Yellow:after {
+.App .CardChart.yellow .CardChartAvatar {
+  background-color: $yellowLight;
+  color: $yellowDark;
+}
+
+.App .CardChart.yellow:after {
   background-color: $yellowMain;
   bottom: -144px;
   right: -144px;
   top: auto;
 }
 
-.App .CardChart.Yellow:before {
+.App .CardChart.yellow:before {
   background-color: $yellowMain;
   top: -105px;
   right: -27px;
