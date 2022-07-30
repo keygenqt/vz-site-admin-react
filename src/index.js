@@ -5,7 +5,8 @@ import reportWebVitals from './tests/reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import AppContextProvider from "./base/contexts/AppContext";
 
-import './static/css/base.css';
+import './assets/scss/colors.scss';
+import './assets/scss/style.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

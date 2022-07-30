@@ -1,15 +1,10 @@
 import * as React from 'react';
-import {useContext} from 'react';
-import {AppContext} from "../base";
 import {AppMenu, AppTopBar} from "../components";
+import PropTypes from "prop-types";
 
 export function BaseLayout(props) {
-
-    const {route} = useContext(AppContext)
-    // xl={2} lg={3} md={4} sm={5} xs={12}
-
     return (
-        <div className={"AppTable"}>
+        <div className={"App AppTable"}>
             <div className={"AppTableRow"}>
                 <div className={"AppTableCell"}>
                     <AppTopBar/>
@@ -33,3 +28,7 @@ export function BaseLayout(props) {
         </div>
     );
 }
+
+BaseLayout.propTypes = {
+    children: PropTypes.element.isRequired
+};
