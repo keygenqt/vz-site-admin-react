@@ -6,6 +6,8 @@ My Personal Admin Site
 Well, what site can exist without an admin panel? This is the admin panel for [my personal website](https://github.com/keygenqt/vz-site-react) and open source
 projects.
 
+**Used:** [React](https://reactjs.org/) + [MUI](https://mui.com/) :heart:
+
 # License
 
 ```
