@@ -3,7 +3,7 @@ My Personal Admin Site
 
 ![alt text](data/logo160.png)
 
-Well, what site can exist without an admin panel? This is the admin panel for my personal website and open source
+Well, what site can exist without an admin panel? This is the admin panel for [my personal website](https://github.com/keygenqt/vz-site-react) and open source
 projects.
 
 # License
