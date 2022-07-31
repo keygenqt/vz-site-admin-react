@@ -9,10 +9,14 @@ export function HomePage(props) {
 
     const {route} = useContext(AppContext)
 
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         document.title = props.title;
+
+        setTimeout(function () {
+            setLoading(false)
+        }, 2000);
     });
 
     return (
@@ -20,6 +24,7 @@ export function HomePage(props) {
             <Grid container spacing={3} rowSpacing={3}>
                 <Grid item xl={4} lg={6} md={6} sm={6} xs={6}>
                     <CardChart
+                        isLoading={isLoading}
                         title={'$500.00'}
                         subheader={'Total Earning'}
                         icon={<AllInbox/>}
@@ -28,6 +33,7 @@ export function HomePage(props) {
                 </Grid>
                 <Grid item xl={4} lg={6} md={6} sm={6} xs={6}>
                     <CardChart
+                        isLoading={isLoading}
                         title={'$203k'}
                         subheader={'Total Income'}
                         icon={<AssignmentInd/>}
@@ -41,15 +47,20 @@ export function HomePage(props) {
                     <Grid container spacing={3} rowSpacing={3}>
                         <Grid item xl={12} lg={6} md={6} sm={6} xs={6}>
                             <CardChart
+                                isLoading={isLoading}
                                 title={'$203k'}
                                 subheader={'Total Income'}
                                 size={'small'}
                                 icon={<Badge/>}
                                 color={'blue'}
+                                actionMenu={() => {
+                                    console.log('yes')
+                                }}
                             />
                         </Grid>
                         <Grid item xl={12} lg={6} md={6} sm={6} xs={6}>
                             <CardChart
+                                isLoading={isLoading}
                                 size={'small'}
                                 title={'$203k'}
                                 subheader={'Total Income'}
@@ -61,9 +72,11 @@ export function HomePage(props) {
                 </Grid>
                 <Grid item xl={8} lg={6} md={6} sm={6} xs={6}>
                     <CardChart
+                        isLoading={isLoading}
                         title={'Test chat title'}
                         size={'small'}
                         color={'blue'}
+                        contentHeight={120}
                         actionMenu={() => {
                             console.log('yes')
                         }}
@@ -80,11 +93,13 @@ export function HomePage(props) {
                 </Grid>
                 <Grid item xl={4} lg={6} md={6} sm={6} xs={6}>
                     <CardChart
+                        isLoading={isLoading}
                         iconSize={'small'}
                         icon={<Domain/>}
                         title={'Test chat title'}
                         size={'small'}
                         color={'blue'}
+                        contentHeight={120}
                     >
                         <Stack spacing={1}>
                             <Typography component="div" variant="h3">

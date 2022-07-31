@@ -61,6 +61,10 @@ a {
   height: 170px;
 }
 
+.App .CardChartSkeleton:last-child {
+  padding-bottom: 15px;
+}
+
 .App .CardChart.normal .MuiCardHeader-root {
   padding-bottom: 10px;
 }
