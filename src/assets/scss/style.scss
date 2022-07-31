@@ -180,3 +180,21 @@ a {
   top: -105px;
   right: -27px;
 }
+
+.App .CardChart.success .CardChartAvatar {
+  background-color: $successDark;
+  color: white;
+}
+
+.App .CardChart.success:after {
+  background-color: $success200;
+  opacity: 0.5;
+  top: -3px;
+  right: -164px;
+}
+
+.App .CardChart.success:before {
+  background-color: $successMain;
+  top: -87px;
+  right: -50px;
+}

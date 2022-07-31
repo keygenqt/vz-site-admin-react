@@ -13,6 +13,12 @@ export const palette = (colors) => {
             dark: colors?.secondaryDark,
             200: colors?.secondary200,
             800: colors?.secondary800
-        }
+        },
+        success: {
+            light: colors?.successLight,
+            200: colors?.success200,
+            main: colors?.successMain,
+            dark: colors?.successDark
+        },
     }
 }
