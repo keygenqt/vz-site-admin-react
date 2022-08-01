@@ -26,7 +26,7 @@ export function SkeletonNormal(props) {
 
                     <Grid container spacing={3} sx={{paddingTop: 1}}>
                         <Grid item xs={5}>
-                            <Stack spacing={1} sx={{paddingTop: 1}}>
+                            <Stack spacing={1} sx={{paddingTop: 1, paddingBottom: '9px'}}>
                                 <Skeleton variant="rectangular" height={41}/>
                                 <Skeleton variant="rectangular" height={19}/>
                             </Stack>

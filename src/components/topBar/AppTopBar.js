@@ -17,15 +17,19 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import PropTypes from "prop-types";
+import {AppMenu} from "../menu/AppMenu";
 
 /**
  * Top bar fot app with adaptive layout
  *
  * @returns {JSX.Element}
  */
-export function AppTopBar() {
+export function AppTopBar(props) {
 
-    const {route} = useContext(AppContext)
+    const {
+        onChangeMenu = () => {}
+    } = props
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -134,6 +138,7 @@ export function AppTopBar() {
                         color="inherit"
                         aria-label="open drawer"
                         sx={{mr: 2}}
+                        onClick={onChangeMenu}
                     >
                         <MenuIcon/>
                     </IconButton>
@@ -192,3 +197,7 @@ export function AppTopBar() {
         </Box>
     );
 }
+
+AppTopBar.propTypes = {
+    onChangeMenu: PropTypes.func
+};

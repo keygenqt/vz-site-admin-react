@@ -10,3 +10,5 @@ export const ConstantOther = {
         en: 'en'
     }
 };
+
+export const menuSize = 300;

@@ -18,6 +18,18 @@ export const AppTheme = createTheme({
         'none',
         'none'
     ],
+    components: {
+        MuiPaper: {
+            defaultProps: {
+                elevation: 0
+            },
+            styleOverrides: {
+                rounded: {
+                    borderRadius: 15
+                }
+            }
+        },
+    },
     palette: palette(colors),
     typography: typography(colors),
 });

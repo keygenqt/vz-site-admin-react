@@ -3,6 +3,7 @@
 
 // color variants
 @import 'colors.scss';
+@import 'size.scss';
 
 /** Base **/
 body, html, #root {
@@ -39,11 +40,51 @@ a {
 
 .Page {
   background-color: $primaryLight;
-  border-radius: 8px;
+  border-radius: 15px;
   margin-left: 20px;
   margin-right: 20px;
   height: calc(100% - 60px);
   padding: 20px;
+  margin-bottom: 20px;
+}
+
+/** Menu **/
+.App .Menu {
+  width: 0;
+}
+
+.App .Menu.Menu-Small {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-top: 64px;
+  z-index: 10;
+  transition-duration: 300ms;
+}
+
+.App .Menu.Menu-Small .AppMenu {
+  position: absolute;
+  width: 350px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.App .Menu.Menu-Small .AppMenu .MuiCollapse-root.MuiCollapse-horizontal {
+  min-width: 0;
+  width: 0;
+  transition-duration: 300ms;
+}
+
+.App .Menu.Menu-Small .AppMenu .MuiCollapse-horizontal {
+  background-color: white;
+  height: 100%;
+  position: relative;
+  z-index: 100;
+  width: 350px;
 }
 
 /** CardChart **/
@@ -54,7 +95,6 @@ a {
 
 .App .CardChart {
   position: relative;
-  border-radius: 7px;
 }
 
 .App .CardChart.normal {

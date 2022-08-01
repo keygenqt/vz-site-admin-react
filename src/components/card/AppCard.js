@@ -68,7 +68,7 @@ export function AppCard(props) {
                     /> : null}
 
                     {size === 'normal' || props.children ? <CardContent sx={{
-                        padding: '0 16px'
+                        padding: '0 16px',
                     }}>
                         <Grid container spacing={1}>
                             {size === 'normal' ? <React.Fragment>

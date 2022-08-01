@@ -1,65 +1,51 @@
 import * as React from 'react';
-import {useContext} from 'react';
-import {AppContext} from "../../base";
-import Typography from '@mui/material/Typography';
-import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
-import MenuList from '@mui/material/MenuList';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ContentCut from '@mui/icons-material/ContentCut';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
-import Cloud from '@mui/icons-material/Cloud';
+import {Collapse, Grid, useMediaQuery, useTheme} from "@mui/material";
+import PropTypes from "prop-types";
+import {useEffect} from "react";
 
 /**
  * Top bar fot app with adaptive layout
  *
  * @returns {JSX.Element}
  */
-export function AppMenu() {
+export function AppMenu(props) {
 
-    const {route} = useContext(AppContext)
+    const {breakpoints} = useTheme();
+
+    const isMD = useMediaQuery(breakpoints.down('md'));
+
+    const {
+        isOpen = true
+    } = props
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            window.scrollTo(0, 0);
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
 
     return (
-        <MenuList style={{
-            width: 320,
-            marginLeft: 20
+        <div className={`AppTableCell Menu ${isMD ? 'Menu-Small' : ''}`} style={{
+            backgroundColor: isOpen && isMD ? '#00000080' : 'transparent',
         }}>
-            <MenuItem>
-                <ListItemIcon>
-                    <ContentCut fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText>Cut</ListItemText>
-                <Typography variant="body2" color="text.secondary">
-                    ⌘X
-                </Typography>
-            </MenuItem>
-            <MenuItem>
-                <ListItemIcon>
-                    <ContentCopy fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText>Copy</ListItemText>
-                <Typography variant="body2" color="text.secondary">
-                    ⌘C
-                </Typography>
-            </MenuItem>
-            <MenuItem>
-                <ListItemIcon>
-                    <ContentPaste fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText>Paste</ListItemText>
-                <Typography variant="body2" color="text.secondary">
-                    ⌘V
-                </Typography>
-            </MenuItem>
-            <Divider/>
-            <MenuItem>
-                <ListItemIcon>
-                    <Cloud fontSize="small"/>
-                </ListItemIcon>
-                <ListItemText>Web Clipboard</ListItemText>
-            </MenuItem>
-        </MenuList>
+            <div className={"AppMenu"}>
+                <Collapse orientation="horizontal" in={isOpen}>
+                    <Grid container spacing={1} style={{
+                        width: 300,
+                    }}>
+                        <Grid item xs={12}>
+                            sdfs
+                        </Grid>
+                    </Grid>
+                </Collapse>
+            </div>
+        </div>
     );
 }
+
+AppMenu.propTypes = {
+    isOpen: PropTypes.bool
+};
