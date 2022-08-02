@@ -35,14 +35,14 @@ export function AppCard(props) {
                     isIconSmall={iconSize === 'small'}
                     contentHeight={contentHeight}
                 />) : (
-                <Card variant={"outlined"} className={`CardChart ${color} ${size}`}>
+                <Card variant={"outlined"} className={`AppCard ${color} ${size}`}>
                     {icon || actionMenu || title || subheader ? <CardHeader
                         avatar={
                             icon && iconSize === 'normal' ?
-                                <Avatar variant="rounded" aria-label="recipe" className={"CardChartAvatar"}>
+                                <Avatar variant="rounded" aria-label="recipe" className={"AppCardAvatar"}>
                                     {icon}
                                 </Avatar> : icon ?
-                                    <Avatar variant="rounded" aria-label="recipe" className={"CardChartAvatar Small"}>
+                                    <Avatar variant="rounded" aria-label="recipe" className={"AppCardAvatar Small"}>
                                         {icon}
                                     </Avatar> : null
                         }

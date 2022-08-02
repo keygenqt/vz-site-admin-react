@@ -1,24 +1,19 @@
 import * as React from 'react';
-import {useContext} from 'react';
-import {AppContext} from "../../base";
-import {alpha, styled} from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import PropTypes from "prop-types";
-import {AppMenu} from "../menu/AppMenu";
+import {useTheme} from "@mui/material";
 
 /**
  * Top bar fot app with adaptive layout
@@ -28,8 +23,11 @@ import {AppMenu} from "../menu/AppMenu";
 export function AppTopBar(props) {
 
     const {
-        onChangeMenu = () => {}
+        onChangeMenu = () => {
+        }
     } = props
+
+    const theme = useTheme()
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -129,9 +127,16 @@ export function AppTopBar(props) {
     );
 
     return (
-        <Box sx={{flexGrow: 0}}>
+        <Box sx={{flexGrow: 0}} style={{
+            zIndex: 2000,
+            position: 'relative'
+        }}>
             <AppBar position="static" color={'inherit'} elevation={0}>
-                <Toolbar>
+                <Toolbar disableGutters sx={{
+                    minHeight: 64,
+                    paddingLeft: '20px',
+                    paddingRight: '20px',
+                }}>
                     <IconButton
                         size="large"
                         edge="start"
@@ -146,9 +151,8 @@ export function AppTopBar(props) {
                         variant="h6"
                         noWrap
                         component="div"
-                        sx={{display: {xs: 'none', sm: 'block'}}}
                     >
-                        MUI
+                        <span style={{color: theme.palette.primary[800]}}>Ad</span>minka
                     </Typography>
                     <Box sx={{flexGrow: 1}}/>
                     <Box sx={{display: {xs: 'none', md: 'flex'}}}>

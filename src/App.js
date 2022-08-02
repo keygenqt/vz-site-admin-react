@@ -10,11 +10,11 @@ function App() {
 
     return (
         <ThemeProvider theme={AppTheme}>
-            <React.Fragment>
+            <div className={"App"}>
                 {route.render(() => {
                     console.log('page error')
                 })}
-            </React.Fragment>
+            </div>
         </ThemeProvider>
     );
 }

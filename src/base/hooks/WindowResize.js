@@ -28,6 +28,12 @@ export function useWindowResize(effect = undefined) {
 
     useLayoutEffect(() => {
         window.addEventListener('resize', handleWindowResize);
+
+        setTimeout(function () { handleWindowResize() }, 50);
+        setTimeout(function () { handleWindowResize() }, 150);
+        setTimeout(function () { handleWindowResize() }, 300);
+        setTimeout(function () { handleWindowResize() }, 600);
+
         return () => {
             window.removeEventListener('resize', handleWindowResize);
         };

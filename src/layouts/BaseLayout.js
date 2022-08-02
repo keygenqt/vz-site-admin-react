@@ -1,43 +1,71 @@
 import * as React from 'react';
 import {AppMenu, AppTopBar} from "../components";
 import PropTypes from "prop-types";
-import {useWindowResize} from "../base";
-import {useMediaQuery, useTheme} from "@mui/material";
+import {Button, Grid} from "@mui/material";
 
 export function BaseLayout(props) {
 
-    const {width} = useWindowResize((size) => {
-        setIsOpenMenu(size.width > 1400)
-    })
-
-    const [isOpenMenu, setIsOpenMenu] = React.useState(width > 1400);
+    const [isOpenMenu, setIsOpenMenu] = React.useState(null);
 
     return (
-        <div className={"App AppTable"}>
-            <div className={"AppTableRow"}>
-                <div className={"AppTableCell"}>
-                    <AppTopBar onChangeMenu={() => {
-                        setIsOpenMenu(!isOpenMenu)
-                    }}/>
-                    <div className={"AppTable"} style={{
-                        height: 'calc(100% - 64px)'
-                    }}>
-                        <div className={"AppTableRow"}>
-                            <AppMenu
-                                isOpen={isOpenMenu}
-                            />
-                            <div className={"AppTableCell"}>
-                                <div className={"Page"}>
-                                    {props.children}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <Grid container spacing={0} rowSpacing={0} style={{
+            height: '100%'
+        }}>
+            <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                <AppTopBar onChangeMenu={() => {
+                    setIsOpenMenu(!isOpenMenu)
+                }}/>
+            </Grid>
 
-        </div>
-    );
+            <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{
+                height: 'calc(100% - 64px)'
+            }}>
+                <AppMenu isOpen={isOpenMenu} onChangeMenu={(isOpen) => {
+                    setIsOpenMenu(isOpen)
+                }} content={props.children}>
+                    <Grid container spacing={2} style={{
+                        padding: 20
+                    }}>
+                        <Grid item xs={12}>
+                            <Button variant="contained" href="#contained-buttons" style={{
+                                width: '100%'
+                            }}>
+                                Menu test 1
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button variant="contained" href="#contained-buttons" style={{
+                                width: '100%'
+                            }}>
+                                Menu test 2
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button variant="contained" href="#contained-buttons" style={{
+                                width: '100%'
+                            }}>
+                                Menu test 3
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant="contained" href="#contained-buttons" style={{
+                                width: '100%'
+                            }}>
+                                Menu test 4
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant="contained" href="#contained-buttons" style={{
+                                width: '100%'
+                            }}>
+                                Menu test 5
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </AppMenu>
+            </Grid>
+        </Grid>
+    )
 }
 
 BaseLayout.propTypes = {

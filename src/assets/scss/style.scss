@@ -20,105 +20,42 @@ a {
   color: inherit;
 }
 
-/** TABLE **/
-.AppTable {
-  display: table;
-  width: 100%;
+.App {
   height: 100%;
-}
-
-.AppTableRow {
-  display: table-row;
-}
-
-.AppTableCell {
-  display: table-cell;
-  width: 100%;
-  height: 100%;
-  vertical-align: top;
-}
-
-.Page {
-  background-color: $primaryLight;
-  border-radius: 15px;
-  margin-left: 20px;
-  margin-right: 20px;
-  height: calc(100% - 60px);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-/** Menu **/
-.App .Menu {
-  width: 0;
-}
-
-.App .Menu.Menu-Small {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin-top: 64px;
-  z-index: 10;
-  transition-duration: 300ms;
-}
-
-.App .Menu.Menu-Small .AppMenu {
-  position: absolute;
-  width: 350px;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
-.App .Menu.Menu-Small .AppMenu .MuiCollapse-root.MuiCollapse-horizontal {
-  min-width: 0;
-  width: 0;
-  transition-duration: 300ms;
-}
-
-.App .Menu.Menu-Small .AppMenu .MuiCollapse-horizontal {
-  background-color: white;
-  height: 100%;
-  position: relative;
-  z-index: 100;
-  width: 350px;
 }
 
 /** CardChart **/
-.App .CardChart > div {
+.App .AppCard > div {
   position: relative;
   z-index: 5;
 }
 
-.App .CardChart {
+.App .AppCard {
   position: relative;
 }
 
-.App .CardChart.normal {
+.App .AppCard.normal {
   height: 170px;
 }
 
-.App .CardChartSkeleton:last-child {
+.App .AppCardSkeleton:last-child {
   padding-bottom: 15px;
 }
 
-.App .CardChart.normal .MuiCardHeader-root {
+.App .AppCard.normal .MuiCardHeader-root {
   padding-bottom: 10px;
 }
 
-.App .CardChart .CardChartAvatar.Small {
+.App .AppCard .AppCardAvatar.Small {
   width: 30px;
   height: 30px;
 }
 
-.App .CardChart .CardChartAvatar.Small svg {
+.App .AppCard .AppCardAvatar.Small svg {
   font-size: 18px;
 }
 
-.App .CardChart:after {
+.App .AppCard:after {
   content: "";
   position: absolute;
   width: 210px;
@@ -129,7 +66,7 @@ a {
   right: -95px;
 }
 
-.App .CardChart:before {
+.App .AppCard:before {
   content: "";
   position: absolute;
   z-index: 1;
@@ -141,99 +78,99 @@ a {
   opacity: 0.5;
 }
 
-.App .CardChart.primary {
+.App .AppCard.primary {
   background-color: $primaryMain;
   color: white;
 }
 
-.App .CardChart.primary .CardChartAvatar {
+.App .AppCard.primary .AppCardAvatar {
   background-color: $primary800;
   color: white;
 }
 
-.App .CardChart.primary:after {
+.App .AppCard.primary:after {
   background-color: $primary800;
 }
 
-.App .CardChart.primary:before {
+.App .AppCard.primary:before {
   background-color: $primary800;
 }
 
-.App .CardChart.secondary {
+.App .AppCard.secondary {
   color: white;
   background-color: $secondaryMain;
 }
 
-.App .CardChart.secondary .CardChartAvatar {
+.App .AppCard.secondary .AppCardAvatar {
   background-color: $secondary800;
   color: white;
 }
 
-.App .CardChart.secondary:after {
+.App .AppCard.secondary:after {
   background-color: $secondary800;
 }
 
-.App .CardChart.secondary:before {
+.App .AppCard.secondary:before {
   background-color: $secondary800;
 }
 
-.App .CardChart.blue {
+.App .AppCard.blue {
   background-color: $paper;
 }
 
-.App .CardChart.blue .CardChartAvatar {
+.App .AppCard.blue .AppCardAvatar {
   background-color: $primaryDark;
   color: white;
 }
 
-.App .CardChart.blue:after {
+.App .AppCard.blue:after {
   background-color: $primary200;
   bottom: -144px;
   right: -144px;
   top: auto;
 }
 
-.App .CardChart.blue:before {
+.App .AppCard.blue:before {
   background-color: $primary200;
   top: -105px;
   right: -27px;
 }
 
-.App .CardChart.yellow {
+.App .AppCard.yellow {
   background-color: $paper;
 }
 
-.App .CardChart.yellow .CardChartAvatar {
+.App .AppCard.yellow .AppCardAvatar {
   background-color: $yellowLight;
   color: $yellowDark;
 }
 
-.App .CardChart.yellow:after {
+.App .AppCard.yellow:after {
   background-color: $yellowMain;
   bottom: -144px;
   right: -144px;
   top: auto;
 }
 
-.App .CardChart.yellow:before {
+.App .AppCard.yellow:before {
   background-color: $yellowMain;
   top: -105px;
   right: -27px;
 }
 
-.App .CardChart.success .CardChartAvatar {
+.App .AppCard.success .AppCardAvatar {
   background-color: $successDark;
   color: white;
 }
 
-.App .CardChart.success:after {
+.App .AppCard.success:after {
   background-color: $success200;
   opacity: 0.5;
   top: -3px;
   right: -164px;
 }
 
-.App .CardChart.success:before {
+.App .AppCard.success:before {
   background-color: $successMain;
   top: -87px;
   right: -50px;

@@ -14,7 +14,7 @@ export function SkeletonSmall(props) {
     } = props
 
     return (<Card variant={"outlined"}>
-        <CardContent className={"CardChartSkeleton"}>
+        <CardContent className={"AppCardSkeleton"}>
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <Grid container justifyContent="space-between" style={{

@@ -29,7 +29,7 @@ import {AppCardChart} from "./elements/AppCardChart";
 import Chart from 'react-apexcharts';
 import ApexCharts from 'apexcharts';
 
-const chartData = {
+export const chartData = {
     height: 490,
     type: 'bar',
     options: {
@@ -114,7 +114,7 @@ const chartData = {
     ]
 };
 
-const chartData2 = {
+export const chartData2 = {
     type: 'area',
     height: 105,
     options: {
@@ -160,17 +160,10 @@ const chartData2 = {
 
 export function HomePage({title}) {
 
-    const {route} = useContext(AppContext)
-    const {width} = useWindowResize()
-    const {breakpoints} = useTheme();
-    const isMD = useMediaQuery(breakpoints.down('md'));
-    const fixChatWith = isMD ? width - 131 : '100%'
-
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         document.title = title;
-
         setTimeout(function () {
             setLoading(false)
         }, 2000);
@@ -228,7 +221,7 @@ export function HomePage({title}) {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xl={8} lg={8} md={8} sm={12} xs={12}>
+            <Grid item xl={8} lg={8} md={6} sm={12} xs={12} style={{}}>
                 <AppCard
                     isLoading={isLoading}
                     title={'Test chat title'}
@@ -239,12 +232,10 @@ export function HomePage({title}) {
                         console.log('yes')
                     }}
                 >
-                    <Chart
-                        width={fixChatWith}
-                        {...chartData} />
+                    <Chart {...chartData} />
                 </AppCard>
             </Grid>
-            <Grid item xl={4} lg={4} md={4} sm={12} xs={12}>
+            <Grid item xl={4} lg={4} md={6} sm={12} xs={12} style={{}}>
                 <AppCard
                     isLoading={isLoading}
                     iconSize={'small'}
@@ -261,7 +252,6 @@ export function HomePage({title}) {
                                     padding: '20px 0 0 0'
                                 }}>
                                     <Chart
-                                        width={fixChatWith}
                                         {...chartData2} />
                                 </CardContent>
                             </Card>
