@@ -1,9 +1,13 @@
 import * as React from 'react';
-import {AppMenu, AppTopBar} from "../components";
+import {AppCard, AppMenu, AppTopBar} from "../components";
 import PropTypes from "prop-types";
-import {Button, Grid} from "@mui/material";
+import {Grid, LinearProgress, Typography, useTheme} from "@mui/material";
+import {MenuLayout} from "./MenuLayout";
+import {linearProgressClasses} from "@mui/material/LinearProgress";
 
 export function BaseLayout(props) {
+
+    const {palette} = useTheme();
 
     const [isOpenMenu, setIsOpenMenu] = React.useState(null);
 
@@ -20,49 +24,50 @@ export function BaseLayout(props) {
             <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{
                 height: 'calc(100% - 64px)'
             }}>
-                <AppMenu isOpen={isOpenMenu} onChangeMenu={(isOpen) => {
+                <MenuLayout isOpen={isOpenMenu} onChangeMenu={(isOpen) => {
                     setIsOpenMenu(isOpen)
                 }} content={props.children}>
-                    <Grid container spacing={2} style={{
-                        padding: 20
-                    }}>
-                        <Grid item xs={12}>
-                            <Button variant="contained" href="#contained-buttons" style={{
-                                width: '100%'
-                            }}>
-                                Menu test 1
-                            </Button>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Button variant="contained" href="#contained-buttons" style={{
-                                width: '100%'
-                            }}>
-                                Menu test 2
-                            </Button>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Button variant="contained" href="#contained-buttons" style={{
-                                width: '100%'
-                            }}>
-                                Menu test 3
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained" href="#contained-buttons" style={{
-                                width: '100%'
-                            }}>
-                                Menu test 4
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained" href="#contained-buttons" style={{
-                                width: '100%'
-                            }}>
-                                Menu test 5
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </AppMenu>
+                    <AppMenu>
+                        <AppCard
+                            isLoading={false}
+                            title={'Total Income'}
+                            subheader={'100GB'}
+                            size={'small'}
+                            color={'blue'}
+                        >
+                            <Grid container spacing={1} >
+                                <Grid item xs={6}>
+                                    <Typography component="div" variant="caption" sx={{
+                                        fontWeight: 'bold',
+                                        color: palette.primary.dark
+                                    }}>
+                                        Progress
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={6} sx={{
+                                    textAlign: 'right'
+                                }}>
+                                    <Typography component="div" variant="caption">
+                                        70%
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <LinearProgress variant="determinate" value={70} sx={{
+                                        height: 10,
+                                        borderRadius: 5,
+                                        [`&.${linearProgressClasses.colorPrimary}`]: {
+                                            backgroundColor: palette.primary.light,
+                                        },
+                                        [`& .${linearProgressClasses.bar}`]: {
+                                            borderRadius: 5,
+                                            backgroundColor: palette.primary.dark,
+                                        },
+                                    }} />
+                                </Grid>
+                            </Grid>
+                        </AppCard>
+                    </AppMenu>
+                </MenuLayout>
             </Grid>
         </Grid>
     )

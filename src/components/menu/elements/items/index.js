@@ -1,9 +1,10 @@
-import {dashboard} from './dashboard';
-import {application} from './application';
+import {android} from './android';
+import {pc} from './pc';
+import {web} from './web';
 
 /**
  * Data menu
  */
 export const menuItems = {
-    items: [dashboard, application]
+    items: [web, pc, android]
 };

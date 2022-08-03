@@ -1,9 +1,20 @@
 import * as React from 'react';
-import {useEffect} from 'react';
-import {Grid, useMediaQuery, useTheme} from "@mui/material";
-import PropTypes from "prop-types";
-import {useWindowResize} from "../../base";
-import corner15 from "../../assets/images/common/corner15.png";
+import {
+    Avatar,
+    Collapse,
+    Divider,
+    Grid,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    ListSubheader,
+    Typography,
+    useTheme
+} from "@mui/material";
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
+
+import {menuItems} from "./elements/items";
 
 /**
  * Top bar fot app with adaptive layout
@@ -12,127 +23,172 @@ import corner15 from "../../assets/images/common/corner15.png";
  */
 export function AppMenu(props) {
 
-    const {
-        isOpen = true,
-        menuWidth = 300,
-        paddingTop = 64,
-        menuBackgroundColor = 'white',
-        contentBackgroundColor = '#e3f2fd',
-        content = <div/>,
-        onChangeMenu = (isOpen) => {
-        },
-    } = props
+    const {} = props
 
-    const {breakpoints} = useTheme();
-    const isMD = useMediaQuery(breakpoints.down('md'));
-    const {width} = useWindowResize((size) => {
-        setIsOpenMenu(size.width > 1400)
-    })
+    const {palette} = useTheme();
 
-    const [scrollHeight, setScrollHeight] = React.useState(document.body.scrollHeight);
-    const [isOpenMenu, setIsOpenMenu] = React.useState(width > 1400);
+    const [open, setOpen] = React.useState([]);
 
-    useEffect(() => {
-        if (isOpen !== null) {
-            setIsOpenMenu(isOpen)
+    const handleClick = (index) => {
+        if (open.includes(index)) {
+            setOpen(open.filter(function (value) {
+                return value !== index;
+            }))
+        } else {
+            setOpen(open.concat([index]))
         }
-    }, [isOpen]);
+    };
 
-    useEffect(() => {
-        onChangeMenu(isOpenMenu)
-    }, [isOpenMenu]);
+    const listGroups = []
 
-    useEffect(() => {
-        if (isMD) {
-            if (isOpenMenu) {
-                document.body.style.overflow = 'hidden';
-                if (document.body.offsetHeight < document.body.scrollHeight) {
-                    document.body.style.width = 'calc(100% - 15px)';
-                }
-                window.scrollTo(0, 0);
-            } else {
-                document.body.style.width = '100%';
-                document.body.style.overflow = 'auto';
+    menuItems.items.forEach((data, indexGroup) => {
+
+        const listApps = []
+
+        data.children.forEach((app, indexApp) => {
+
+            const IconApp = app.icon;
+            const idApp = `app-item-${indexGroup}-${indexApp}`
+
+            const listPages = []
+
+            if (app.children) {
+                app.children.forEach((page, indexPage) => {
+
+                    const IconPage = page.icon;
+                    const idPage = `icon-page-item-${indexGroup}-${indexApp}-${indexPage}`
+                    const isSelected = page.selected === true
+
+                    switch (page.type) {
+                        case 'primary':
+                            listPages.push(
+                                <ListItemButton selected={isSelected} key={idPage} sx={{ml: 4}}>
+                                    <ListItemIcon>
+                                        <IconPage/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={page.title}/>
+                                </ListItemButton>
+                            )
+                            break;
+                        case 'secondary':
+                            listPages.push(
+                                <ListItemButton selected={isSelected} key={idPage} sx={{ml: 4}}>
+                                    <ListItemIcon>
+                                        <IconPage/>
+                                    </ListItemIcon>
+                                    <ListItemText secondary={page.title}/>
+                                </ListItemButton>
+                            )
+                            break;
+                        case 'driver':
+                            listPages.push(
+                                <Divider key={idPage} sx={{my: 0.5, ml: 4}}/>
+                            )
+                            break;
+                    }
+                })
             }
-        }
-    }, [isOpenMenu]);
 
-    useWindowResize(() => {
-        setScrollHeight(document.body.scrollHeight)
+            listApps.push(
+                <React.Fragment key={idApp}>
+                    <ListItemButton selected={open.includes(idApp)} onClick={() => {
+                        handleClick(idApp)
+                    }}>
+                        <ListItemIcon>
+                            <Avatar variant="circular" sx={{
+                                width: 30,
+                                height: 30,
+                                backgroundColor: 'white',
+                                border: '1px solid ' + palette.grey.A200,
+                            }}>
+                                <IconApp style={{
+                                    width: 20,
+                                    color: app.color
+                                }}/>
+                            </Avatar>
+
+                        </ListItemIcon>
+                        <ListItemText primary={app.title}/>
+                        {open.includes(idApp) ? <ExpandLess/> : <ExpandMore/>}
+                    </ListItemButton>
+
+                    <Collapse in={open.includes(idApp)} timeout="auto" unmountOnExit>
+                        <List component="div">
+                            {listPages}
+                        </List>
+                    </Collapse>
+                </React.Fragment>
+            );
+        });
+
+        listGroups.push(
+            <React.Fragment key={`group-item-${indexGroup}`}>
+                <List
+                    sx={{
+                        width: '100%',
+                        // selected and (selected + hover) states
+                        '& .MuiListItemButton-root': {
+                            borderRadius: 2,
+                        },
+                        // selected and (selected + hover) states
+                        '&& .Mui-selected, && .Mui-selected:hover': {
+                            bgcolor: palette.primary.light,
+                            '& .MuiListItemIcon-root': {
+                                color: palette.primary.dark,
+                            },
+                        },
+                        // hover states
+                        '& .MuiListItemButton-root:hover': {
+                            bgcolor: palette.grey.A100,
+                        },
+
+                        '&& .MuiCollapse-root .Mui-selected': {
+                            bgcolor: 'white',
+                            '& .MuiListItemIcon-root': {
+                                color: palette.primary.dark,
+                            },
+                        },
+                        '&& .MuiCollapse-root .Mui-selected:hover': {
+                            bgcolor: palette.grey.A100
+                        },
+
+                    }}
+
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    subheader={
+                        <ListSubheader component="div" id="nested-list-subheader">
+                            <Typography component="div" variant="h7" sx={{
+                                lineHeight: 2
+                            }}>
+                                {data.group}
+                            </Typography>
+                        </ListSubheader>
+                    }
+                >
+                    {listApps}
+                </List>
+
+                {menuItems.items.length === indexGroup + 1 ? null : <Divider sx={{my: 1.5}}/>}
+
+            </React.Fragment>
+        )
     })
 
     return (
         <React.Fragment>
-            <div onClick={() => {
-                setIsOpenMenu(false)
-            }} style={{
-                display: isMD ? 'block' : 'none',
-                backgroundColor: 'black',
-                position: 'absolute',
-                opacity: isOpenMenu ? 0.5 : 0,
-                top: paddingTop,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                zIndex: 1099,
-                transitionDuration: '300ms',
-            }}/>
-
-            <div style={{
-                position: 'absolute',
-                height: 10,
-                width: 10,
-                top: paddingTop,
-                marginLeft: isOpenMenu ? menuWidth : 0,
-                backgroundImage: `url(${corner15})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                zIndex: 1099,
-                transitionDuration: '300ms',
-            }}/>
-
-            <div style={{
-                backgroundColor: menuBackgroundColor,
-                position: 'absolute',
-                top: paddingTop,
-                left: isOpenMenu ? 0 : menuWidth * -1,
-                width: menuWidth,
-                height: isMD ? 'auto' : scrollHeight - paddingTop,
-                bottom: !isMD ? 'auto' : 0,
-                transitionDuration: '300ms',
-                margin: 0,
-                zIndex: 1100,
-                overflow: 'auto'
+            <Grid container spacing={2} style={{
+                padding: 20
             }}>
-                {props.children}
-            </div>
-
-            <Grid container spacing={0} rowSpacing={0} style={{
-                paddingLeft: isOpenMenu && !isMD ? menuWidth : 20,
-                paddingRight: 20,
-                height: '100%',
-                transitionDuration: '300ms'
-            }}>
-                <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{
-                    backgroundColor: contentBackgroundColor,
-                    padding: 20,
-                    borderTopRightRadius: 15,
-                    borderTopLeftRadius: 15
-                }}>
-                    {content}
+                <Grid item xs={12}>
+                    {listGroups}
+                </Grid>
+                <Grid item xs={12}>
+                    {props.children}
                 </Grid>
             </Grid>
         </React.Fragment>
     );
 }
 
-AppMenu.propTypes = {
-    isOpen: PropTypes.bool,
-    paddingTop: PropTypes.number,
-    menuWidth: PropTypes.number,
-    menuBackgroundColor: PropTypes.string,
-    contentBackgroundColor: PropTypes.string,
-    content: PropTypes.element,
-    children: PropTypes.element.isRequired,
-    onChangeMenu: PropTypes.func
-};
+AppMenu.propTypes = {};
