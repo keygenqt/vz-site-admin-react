@@ -10,7 +10,7 @@ projects.
 
 ### Preview
 
-![alt text](data/screenshot-413.png)
+![alt text](data/screenshot-413-border.png)
 
 # License
 
