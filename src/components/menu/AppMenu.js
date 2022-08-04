@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useContext, useEffect} from 'react';
 import {
     Avatar,
     Collapse,
@@ -14,7 +15,17 @@ import {
 } from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
-import {menuItems} from "./elements/items";
+import {AppContext} from "../../base";
+import {web} from "./elements/web";
+import {pc} from "./elements/pc";
+import {android} from "./elements/android";
+
+/**
+ * Data menu
+ */
+export const menuItems = {
+    items: [web, pc, android]
+};
 
 /**
  * Top bar fot app with adaptive layout
@@ -23,11 +34,15 @@ import {menuItems} from "./elements/items";
  */
 export function AppMenu(props) {
 
+    const {route} = useContext(AppContext)
+
     const {} = props
 
     const {palette} = useTheme();
 
     const [open, setOpen] = React.useState([]);
+    const [pageSelected, setPageSelected] = React.useState(null);
+    const [isAnimateCollapse, setIsAnimateCollapse] = React.useState(false);
 
     const handleClick = (index) => {
         if (open.includes(index)) {
@@ -38,6 +53,25 @@ export function AppMenu(props) {
             setOpen(open.concat([index]))
         }
     };
+
+    useEffect(() => {
+        menuItems.items.forEach((data, indexGroup) => {
+            data.children.forEach((app, indexApp) => {
+                const idApp = `app-item-${indexGroup}-${indexApp}`
+                app.children.forEach((page, indexPage) => {
+                    const idPage = `icon-page-item-${indexGroup}-${indexApp}-${indexPage}`
+                    const isSelected = route.isPage(page.route)
+                    if (isSelected) {
+                        setOpen(open.concat([idApp]))
+                        setPageSelected(idPage)
+                        setTimeout(function () {
+                            setIsAnimateCollapse(true)
+                        }, 50);
+                    }
+                })
+            })
+        })
+    }, [pageSelected]);
 
     const listGroups = []
 
@@ -57,12 +91,21 @@ export function AppMenu(props) {
 
                     const IconPage = page.icon;
                     const idPage = `icon-page-item-${indexGroup}-${indexApp}-${indexPage}`
-                    const isSelected = page.selected === true
+
+                    const onClickPage = () => {
+                        if (page.route) {
+                            route.toLocation(page.route)
+                            setPageSelected(idPage)
+                        }
+                        if (page.link) {
+                            route.openUrlNewTab(page.link)
+                        }
+                    }
 
                     switch (page.type) {
                         case 'primary':
                             listPages.push(
-                                <ListItemButton selected={isSelected} key={idPage} sx={{ml: 4}}>
+                                <ListItemButton selected={pageSelected === idPage} key={idPage} sx={{ml: 4}} onClick={onClickPage}>
                                     <ListItemIcon>
                                         <IconPage/>
                                     </ListItemIcon>
@@ -72,7 +115,7 @@ export function AppMenu(props) {
                             break;
                         case 'secondary':
                             listPages.push(
-                                <ListItemButton selected={isSelected} key={idPage} sx={{ml: 4}}>
+                                <ListItemButton selected={pageSelected === idPage} key={idPage} sx={{ml: 4}} onClick={onClickPage}>
                                     <ListItemIcon>
                                         <IconPage/>
                                     </ListItemIcon>
@@ -112,7 +155,7 @@ export function AppMenu(props) {
                         {open.includes(idApp) ? <ExpandLess/> : <ExpandMore/>}
                     </ListItemButton>
 
-                    <Collapse in={open.includes(idApp)} timeout="auto" unmountOnExit>
+                    <Collapse in={open.includes(idApp)} timeout={!isAnimateCollapse ? 0 : 'auto'} unmountOnExit>
                         <List component="div">
                             {listPages}
                         </List>

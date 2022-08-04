@@ -16,9 +16,12 @@ export function BaseLayout(props) {
             height: '100%'
         }}>
             <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-                <AppTopBar onChangeMenu={() => {
-                    setIsOpenMenu(!isOpenMenu)
-                }}/>
+                <AppTopBar
+                    isOpenMenu={isOpenMenu}
+                    onChangeMenu={() => {
+                        setIsOpenMenu(!isOpenMenu)
+                    }}
+                />
             </Grid>
 
             <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{
@@ -35,7 +38,7 @@ export function BaseLayout(props) {
                             size={'small'}
                             color={'blue'}
                         >
-                            <Grid container spacing={1} >
+                            <Grid container spacing={1}>
                                 <Grid item xs={6}>
                                     <Typography component="div" variant="caption" sx={{
                                         fontWeight: 'bold',
@@ -62,7 +65,7 @@ export function BaseLayout(props) {
                                             borderRadius: 5,
                                             backgroundColor: palette.primary.dark,
                                         },
-                                    }} />
+                                    }}/>
                                 </Grid>
                             </Grid>
                         </AppCard>

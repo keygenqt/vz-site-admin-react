@@ -1,19 +1,7 @@
 import * as React from 'react';
-import {useContext, useEffect, useRef, useState} from 'react';
-import {
-    Avatar,
-    Button,
-    Card,
-    CardContent,
-    Divider,
-    Grid,
-    Stack,
-    Typography,
-    useMediaQuery,
-    useTheme
-} from "@mui/material";
-import {AppContext, useWindowResize} from "../../base";
-import {AppCard} from "../../components";
+import {useEffect, useState} from 'react';
+import {Avatar, Button, Card, CardContent, Divider, Grid, Stack, Typography} from "@mui/material";
+import {AppCard} from "../../../../components";
 import {
     AllInbox,
     AssignmentInd,
@@ -27,7 +15,6 @@ import {
 import PropTypes from "prop-types";
 import {AppCardChart} from "./elements/AppCardChart";
 import Chart from 'react-apexcharts';
-import ApexCharts from 'apexcharts';
 
 export const chartData = {
     height: 490,
@@ -158,7 +145,7 @@ export const chartData2 = {
     ]
 };
 
-export function HomePage({title}) {
+export function DashboardPage({title}) {
 
     const [isLoading, setLoading] = useState(true);
 
@@ -238,7 +225,7 @@ export function HomePage({title}) {
             <Grid item xl={4} lg={4} md={6} sm={12} xs={12} style={{}}>
                 <AppCard
                     isLoading={isLoading}
-                    iconSize={'small'}
+                    iconType={'small'}
                     icon={<Domain/>}
                     title={'Popular Stocks'}
                     size={'small'}
@@ -459,6 +446,6 @@ export function HomePage({title}) {
     );
 }
 
-HomePage.propTypes = {
+DashboardPage.propTypes = {
     title: PropTypes.string,
 };

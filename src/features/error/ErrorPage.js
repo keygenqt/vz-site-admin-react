@@ -3,7 +3,6 @@ import {useContext, useEffect} from 'react';
 import {Container, Stack, Typography, Zoom} from "@mui/material";
 import {AppContext} from "../../base";
 import PropTypes from "prop-types";
-import {AppCard} from "../../components";
 
 export function ErrorPage({title}) {
 

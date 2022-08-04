@@ -4,16 +4,29 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import PropTypes from "prop-types";
-import {useTheme} from "@mui/material";
+import {
+    Avatar,
+    Chip,
+    ClickAwayListener,
+    Fade,
+    Grid,
+    Paper,
+    Popper,
+    Switch,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
+import {ConstantImage} from "../../base/constants/ConstantImage";
+import {SettingsOutlined} from "@mui/icons-material";
+import {AppCard} from "../card/AppCard";
+import {useState} from "react";
+import {useWindowResize} from "../../base";
+
+function Transitions(props: { onEnter: () => {}, in: boolean, onExited: () => {} }) {
+    return null;
+}
 
 /**
  * Top bar fot app with adaptive layout
@@ -23,108 +36,24 @@ import {useTheme} from "@mui/material";
 export function AppTopBar(props) {
 
     const {
+        isOpenMenu,
         onChangeMenu = () => {
         }
     } = props
 
+
     const theme = useTheme()
-
+    const isMD = useMediaQuery(theme.breakpoints.down('md'));
+    const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [sdm, setSdm] = useState(true);
 
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const canBeOpen = open && Boolean(anchorEl);
+    const id = canBeOpen ? 'transition-popper' : undefined;
 
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
-
-    const handleMobileMenuOpen = (event) => {
-        setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-    const menuId = 'primary-search-account-menu';
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        </Menu>
-    );
-
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    const renderMobileMenu = (
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-        >
-            <MenuItem>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
-                        <MailIcon/>
-                    </Badge>
-                </IconButton>
-                <p>Messages</p>
-            </MenuItem>
-            <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                >
-                    <Badge badgeContent={17} color="error">
-                        <NotificationsIcon/>
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle/>
-                </IconButton>
-                <p>Profile</p>
-            </MenuItem>
-        </Menu>
-    );
+    useWindowResize(() => {
+        setOpen(false)
+    })
 
     return (
         <Box sx={{flexGrow: 0}} style={{
@@ -154,54 +83,119 @@ export function AppTopBar(props) {
                     >
                         <span style={{color: theme.palette.primary[800]}}>Ad</span>minka
                     </Typography>
+
                     <Box sx={{flexGrow: 1}}/>
-                    <Box sx={{display: {xs: 'none', md: 'flex'}}}>
-                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
-                                <MailIcon/>
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
+
+                    <Chip
+                        sx={{
+                            alignItems: 'center',
+                            height: '40px',
+                            borderRadius: '27px',
+                            border: 'none',
+                            backgroundColor: open ? theme.palette.primary.main : theme.palette.primary.light,
+                            transition: isOpenMenu && isMD ? 'all 0s ease-in-out' : 'all 0.2s ease-in-out',
+                            '& .MuiChip-label': {
+                                paddingLeft: isOpenMenu && isMD ? 0.6 : 2
+                            },
+                            '& svg': {
+                                color: open ? theme.palette.primary.light : theme.palette.primary.main,
+                                transition: 'all .2s ease-in-out',
+                            },
+                            '&:hover': isOpenMenu && isMD ? null : {
+                                borderColor: theme.palette.primary.main,
+                                background: `${theme.palette.primary.main}!important`,
+                                '& svg': {
+                                    color: theme.palette.primary.light,
+                                },
+                            },
+                        }}
+                        aria-describedby={id}
+                        avatar={<Avatar sx={{paddingLeft: 1}} src={ConstantImage.common.default_user_avatar}/>}
+                        label={isOpenMenu && isMD ? null : <SettingsOutlined sx={{width: 18}}/>}
+                        variant="outlined"
+                        onClick={isOpenMenu && isMD ? null : (event) => {
+                            setAnchorEl(event.currentTarget);
+                            event.stopPropagation();
+                            setOpen((previousOpen) => !previousOpen);
+                        }}
+                    />
+
+                    <ClickAwayListener onClickAway={() => {
+                        setOpen(false);
+                    }}>
+                        <Popper
+                            id={id}
+                            open={open}
+                            anchorEl={anchorEl}
+                            transition
+                            disablePortal
+                            placement="bottom-end"
+                            role={undefined}
+                            popperOptions={{
+                                modifiers: [
+                                    {
+                                        name: 'offset',
+                                        options: {
+                                            offset: [2, 10]
+                                        }
+                                    }
+                                ]
+                            }}
                         >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon/>
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle/>
-                        </IconButton>
-                    </Box>
-                    <Box sx={{display: {xs: 'flex', md: 'none'}}}>
-                        <IconButton
-                            size="large"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon/>
-                        </IconButton>
-                    </Box>
+                            {({TransitionProps}) => (
+                                <Fade {...TransitionProps} timeout={isOpenMenu && isMD ? 0 : 350}>
+                                    <Paper style={{
+                                        boxShadow: 'rgb(0 0 0 / 20%) 0px 3px 5px -1px, rgb(0 0 0 / 14%) 0px 5px 8px 0px, rgb(0 0 0 / 12%) 0px 1px 14px 0px',
+                                    }}>
+                                        <AppCard
+                                            title={'Good Morning!'}
+                                            size={'small'}
+                                            color={'success'}
+                                            style={{
+                                                border: 'none',
+                                                minWidth: 300
+                                            }}
+                                        >
+                                            <Box sx={{
+                                                backgroundColor: theme.palette.primary.light,
+                                                borderRadius: 3,
+                                                padding: 2
+                                            }}>
+                                                <Grid container spacing={2} direction="column">
+                                                    <Grid item>
+                                                        <Grid item container alignItems="center" justifyContent="space-between">
+                                                            <Grid item>
+                                                                <Typography variant="subtitle1">Theme dark</Typography>
+                                                            </Grid>
+                                                            <Grid item>
+                                                                <Switch
+                                                                    color="primary"
+                                                                    checked={sdm}
+                                                                    onChange={(e) => setSdm(e.target.checked)}
+                                                                    name="sdm"
+                                                                    size="small"
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </Box>
+                                        </AppCard>
+                                    </Paper>
+                                </Fade>
+                            )}
+                        </Popper>
+                    </ClickAwayListener>
+
+
+
                 </Toolbar>
             </AppBar>
-            {renderMobileMenu}
-            {renderMenu}
         </Box>
     );
 }
 
 AppTopBar.propTypes = {
+    isOpenMenu: PropTypes.bool,
     onChangeMenu: PropTypes.func
 };

@@ -11,6 +11,7 @@ import {
     ViewListOutlined,
     YouTube
 } from "@mui/icons-material";
+import {RouteConf} from "../../../base/route/RouteConf";
 
 // constant
 const icons = {
@@ -36,32 +37,31 @@ export const web = {
             children: [
                 {
                     selected: true,
+                    route: RouteConf.routes.mps.dashboard,
                     type: 'primary',
                     icon: icons.DashboardOutlined,
                     title: 'Dashboard',
                 },
                 {
+                    route: RouteConf.routes.mps.blogs,
                     type: 'primary',
                     icon: icons.ViewListOutlined,
                     title: 'Blog',
                 },
                 {
+                    route: RouteConf.routes.mps.projects,
                     type: 'primary',
                     icon: icons.ViewListOutlined,
                     title: 'Projects',
                 },
                 {
-                    type: 'primary',
-                    icon: icons.SettingsOutlined,
-                    title: 'Settings',
-                },
-                {
                     type: 'driver'
                 },
                 {
+                    link: 'https://version2.keygenqt.com/',
                     type: 'secondary',
                     icon: icons.LinkOutlined,
-                    title: 'Go to App',
+                    title: 'Go To',
                 },
             ]
         },

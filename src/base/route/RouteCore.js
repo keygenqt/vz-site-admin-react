@@ -1,8 +1,8 @@
 import * as React from "react";
 import {ScrollToTop} from "../../components";
 import {Route, Routes} from "react-router-dom";
-import {ErrorPage} from "../../pages";
-import {BaseLayout, GuestLayout} from "../../layouts";
+import {GuestLayout} from "../../layouts";
+import {ErrorPage} from "../../features/error/ErrorPage";
 
 export default class RouteCore {
 
@@ -18,36 +18,62 @@ export default class RouteCore {
     }
 
     /**
+     * Get path with check object or string
+     *
+     * @param route
+     *
+     * @return string
+     */
+    getPathFromObject(route) {
+        if (typeof route === 'string' || route instanceof String) {
+            return route
+        } else {
+            if (route === undefined) {
+                return ""
+            } else if (route.path !== undefined) {
+                return route.path
+            } else {
+                return ""
+            }
+        }
+    }
+
+    /**
      * Open page
      *
-     * @param route {String}
+     * @param route {String | Object}
      * @param arg
      *
      * @returns {(function(): void)|*}
      */
     toLocation(route, ...arg) {
-        if (this.isPage(route)) {
+        const path = this.getPathFromObject(route)
+        if (this.isPage(path)) {
             this.navigate(0)
         } else {
-            this.navigate(this.createLink(route, arg));
+            this.navigate(this.createLink(path, arg));
         }
     }
 
     /**
      * Open page with delay
      *
-     * @param route {String}
+     * @param route {String | Object}
      * @param arg
      *
      * @returns {(function(): void)|*}
      */
     toLocationDelay(route, ...arg) {
+        if (route === undefined) {
+            return
+        }
         const self = this
+        const path = this.getPathFromObject(route)
         setTimeout(function () {
-            if (self.isPage(route)) {
+            if (self.isPage(path)) {
                 self.navigate(0)
             } else {
-                self.navigate(self.createLink(route, arg));
+                self.navigate(self.createLink(path, arg));
             }
         }, this.conf.delay);
     }
@@ -76,28 +102,30 @@ export default class RouteCore {
     /**
      * Open page
      *
-     * @param route {String}
+     * @param route {String | Object}
      * @param arg
      *
      * @returns {(function(): void)|*}
      */
     onClickToLocation(route, ...arg) {
+        const path = this.getPathFromObject(route)
         return () => {
-            this.toLocation(route, arg)
+            this.toLocation(path, arg)
         }
     }
 
     /**
      * Open page with delay
      *
-     * @param route {String}
+     * @param route {String | Object}
      * @param arg
      *
      * @returns {(function(): void)|*}
      */
     onClickToLocationDelay(route, ...arg) {
+        const path = this.getPathFromObject(route)
         return () => {
-            this.toLocationDelay(route, arg)
+            this.toLocationDelay(path, arg)
         }
     }
 
@@ -133,7 +161,7 @@ export default class RouteCore {
     }
 
     /**
-     * Check location by route
+     * Check location by path
      *
      * @returns {boolean}
      */
@@ -143,17 +171,8 @@ export default class RouteCore {
         const regexLoc = /([\d+])|(\w+-\w+)/ig;
 
         for (let i = 0; i < route.length; i++) {
-
-            let result;
-            let data = route[i]
-
-            if (typeof data === 'string' || data instanceof String) {
-                result = data
-            } else {
-                result = data.route
-            }
-
-            if (this.location.pathname.replaceAll(regexLoc, "__id__") === result.replaceAll(regexPath, "__id__")) {
+            const path = this.getPathFromObject(route[i])
+            if (this.location.pathname.replaceAll(regexLoc, "__id__") === path.replaceAll(regexPath, "__id__")) {
                 return true
             }
         }
@@ -167,14 +186,16 @@ export default class RouteCore {
      */
     createLink(route, ...arg) {
 
-        if (!route.includes(":")) {
-            return route
+        const path = this.getPathFromObject(route)
+
+        if (!path.includes(":")) {
+            return path
         }
 
-        let result = route
+        let result = path
         let linkArgs = []
 
-        route.split("/").forEach((v) => {
+        path.split("/").forEach((v) => {
             if (v.includes(":")) {
                 linkArgs.push(v)
             }
@@ -204,9 +225,9 @@ export default class RouteCore {
 
         Object.keys(this.conf.routes).forEach((group, groupIndex) => {
             Object.keys(this.conf.routes[group]).forEach((page, pageIndex) => {
-                const {route, title, render} = this.conf.routes[group][page]
+                const {path, title, render} = this.conf.routes[group][page]
                 if (render !== undefined) {
-                    pages.push(render(groupIndex + pageIndex, route, title))
+                    pages.push(render(groupIndex + pageIndex, path, title))
                 }
             })
         });

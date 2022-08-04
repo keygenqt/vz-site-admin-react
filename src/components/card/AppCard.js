@@ -9,6 +9,7 @@ import {SkeletonSmall} from "./elements/SkeletonSmall";
 export function AppCard(props) {
 
     const {
+        style,
         icon,
         title,
         subheader,
@@ -16,7 +17,7 @@ export function AppCard(props) {
         chart,
         contentHeight = 0,
         isLoading = false,
-        iconSize = 'normal',
+        iconType = 'normal',
         size = 'normal',
         color = 'blue',
     } = props
@@ -32,17 +33,25 @@ export function AppCard(props) {
                     isTitle={title !== undefined}
                     isSubheader={subheader !== undefined}
                     isIcon={icon !== undefined}
-                    isIconSmall={iconSize === 'small'}
+                    isIconSmall={iconType === 'small'}
                     contentHeight={contentHeight}
                 />) : (
-                <Card variant={"outlined"} className={`AppCard ${color} ${size}`}>
+                <Card variant={"outlined"} className={`AppCard ${color} ${size}`} style={style}>
                     {icon || actionMenu || title || subheader ? <CardHeader
                         avatar={
-                            icon && iconSize === 'normal' ?
+                            icon && iconType === 'normal' ?
                                 <Avatar variant="rounded" aria-label="recipe" className={"AppCardAvatar"}>
                                     {icon}
                                 </Avatar> : icon ?
-                                    <Avatar variant="rounded" aria-label="recipe" className={"AppCardAvatar Small"}>
+                                    <Avatar variant="rounded" aria-label="recipe"
+                                            className={"AppCardAvatar " + (iconType === 'page' ? '' : 'Small')}
+                                            style={iconType === 'page' ? {
+                                                backgroundColor: 'transparent',
+                                                color: 'black',
+                                                fontSize: 24,
+                                                width: 30,
+                                                height: 30
+                                            } : {}}>
                                         {icon}
                                     </Avatar> : null
                         }
@@ -101,10 +110,11 @@ export function AppCard(props) {
 }
 
 AppCard.propTypes = {
+    style: PropTypes.object,
     contentHeight: PropTypes.number,
     isLoading: PropTypes.bool,
     icon: PropTypes.node,
-    iconSize: PropTypes.oneOf(['small', 'normal']),
+    iconType: PropTypes.oneOf(['small', 'normal', 'page']),
     title: PropTypes.string,
     subheader: PropTypes.string,
     actionMenu: PropTypes.func,
