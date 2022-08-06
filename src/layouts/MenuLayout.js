@@ -66,7 +66,7 @@ export function MenuLayout(props) {
             <div onClick={() => {
                 setIsOpenMenu(false)
             }} style={{
-                display: isMD ? 'block' : 'none',
+                display: isOpen && isMD ? 'block' : 'none',
                 backgroundColor: 'black',
                 position: 'absolute',
                 opacity: isOpenMenu ? 0.5 : 0,

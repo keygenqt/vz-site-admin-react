@@ -35,11 +35,7 @@ export const menuItems = {
 export function AppMenu(props) {
 
     const {route} = useContext(AppContext)
-
-    const {} = props
-
     const {palette} = useTheme();
-
     const [open, setOpen] = React.useState([]);
     const [pageSelected, setPageSelected] = React.useState(null);
     const [isAnimateCollapse, setIsAnimateCollapse] = React.useState(false);
@@ -105,7 +101,8 @@ export function AppMenu(props) {
                     switch (page.type) {
                         case 'primary':
                             listPages.push(
-                                <ListItemButton selected={pageSelected === idPage} key={idPage} sx={{ml: 4}} onClick={onClickPage}>
+                                <ListItemButton selected={pageSelected === idPage} key={idPage} sx={{ml: 4}}
+                                                onClick={onClickPage}>
                                     <ListItemIcon>
                                         <IconPage/>
                                     </ListItemIcon>
@@ -115,7 +112,8 @@ export function AppMenu(props) {
                             break;
                         case 'secondary':
                             listPages.push(
-                                <ListItemButton selected={pageSelected === idPage} key={idPage} sx={{ml: 4}} onClick={onClickPage}>
+                                <ListItemButton selected={pageSelected === idPage} key={idPage} sx={{ml: 4}}
+                                                onClick={onClickPage}>
                                     <ListItemIcon>
                                         <IconPage/>
                                     </ListItemIcon>
@@ -128,6 +126,8 @@ export function AppMenu(props) {
                                 <Divider key={idPage} sx={{my: 0.5, ml: 4}}/>
                             )
                             break;
+                        default:
+                            console.log("Error type menu: " + page.type)
                     }
                 })
             }

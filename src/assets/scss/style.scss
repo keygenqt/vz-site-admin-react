@@ -192,3 +192,17 @@ a {
   top: -87px;
   right: -50px;
 }
+
+/** Grid **/
+.MuiDataGrid-menu .MuiPaper-root {
+  box-shadow: rgb(0 0 0 / 6%) 0 3px 5px -1px, rgb(0 0 0 / 6%) 0px 5px 8px 0px, rgb(0 0 0 / 6%) 0px 1px 14px 0px;
+  border: 1px solid #d3d3d3;
+  border-radius: 15px;
+  min-width: 200px;
+}
+
+.MuiDataGrid-panel .MuiPaper-root {
+  box-shadow: rgb(0 0 0 / 6%) 0 3px 5px -1px, rgb(0 0 0 / 6%) 0px 5px 8px 0px, rgb(0 0 0 / 6%) 0px 1px 14px 0px;
+  padding: 5px 10px;
+  border: 1px solid #d3d3d3;
+}
