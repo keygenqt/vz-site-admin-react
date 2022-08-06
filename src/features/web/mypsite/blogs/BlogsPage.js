@@ -75,7 +75,7 @@ export function BlogsPage({title}) {
             <Grid item xs={12}>
                 <SplitButton
                     color={theme.palette.success.main}
-                    size={'large'}
+                    size={'medium'}
                     startIcon={<AddOutlined/>}
                 >
                     Add
@@ -90,17 +90,17 @@ export function BlogsPage({title}) {
                     color={'success'}
                 >
                     <AppGridData
-                        checkboxSelection={false}
+                        checkboxSelection={true}
                         rows={rows}
                         columns={columns}
-                        onClickView={() => {
-
+                        onClickView={(e, id) => {
+                            console.log(id)
                         }}
-                        onClickEdit={() => {
-
+                        onClickEdit={(e, id) => {
+                            console.log(id)
                         }}
-                        onClickDelete={() => {
-
+                        onClickDelete={(e, id) => {
+                            console.log(id)
                         }}
                     />
                 </AppCard>

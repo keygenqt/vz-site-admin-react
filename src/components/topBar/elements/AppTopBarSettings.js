@@ -34,7 +34,8 @@ export function AppTopBarSettings(props) {
                     backgroundColor: open ? theme.palette.primary.main : theme.palette.primary.light,
                     transition: !clickable ? 'all 0s ease-in-out' : 'all 0.2s ease-in-out',
                     '& .MuiChip-label': {
-                        paddingLeft: !clickable ? 0.6 : 2
+                        paddingLeft: !clickable ? 0.6 : 2,
+                        paddingTop: '1px'
                     },
                     '& svg': {
                         color: open ? theme.palette.primary.light : theme.palette.primary.main,

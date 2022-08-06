@@ -6,80 +6,17 @@ import {DeleteOutline, EditOutlined, VisibilityOutlined} from "@mui/icons-materi
 
 const gridColumnsClasses = {
     headerClassName: (params: GridCellParams<number>) => {
-        return clsx('super-app', {
-            fullWith: params.colDef.width === 0,
+        return clsx('MuiDataGrid-custom', {
+            'MuiDataGrid-fullWith': params.colDef.width === 0,
         })
     },
     cellClassName: (params: GridCellParams<number>) => {
-        return clsx('super-app', {
-            fullWith: params.colDef.width === 0,
+        return clsx('MuiDataGrid-custom', {
+            'MuiDataGrid-fullWith': params.colDef.width === 0,
+            'MuiDataGrid-lastColumn': params.colDef.lastColumn,
         })
     },
 }
-
-const columns = [
-    {
-        ...gridColumnsClasses,
-        field: 'id',
-        headerName: 'ID',
-        width: 100,
-    },
-    {
-        ...gridColumnsClasses,
-        field: 'firstName',
-        headerName: 'First name',
-        width: 0,
-        minWidth: 200,
-        editable: true,
-    },
-    {
-        ...gridColumnsClasses,
-        field: 'fullName',
-        headerName: 'Full name',
-        description: 'This column has a value getter and is not sortable.',
-        disableColumnMenu: true,
-        sortable: false,
-        width: 0,
-        minWidth: 200,
-        valueGetter: (params) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    },
-    {
-        ...gridColumnsClasses,
-        field: 'age',
-        headerName: 'Age',
-        width: 120
-    },
-    {
-        ...gridColumnsClasses,
-        field: 'actions',
-        type: 'actions',
-        width: 130,
-        getActions: () => [
-            <GridActionsCellItem color="success" sx={{
-                backgroundColor: '#07a94a14',
-                transitionDuration: '300ms',
-                '&:hover': {
-                    backgroundColor: '#07a94a2e',
-                }
-            }} icon={<VisibilityOutlined/>} label="Edit"/>,
-            <GridActionsCellItem color="primary" sx={{
-                backgroundColor: '#2196f314',
-                transitionDuration: '300ms',
-                '&:hover': {
-                    backgroundColor: '#2196f32e',
-                }
-            }} icon={<EditOutlined/>} label="Edit"/>,
-            <GridActionsCellItem color="error" sx={{
-                backgroundColor: '#d32f2f14',
-                transitionDuration: '300ms',
-                '&:hover': {
-                    backgroundColor: '#d32f2f2e',
-                }
-            }} icon={<DeleteOutline/>} label="Delete"/>,
-        ],
-    },
-];
 
 export function AppGridData(props) {
 
@@ -92,14 +29,20 @@ export function AppGridData(props) {
         onClickDelete,
     } = props
 
-    const columnsMap = columns.map((item) => {
-        return {...item, ...gridColumnsClasses}
+    const columnsMap = columns.map((item, index) => {
+        return {
+            ...item,
+            ...{lastColumn: index === columns.length - 1 && !(onClickView || onClickEdit || onClickDelete)},
+            ...gridColumnsClasses
+        }
     });
 
     if (onClickView || onClickEdit || onClickDelete) {
         let actions = [];
         if (onClickView) {
-            actions.push(<GridActionsCellItem color="success" sx={{
+            actions.push(<GridActionsCellItem color="success" onClick={(event) => {
+                onClickView(event, event.target.closest('.MuiDataGrid-row').dataset.id)
+            }} sx={{
                 backgroundColor: '#07a94a14',
                 transitionDuration: '300ms',
                 '&:hover': {
@@ -108,16 +51,20 @@ export function AppGridData(props) {
             }} icon={<VisibilityOutlined/>} label="Edit"/>)
         }
         if (onClickEdit) {
-            actions.push(<GridActionsCellItem color="primary" sx={{
+            actions.push(<GridActionsCellItem color="primary" onClick={(event) => {
+                onClickEdit(event, event.target.closest('.MuiDataGrid-row').dataset.id)
+            }} sx={{
                 backgroundColor: '#2196f314',
                 transitionDuration: '300ms',
                 '&:hover': {
                     backgroundColor: '#2196f32e',
                 }
-            }} icon={<EditOutlined/>} label="Edit"/>,)
+            }} icon={<EditOutlined/>} label="Edit"/>)
         }
         if (onClickDelete) {
-            actions.push(<GridActionsCellItem color="error" sx={{
+            actions.push(<GridActionsCellItem color="error" onClick={(event) => {
+                onClickDelete(event, event.target.closest('.MuiDataGrid-row').dataset.id)
+            }} sx={{
                 backgroundColor: '#d32f2f14',
                 transitionDuration: '300ms',
                 '&:hover': {
@@ -130,13 +77,14 @@ export function AppGridData(props) {
             ...gridColumnsClasses,
             field: 'actions',
             type: 'actions',
-            width: 40 * actions.length,
+            width: 40 * actions.length + 20,
             getActions: () => actions,
         })
     }
 
     return (
         <DataGrid
+            density={'standard'}
             checkboxSelection={checkboxSelection}
             disableSelectionOnClick
             disableColumnSelector
@@ -166,7 +114,7 @@ export function AppGridData(props) {
                 '& .MuiDataGrid-columnHeadersInner': {
                     width: '100%'
                 },
-                '& .MuiDataGrid-columnHeader.fullWith': {
+                '& .MuiDataGrid-columnHeader.MuiDataGrid-fullWith': {
                     width: '100% !important',
                     maxWidth: '100% !important'
                 },
@@ -180,11 +128,11 @@ export function AppGridData(props) {
                 '& .MuiDataGrid-row': {
                     width: '100%',
                 },
-                '& .MuiDataGrid-cell.fullWith': {
+                '& .MuiDataGrid-cell.MuiDataGrid-fullWith': {
                     width: '100% !important',
                     maxWidth: '100% !important'
                 },
-                '& .MuiDataGrid-cell:last-child:not(.super-app)': {
+                '& .MuiDataGrid-cell:last-child:not(.MuiDataGrid-custom)': {
                     display: 'none'
                 },
                 '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {

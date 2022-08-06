@@ -206,3 +206,25 @@ a {
   padding: 5px 10px;
   border: 1px solid #d3d3d3;
 }
+
+.MuiDataGrid-root .MuiDataGrid-columnHeader:first-child,
+.MuiDataGrid-root .MuiDataGrid-cell:first-child {
+  padding-left: 20px !important;
+}
+
+.MuiDataGrid-root .MuiDataGrid-columnHeader:last-of-type,
+.MuiDataGrid-root .MuiDataGrid-cell.MuiDataGrid-lastColumn {
+  padding-right: 20px !important;
+}
+
+.MuiDataGrid-root .MuiDataGrid-columnHeaderCheckbox,
+.MuiDataGrid-root .MuiDataGrid-cellCheckbox {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+}
+
+.MuiDataGrid-root .MuiCheckbox-root {
+  padding-right: 10px !important;
+  padding-left: 0 !important;
+}
