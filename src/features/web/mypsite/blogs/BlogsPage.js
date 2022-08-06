@@ -1,35 +1,19 @@
 import * as React from 'react';
 import {useEffect} from 'react';
-import {Grid, useMediaQuery, useTheme} from "@mui/material";
+import {Grid, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
-import {AddOutlined, DeleteOutline, EditOutlined, ViewListOutlined, VisibilityOutlined} from "@mui/icons-material";
+import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
 import {AppCard} from "../../../../components";
-import {DataGrid, GridActionsCellItem, GridCellParams, GridToolbar} from '@mui/x-data-grid';
 import {SplitButton} from "../../../../components/buttons/SplitButton";
-import clsx from 'clsx';
-
-const gridColumnsClasses = {
-    headerClassName: (params: GridCellParams<number>) => {
-        return clsx('super-app', {
-            fullWith: params.colDef.width === 0,
-        })
-    },
-    cellClassName: (params: GridCellParams<number>) => {
-        return clsx('super-app', {
-            fullWith: params.colDef.width === 0,
-        })
-    },
-}
+import {AppGridData} from "../../../../components/gridData/AppGridData";
 
 const columns = [
     {
-        ...gridColumnsClasses,
         field: 'id',
         headerName: 'ID',
-        width: 100,
+        width: 110,
     },
     {
-        ...gridColumnsClasses,
         field: 'firstName',
         headerName: 'First name',
         width: 0,
@@ -37,7 +21,6 @@ const columns = [
         editable: true,
     },
     {
-        ...gridColumnsClasses,
         field: 'fullName',
         headerName: 'Full name',
         description: 'This column has a value getter and is not sortable.',
@@ -49,22 +32,10 @@ const columns = [
             `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
     {
-        ...gridColumnsClasses,
         field: 'age',
         headerName: 'Age',
-        width: 120
-    },
-    {
-        ...gridColumnsClasses,
-        field: 'actions',
-        type: 'actions',
-        width: 130,
-        getActions: () => [
-            <GridActionsCellItem color="success" icon={<VisibilityOutlined/>} label="Edit"/>,
-            <GridActionsCellItem color="primary" icon={<EditOutlined/>} label="Edit"/>,
-            <GridActionsCellItem color="error" icon={<DeleteOutline/>} label="Delete"/>,
-        ],
-    },
+        width: 124
+    }
 ];
 
 const rows = [
@@ -117,64 +88,19 @@ export function BlogsPage({title}) {
                     title={'Blogs Page'}
                     size={'small'}
                     color={'success'}
-                    actionMenu={() => {
-
-                    }}
                 >
-                    <DataGrid
-                        checkboxSelection
-                        disableSelectionOnClick
-                        disableColumnSelector
-                        disableColumnFilter
-                        autoHeight
+                    <AppGridData
+                        checkboxSelection={false}
                         rows={rows}
                         columns={columns}
-                        pageSize={15}
-                        rowsPerPageOptions={[15]}
-                        sx={{
-                            '& .MuiDataGrid-main': {
-                                width: '100%'
-                            },
-                            '& .MuiDataGrid-columnHeaders': {
-                                width: '100%',
-                                backgroundColor: '#00000014'
-                            },
-                            '& .MuiDataGrid-columnHeaders .MuiDataGrid-columnSeparator': {
-                                display: 'none'
-                            },
-                            '& .MuiDataGrid-columnHeaders .MuiDataGrid-menuIcon': {
-                                paddingRight: 1
-                            },
-                            '& .MuiDataGrid-columnHeaders .MuiCheckbox-root': {
-                                padding: '14px'
-                            },
-                            '& .MuiDataGrid-columnHeadersInner': {
-                                width: '100%'
-                            },
-                            '& .MuiDataGrid-columnHeader.fullWith': {
-                                width: '100% !important',
-                                maxWidth: '100% !important'
-                            },
-                            '& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within': {
-                                outline: 'none'
-                            },
+                        onClickView={() => {
 
-                            '& .MuiDataGrid-virtualScrollerRenderZone': {
-                                width: '100%',
-                            },
-                            '& .MuiDataGrid-row': {
-                                width: '100%',
-                            },
-                            '& .MuiDataGrid-cell.fullWith': {
-                                width: '100% !important',
-                                maxWidth: '100% !important'
-                            },
-                            '& .MuiDataGrid-cell:last-child:not(.super-app)': {
-                                display: 'none'
-                            },
-                            '& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within': {
-                                outline: 'none'
-                            }
+                        }}
+                        onClickEdit={() => {
+
+                        }}
+                        onClickDelete={() => {
+
                         }}
                     />
                 </AppCard>
