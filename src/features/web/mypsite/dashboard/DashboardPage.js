@@ -151,20 +151,24 @@ export function DashboardPage({title}) {
 
     useEffect(() => {
         document.title = title;
+
+        // @todo demo
         setTimeout(function () {
             setLoading(false)
-        }, 2000);
+        }, 1000);
     });
 
     return (
         <Grid container spacing={3} rowSpacing={3}>
             <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
                 <AppCard
+                    type={'card'}
+                    color={'blue'}
+                    variant={'circles1'}
                     isLoading={isLoading}
                     title={'$500.00'}
                     subheader={'Total Earning'}
                     icon={<AllInbox/>}
-                    color={'primary'}
                     actionMenu={() => {
                         console.log('yes')
                     }}
@@ -172,12 +176,14 @@ export function DashboardPage({title}) {
             </Grid>
             <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
                 <AppCard
+                    type={'card'}
+                    color={'purple'}
+                    variant={'circles1'}
                     isLoading={isLoading}
                     chart={AppCardChart}
                     title={'$203k'}
                     subheader={'Total Income'}
                     icon={<AssignmentInd/>}
-                    color={'secondary'}
 
                 />
             </Grid>
@@ -185,12 +191,14 @@ export function DashboardPage({title}) {
                 <Grid container spacing={3} rowSpacing={3}>
                     <Grid item xl={12} lg={6} md={6} sm={6} xs={12}>
                         <AppCard
+                            type={'inline'}
+                            color={'blueLight'}
+                            variant={'circles2'}
                             isLoading={isLoading}
                             title={'$203k'}
                             subheader={'Total Income'}
                             size={'small'}
                             icon={<Badge/>}
-                            color={'blue'}
                             actionMenu={() => {
                                 console.log('yes')
                             }}
@@ -198,22 +206,26 @@ export function DashboardPage({title}) {
                     </Grid>
                     <Grid item xl={12} lg={6} md={6} sm={6} xs={12}>
                         <AppCard
+                            type={'inline'}
+                            color={'yellow'}
+                            variant={'circles2'}
                             isLoading={isLoading}
                             size={'small'}
                             title={'$203k'}
                             subheader={'Total Income'}
                             icon={<Dashboard/>}
-                            color={'yellow'}
                         />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xl={8} lg={8} md={6} sm={12} xs={12} style={{}}>
                 <AppCard
+                    type={'page'}
+                    color={'green'}
+                    variant={'circles3'}
                     isLoading={isLoading}
                     title={'Test chat title'}
                     size={'small'}
-                    color={'success'}
                     contentHeight={504}
                     actionMenu={() => {
                         console.log('yes')
@@ -224,12 +236,13 @@ export function DashboardPage({title}) {
             </Grid>
             <Grid item xl={4} lg={4} md={6} sm={12} xs={12} style={{}}>
                 <AppCard
+                    type={'page'}
+                    color={'blue'}
+                    variant={'circles3'}
                     isLoading={isLoading}
-                    iconType={'small'}
                     icon={<Domain/>}
                     title={'Popular Stocks'}
                     size={'small'}
-                    color={'blue'}
                     contentHeight={504}
                 >
                     <Grid container spacing={1}>

@@ -1,73 +1,127 @@
 import * as React from 'react';
-import {useEffect} from 'react';
-import {Grid, useTheme} from "@mui/material";
+import {useEffect, useState} from 'react';
+import {Avatar, Grid, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
 import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
-import {AppCard} from "../../../../components";
-import {SplitButton} from "../../../../components/buttons/SplitButton";
-import {AppGridData} from "../../../../components/gridData/AppGridData";
-
-const columns = [
-    {
-        field: 'id',
-        headerName: 'ID',
-        width: 110,
-    },
-    {
-        field: 'firstName',
-        headerName: 'First name',
-        width: 0,
-        minWidth: 200,
-        editable: true,
-    },
-    {
-        field: 'fullName',
-        headerName: 'Full name',
-        description: 'This column has a value getter and is not sortable.',
-        disableColumnMenu: true,
-        sortable: false,
-        width: 0,
-        minWidth: 200,
-        valueGetter: (params) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    },
-    {
-        field: 'age',
-        headerName: 'Age',
-        width: 124
-    }
-];
+import {AppCard, AppGridData, SplitButton} from "../../../../components";
 
 const rows = [
-    {id: 1, lastName: 'Snow', firstName: 'Jonsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf', age: 35},
-    {id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42},
-    {id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45},
-    {id: 4, lastName: 'Stark', firstName: 'Arya', age: 16},
-    {id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null},
-    {id: 6, lastName: 'Melisandre', firstName: null, age: 150},
-    {id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44},
-    {id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36},
-    {id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 10, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 11, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 12, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 13, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 14, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 15, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 16, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 17, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 18, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 19, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 20, lastName: 'Roxie', firstName: 'Harvey', age: 65},
-    {id: 21, lastName: 'Roxie', firstName: 'Harvey', age: 65},
+    {
+        id: 1,
+        icon: 'https://keygenqt.com/images/blog/601076d399c15.jpg',
+        title: 'Алгоритмы. Основы.',
+        create_at: 1659881551
+    },
+    {
+        id: 2,
+        icon: 'https://keygenqt.com/images/blog/5ef881c28b6c6.jpg',
+        title: 'Плохо написанные хорошие задачи.',
+        create_at: 1659881551
+    },
+    {
+        id: 3,
+        icon: 'https://keygenqt.com/images/blog/5e6e70713347a.jpg',
+        title: 'Дурные привычки.',
+        create_at: 1659881551
+    },
+    {
+        id: 4,
+        icon: 'https://keygenqt.com/images/blog/5eb1e22f20315.jpg',
+        title: 'Количество станет качеством.',
+        create_at: 1659881551
+    },
+    {
+        id: 5,
+        icon: 'https://keygenqt.com/images/blog/5ec6e29c20719.jpg',
+        title: 'Ментальная усталость.',
+        create_at: 1659881551
+    },
+    {
+        id: 6,
+        icon: 'https://keygenqt.com/images/blog/5ee7e4486df16.jpg',
+        title: 'Становление философии.',
+        create_at: 1659881551
+    },
+    {
+        id: 7,
+        icon: 'https://keygenqt.com/images/blog/5ed26eec8b8cd.jpg',
+        title: 'Оптимизация процессов.',
+        create_at: 1659881551
+    },
+    {
+        id: 8,
+        icon: 'https://keygenqt.com/images/blog/5e5d66c8b82dc.jpg',
+        title: 'Логика. Основы.',
+        create_at: 1659881551
+    },
+    {
+        id: 9,
+        icon: 'https://keygenqt.com/images/blog/5f0519630f1dd.jpg',
+        title: 'Деградируй или проиграешь.',
+        create_at: 1659881551
+    },
+    {
+        id: 10,
+        icon: 'https://keygenqt.com/images/blog/5e5d656a012f7.jpg',
+        title: 'Красная шапочка.',
+        create_at: 1659881551
+    },
+    {
+        id: 11,
+        icon: 'https://keygenqt.com/images/blog/5e5d5f715bb0d.jpg',
+        title: 'Безумие прогресса.',
+        create_at: 1659881551
+    },
+    {
+        id: 12,
+        icon: 'https://keygenqt.com/images/blog/5e5d6042aa75b.jpg',
+        title: 'Когда ты хороший.',
+        create_at: 1659881551
+    },
+    {
+        id: 13,
+        icon: 'https://keygenqt.com/images/blog/5e5e06b1245c3.jpg',
+        title: 'Смотрите под ноги.',
+        create_at: 1659881551
+    },
+    {
+        id: 14,
+        icon: 'https://keygenqt.com/images/blog/5e5e0d10466c7.jpg',
+        title: 'Философский пароход.',
+        create_at: 1659881551
+    },
+    {
+        id: 15,
+        icon: 'https://keygenqt.com/images/blog/5e5cc904a805d.jpg',
+        title: 'Углеродная форма.',
+        create_at: 1659881551
+    },
+    {
+        id: 16,
+        icon: 'https://keygenqt.com/images/blog/5e5d6662883b3.jpg',
+        title: 'Работа над собой.',
+        create_at: 1659881551
+    },
+    {
+        id: 17,
+        icon: 'https://keygenqt.com/images/blog/5ea5d50695947.jpg',
+        title: 'Пчелиный рой.',
+        create_at: 1659881551
+    },
 ];
 
 export function BlogsPage({title}) {
 
     const theme = useTheme()
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         document.title = title;
+
+        // @todo demo
+        setTimeout(function () {
+            setLoading(false)
+        }, 1000);
     });
 
     return (
@@ -83,16 +137,61 @@ export function BlogsPage({title}) {
             </Grid>
             <Grid item xs={12}>
                 <AppCard
-                    iconType={'page'}
+                    type={'page'}
+                    color={'blueLight'}
+                    variant={'circles4'}
                     icon={<ViewListOutlined/>}
                     title={'Blogs Page'}
-                    size={'small'}
-                    color={'success'}
+                    actionMenu={() => {
+
+                    }}
                 >
                     <AppGridData
-                        checkboxSelection={true}
+                        loading={isLoading}
+                        checkboxSelection={false}
                         rows={rows}
-                        columns={columns}
+                        columns={[
+                            {
+                                field: 'id',
+                                headerName: 'ID',
+                                width: 80,
+                                disableColumnMenu: true,
+                                sortable: false,
+                            },
+                            {
+                                field: 'icon',
+                                headerName: 'Icon',
+                                width: 80,
+                                disableColumnMenu: true,
+                                sortable: false,
+                                renderCell: (params) => <Avatar
+                                    alt={params.row.title}
+                                    src={params.row.icon}
+                                    sx={{ width: 24, height: 24 }}
+                                />
+                            },
+                            {
+                                field: 'title',
+                                headerName: 'Title',
+                                width: 0,
+                                minWidth: 200,
+                                editable: true,
+                            },
+                            {
+                                field: 'create_at',
+                                headerName: 'Created',
+                                width: 170,
+                                valueGetter: (params) => new Intl
+                                    .DateTimeFormat('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })
+                                    .format(params.row.create_at * 1000)
+                            }
+                        ]}
                         onClickView={(e, id) => {
                             console.log(id)
                         }}

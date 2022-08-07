@@ -16,11 +16,11 @@ export function BlogPage({title}) {
         <Grid container spacing={1}>
             <Grid item xs={12}>
                 <AppCard
-                    iconType={'page'}
+                    type={'page'}
+                    color={'blueLight'}
+                    variant={'circles4'}
                     icon={<ViewListOutlined/>}
                     title={'Blog Page'}
-                    size={'small'}
-                    color={'success'}
                     contentHeight={504}
                 >
                     <Typography component="div" variant="h4">

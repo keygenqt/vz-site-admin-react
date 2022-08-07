@@ -21,6 +21,7 @@ const gridColumnsClasses = {
 export function AppGridData(props) {
 
     const {
+        loading = false,
         checkboxSelection = true,
         columns = [],
         rows = [],
@@ -84,6 +85,7 @@ export function AppGridData(props) {
 
     return (
         <DataGrid
+            loading={loading}
             density={'standard'}
             checkboxSelection={checkboxSelection}
             disableSelectionOnClick
@@ -95,8 +97,26 @@ export function AppGridData(props) {
             pageSize={12}
             rowsPerPageOptions={[12]}
             sx={{
+                '&': loading ? {
+                    pointerEvents: 'none'
+                } : null,
                 '& .MuiDataGrid-main': {
                     width: '100%'
+                },
+                '& .MuiCheckbox-root ': {
+                    paddingRight: '10px !important',
+                    paddingLeft: ' 0 !important'
+                },
+                '& .MuiDataGrid-main .MuiDataGrid-columnHeader:first-of-type, & .MuiDataGrid-cell:first-of-type': {
+                    paddingLeft: '20px !important'
+                },
+                '& .MuiDataGrid-main .MuiDataGrid-columnHeader:last-child, & .MuiDataGrid-cell.MuiDataGrid-lastColumn': {
+                    paddingRight: '20px !important'
+                },
+                '& .MuiDataGrid-columnHeaderCheckbox, & .MuiDataGrid-cellCheckbox': {
+                    width: '60px !important',
+                    minWidth: '60px !important',
+                    maxWidth: '60px !important'
                 },
                 '& .MuiDataGrid-columnHeaders': {
                     width: '100%',
@@ -144,6 +164,7 @@ export function AppGridData(props) {
 }
 
 AppGridData.propTypes = {
+    loading: PropTypes.bool,
     checkboxSelection: PropTypes.bool,
     columns: PropTypes.array,
     rows: PropTypes.array,

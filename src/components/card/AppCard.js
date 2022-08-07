@@ -6,9 +6,106 @@ import Chart from 'react-apexcharts';
 import {SkeletonNormal} from "./elements/SkeletonNormal";
 import {SkeletonSmall} from "./elements/SkeletonSmall";
 
+const colors = {
+    blue: {
+        main: '#2196f3',
+        bg: '#c0e0ff',
+    },
+    blueLight: {
+        main: '#71bfff',
+        bg: '#d3e9ff',
+    },
+    purple: {
+        main: '#673ab7',
+        bg: '#c5aef6',
+    },
+    yellow: {
+        main: '#ffc107',
+        bg: '#ffe57f',
+    },
+    green: {
+        main: '#16da7a',
+        bg: '#abffd7',
+    }
+}
+
+const variants = {
+    circles1: {
+        before: {
+            width: '150px',
+            height: '150px',
+            top: '-76px',
+            right: '27px',
+            opacity: 0.5
+        },
+        after: {
+            width: '210px',
+            height: '210px',
+            top: '-100px',
+            right: '-95px',
+        }
+    },
+    circles2: {
+        before: {
+            width: '150px',
+            height: '150px',
+            top: '-95px',
+            right: '-40px',
+            opacity: 0.6
+        },
+        after: {
+            width: '210px',
+            height: '210px',
+            bottom: '-150px',
+            right: '-140px',
+            opacity: 0.4
+        }
+    },
+    circles3: {
+        before: {
+            width: '150px',
+            height: '150px',
+            bottom: '-120px',
+            right: '-45px',
+            opacity: 0.5,
+            backgroundColor: 'transparent',
+            border: '3px solid',
+        },
+        after: {
+            width: '150px',
+            height: '150px',
+            bottom: '-95px',
+            right: '-125px',
+            opacity: 0.7,
+            backgroundColor: 'transparent',
+            border: '10px solid',
+        }
+    },
+    circles4: {
+        before: {
+            width: '150px',
+            height: '150px',
+            bottom: '-110px',
+            left: '-90px',
+            backgroundColor: 'transparent',
+            border: '5px solid',
+        },
+        after: {
+            width: '180px',
+            height: '180px',
+            top: '-120px',
+            right: '-70px',
+        }
+    }
+}
+
+
 export function AppCard(props) {
 
     const {
+        type = 'inline',
+        color = 'blue',
+        variant = 'circles3',
         style,
         icon,
         title,
@@ -17,14 +114,11 @@ export function AppCard(props) {
         chart,
         contentHeight = 0,
         isLoading = false,
-        iconType = 'normal',
-        size = 'normal',
-        color = 'blue',
     } = props
 
     return (
         <>
-            {isLoading ? (size === 'normal' ? <SkeletonNormal
+            {isLoading ? (type === 'card' ? <SkeletonNormal
                     isAction={actionMenu !== undefined}
                     isChart={chart !== undefined}
                 /> :
@@ -33,57 +127,97 @@ export function AppCard(props) {
                     isTitle={title !== undefined}
                     isSubheader={subheader !== undefined}
                     isIcon={icon !== undefined}
-                    isIconSmall={iconType === 'small'}
+                    isIconSmall={type === 'page'}
                     contentHeight={contentHeight}
                 />) : (
-                <Card variant={"outlined"} className={`AppCard ${color} ${size}`} style={style}>
+                <Card variant={"outlined"} className={variant} style={style} sx={{
+                    overflow: 'hidden',
+                    position: 'relative',
+                    backgroundColor: type === 'card' ? colors[color].bg : 'auto',
+                    '& .MuiCardHeader-root, & .MuiCardContent-root': {
+                        position: 'relative',
+                        zIndex: 1,
+                    },
+                    [`&.${variant}:before`]: {
+                        content: '""',
+                        position: 'absolute',
+                        borderRadius: '50%',
+                        zIndex: 0,
+                        backgroundColor: colors[color].main,
+                        ...variants[variant].before,
+                        borderColor: colors[color].main,
+                    },
+                    [`&.${variant}:after`]: {
+                        content: '""',
+                        position: 'absolute',
+                        borderRadius: '50%',
+                        zIndex: 0,
+                        backgroundColor: colors[color].main,
+                        ...variants[variant].after,
+                        borderColor: colors[color].main,
+                    }
+                }}>
                     {icon || actionMenu || title || subheader ? <CardHeader
                         avatar={
-                            icon && iconType === 'normal' ?
-                                <Avatar variant="rounded" aria-label="recipe" className={"AppCardAvatar"}>
-                                    {icon}
-                                </Avatar> : icon ?
-                                    <Avatar variant="rounded" aria-label="recipe"
-                                            className={"AppCardAvatar " + (iconType === 'page' ? '' : 'Small')}
-                                            style={iconType === 'page' ? {
-                                                backgroundColor: 'transparent',
-                                                color: 'black',
-                                                fontSize: 24,
-                                                width: 30,
-                                                height: 30
-                                            } : {}}>
-                                        {icon}
-                                    </Avatar> : null
+                            <Avatar
+                                variant="rounded"
+                                aria-label="recipe"
+                                sx={{
+                                    backgroundColor: type === 'page' ? 'transparent' : colors[color].main,
+                                    fontSize: type === 'page' ? 24 : 'auto',
+                                    color: type === 'page' ? 'black' : 'auto',
+                                    width: type === 'page' ? 30 : 40,
+                                    height: type === 'page' ? 30 : 40,
+                                }}>
+                                {icon}
+                            </Avatar>
                         }
                         action={
                             actionMenu ?
-                                <Fab size="small" color={color === 'blue' || color === 'yellow' ? 'primary' : color}
-                                     aria-label="add" onClick={actionMenu}>
+                                <Fab size="small"
+                                     sx={{
+                                         '&': {
+                                             backgroundColor: colors[color].bg,
+                                         },
+                                         '&:hover': {
+                                             backgroundColor: colors[color].bg,
+                                         },
+                                     }}
+                                     aria-label="add"
+                                     onClick={actionMenu}
+                                >
                                     <MoreVert/>
                                 </Fab> : null
                         }
                         title={
-                            size === 'small' ? <Typography component="div" variant="h7" sx={{
+                            type !== 'card' ? <Typography component="div" variant="h7" sx={{
                                 margin: subheader ? 0 : '7px 0px'
                             }}>
                                 {title}
                             </Typography> : null
                         }
                         subheader={
-                            size === 'small' ? <Typography component="div" variant="caption">
+                            type !== 'card' ? <Typography component="div" variant="caption">
                                 {subheader}
                             </Typography> : null
                         }
+                        sx={{
+                            paddingBottom: type === 'card' ? '1px' : 'auto'
+                        }}
                     /> : null}
 
-                    {size === 'normal' || props.children ? <CardContent sx={{
+                    {type === 'card' || props.children ? <CardContent sx={{
                         padding: '0 16px',
+                        minHeight: type === 'card' ? '106px' : 'auto',
+                        '&:last-child': {
+                            paddingBottom: '15px'
+                        }
                     }}>
                         <Grid container spacing={1}>
-                            {size === 'normal' ? <React.Fragment>
+                            {type === 'card' ? <React.Fragment>
                                 <Grid item xs={5}>
                                     <Stack spacing={1} style={{
-                                        paddingTop: 10
+                                        paddingTop: 18
                                     }}>
                                         <Typography variant="h4">
                                             {title}
@@ -97,9 +231,11 @@ export function AppCard(props) {
                                     {chart ? <Chart {...chart} /> : null}
                                 </Grid>
                             </React.Fragment> : null}
-                            <Grid item xs={12}>
+
+                            {props.children ? <Grid item xs={12}>
                                 {props.children}
-                            </Grid>
+                            </Grid> : null}
+
                         </Grid>
 
                     </CardContent> : null}
@@ -110,15 +246,15 @@ export function AppCard(props) {
 }
 
 AppCard.propTypes = {
+    type: PropTypes.oneOf(['page', 'card', 'inline']),
+    color: PropTypes.oneOf(['blue', 'blueLight', 'purple', 'yellow', 'green']),
+    variant: PropTypes.oneOf(['circles1', 'circles2', 'circles3', 'circles4']),
     style: PropTypes.object,
     contentHeight: PropTypes.number,
     isLoading: PropTypes.bool,
     icon: PropTypes.node,
-    iconType: PropTypes.oneOf(['small', 'normal', 'page']),
     title: PropTypes.string,
     subheader: PropTypes.string,
     actionMenu: PropTypes.func,
     chart: PropTypes.object,
-    color: PropTypes.oneOf(['primary', 'secondary', 'blue', 'yellow', 'success']),
-    size: PropTypes.oneOf(['small', 'normal']),
 };

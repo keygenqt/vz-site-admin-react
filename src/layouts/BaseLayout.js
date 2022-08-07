@@ -27,16 +27,24 @@ export function BaseLayout(props) {
             <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{
                 height: 'calc(100% - 64px)'
             }}>
-                <MenuLayout isOpen={isOpenMenu} onChangeMenu={(isOpen) => {
-                    setIsOpenMenu(isOpen)
-                }} content={props.children}>
-                    <AppMenu>
+                <MenuLayout
+                    isOpen={isOpenMenu}
+                    onChangeMenu={(isOpen) => {
+                        setIsOpenMenu(isOpen)
+                    }}
+                    content={props.children}>
+                    <AppMenu
+                        onChangeMenu={(isOpen) => {
+                            setIsOpenMenu(isOpen)
+                        }}
+                    >
                         <AppCard
+                            type={'inline'}
+                            color={'blueLight'}
+                            variant={'circles2'}
                             isLoading={false}
                             title={'Total Income'}
                             subheader={'100GB'}
-                            size={'small'}
-                            color={'blue'}
                         >
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>

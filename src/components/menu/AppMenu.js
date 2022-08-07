@@ -10,7 +10,7 @@ import {
     ListItemIcon,
     ListItemText,
     ListSubheader,
-    Typography,
+    Typography, useMediaQuery,
     useTheme
 } from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
@@ -19,6 +19,7 @@ import {AppContext} from "../../base";
 import {web} from "./elements/web";
 import {pc} from "./elements/pc";
 import {android} from "./elements/android";
+import PropTypes from "prop-types";
 
 /**
  * Data menu
@@ -34,8 +35,13 @@ export const menuItems = {
  */
 export function AppMenu(props) {
 
+    const {
+        onChangeMenu
+    } = props
+
     const {route} = useContext(AppContext)
-    const {palette} = useTheme();
+    const {palette, breakpoints} = useTheme();
+    const isMD = useMediaQuery(breakpoints.down('md'));
     const [open, setOpen] = React.useState([]);
     const [pageSelected, setPageSelected] = React.useState(null);
     const [isAnimateCollapse, setIsAnimateCollapse] = React.useState(false);
@@ -89,13 +95,20 @@ export function AppMenu(props) {
                     const idPage = `icon-page-item-${indexGroup}-${indexApp}-${indexPage}`
 
                     const onClickPage = () => {
-                        if (page.route) {
-                            route.toLocation(page.route)
-                            setPageSelected(idPage)
+
+                        if (onChangeMenu && isMD) {
+                            onChangeMenu(false)
                         }
-                        if (page.link) {
-                            route.openUrlNewTab(page.link)
-                        }
+
+                        setTimeout(function () {
+                            if (page.route) {
+                                route.toLocation(page.route)
+                                setPageSelected(idPage)
+                            }
+                            if (page.link) {
+                                route.openUrlNewTab(page.link)
+                            }
+                        }, isMD ? 300 : 0);
                     }
 
                     switch (page.type) {
@@ -234,4 +247,6 @@ export function AppMenu(props) {
     );
 }
 
-AppMenu.propTypes = {};
+AppMenu.propTypes = {
+    onChangeMenu: PropTypes.func,
+};

@@ -9,9 +9,10 @@ export function AppTopBarPopper() {
     return (
         <React.Fragment>
             <AppCard
+                type={'inline'}
+                color={'blue'}
+                variant={'circles3'}
                 title={'Good Morning!'}
-                size={'small'}
-                color={'success'}
                 style={{
                     border: 'none',
                     minWidth: 300
