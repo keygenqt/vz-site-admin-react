@@ -188,6 +188,10 @@ export default class RouteCore {
 
         const path = this.getPathFromObject(route)
 
+        if (path.includes('http')) {
+            return  path + (arg.length === 0 ? '' : '/' + arg.join('/'));
+        }
+
         if (!path.includes(":")) {
             return path
         }

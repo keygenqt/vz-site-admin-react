@@ -11,11 +11,13 @@ export function SplitButton(props) {
         startIcon,
         endIcon,
         size = 'medium',
+        onClick,
     } = props
 
     return (
         <>
             <Button
+                onClick={onClick}
                 variant="contained"
                 size={size}
                 endIcon={endIcon}
@@ -24,7 +26,7 @@ export function SplitButton(props) {
                     '&': {
                         overflow: 'hidden',
                         backgroundColor: color,
-                        borderRadius: 3
+                        borderRadius: 1
                     },
                     '&:hover': {
                         backgroundColor: color,
@@ -86,5 +88,6 @@ SplitButton.propTypes = {
     color: PropTypes.string,
     startIcon: PropTypes.element,
     endIcon: PropTypes.element,
+    onClick: PropTypes.func,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
 };

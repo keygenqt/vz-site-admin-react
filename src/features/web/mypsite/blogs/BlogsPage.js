@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {Avatar, Grid, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
 import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
 import {AppCard, AppGridData, SplitButton} from "../../../../components";
+import {AppContext, ConstantOther} from "../../../../base";
 
 const rows = [
     {
@@ -113,6 +114,7 @@ const rows = [
 export function BlogsPage({title}) {
 
     const theme = useTheme()
+    const {route, conf} = useContext(AppContext)
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -131,6 +133,9 @@ export function BlogsPage({title}) {
                     color={theme.palette.success.main}
                     size={'medium'}
                     startIcon={<AddOutlined/>}
+                    onClick={() => {
+                        route.toLocation(route.createLink(conf.routes.mps.blog, 'add'))
+                    }}
                 >
                     Add
                 </SplitButton>
@@ -143,7 +148,6 @@ export function BlogsPage({title}) {
                     icon={<ViewListOutlined/>}
                     title={'Blogs Page'}
                     actionMenu={() => {
-
                     }}
                 >
                     <AppGridData
@@ -167,7 +171,7 @@ export function BlogsPage({title}) {
                                 renderCell: (params) => <Avatar
                                     alt={params.row.title}
                                     src={params.row.icon}
-                                    sx={{ width: 24, height: 24 }}
+                                    sx={{width: 24, height: 24}}
                                 />
                             },
                             {
@@ -193,13 +197,10 @@ export function BlogsPage({title}) {
                             }
                         ]}
                         onClickView={(e, id) => {
-                            console.log(id)
+                            route.openUrlNewTab(route.createLink(ConstantOther.mpsBlogViewUrl, id))
                         }}
                         onClickEdit={(e, id) => {
-                            console.log(id)
-                        }}
-                        onClickDelete={(e, id) => {
-                            console.log(id)
+                            route.toLocation(route.createLink(conf.routes.mps.blog, id))
                         }}
                     />
                 </AppCard>
