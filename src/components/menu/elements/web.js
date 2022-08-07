@@ -32,7 +32,7 @@ export const web = {
     children: [
         {
             icon: icons.CoPresent,
-            title: 'Private Site',
+            title: 'My Personal Site',
             color: '#1e88e5',
             children: [
                 {
