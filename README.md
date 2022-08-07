@@ -1,4 +1,4 @@
-My Personal Admin Site
+Adminka
 ===================
 
 ![alt text](data/logo160.png)
