@@ -3,7 +3,7 @@ import {langs} from "@uiw/codemirror-extensions-langs";
 import {githubDark, githubLight} from '@uiw/codemirror-theme-github';
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Button, ButtonGroup, Grid, Stack, ToggleButton, ToggleButtonGroup, useTheme} from "@mui/material";
+import {Button, ButtonGroup, Divider, Grid, Stack, ToggleButton, ToggleButtonGroup, useTheme} from "@mui/material";
 import {
     Brightness4Outlined,
     FormatBoldOutlined,
@@ -140,6 +140,7 @@ export function MarkdownEditorFilled(props) {
                 minHeight: '429px',
                 width: '100%',
                 margin: 0,
+                overflow: 'auto'
             },
             '& .react-markdown a': {
                 color: '#2196f3',
@@ -213,108 +214,8 @@ export function MarkdownEditorFilled(props) {
 
                     <Stack
                         alignItems="center"
-                        justifyContent="space-between"
-                        spacing={1}
+                        spacing={2}
                     >
-                        <Stack
-                            alignItems="center"
-                            spacing={1}
-                        >
-                            {/*Group format text*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="small button group">
-                                <Button key="1" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatWithSelect('**', '**')
-                                }}>
-                                    <FormatBoldOutlined fontSize="small"/>
-                                </Button>
-                                <Button key="2" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatWithSelect('*', '*')
-                                }}>
-                                    <FormatItalicOutlined fontSize="small"/>
-                                </Button>
-                            </ButtonGroup>
-
-                            {/*Group add links*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="small button group">
-                                <Button key="8" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatSpace(
-                                        "[Link text]()",
-                                        12,
-                                        ' '
-                                    )
-                                }}>
-                                    <LinkOutlined fontSize="small"/>
-                                </Button>
-                                <Button key="6" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatSpace(
-                                        "![alt attribute]()",
-                                        17,
-                                        ' '
-                                    )
-                                }}>
-                                    <InsertPhotoOutlined fontSize="small"/>
-                                </Button>
-                            </ButtonGroup>
-
-                            {/*Group add headers*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="small button group">
-                                <Button key="02" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatSpace("\n===============")
-                                }}>
-                                    <TitleOutlined fontSize="small"/>
-                                </Button>
-                                <Button key="01" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatSpace("## ", 3)
-                                }}>
-                                    <HPlusMobiledataOutlined fontSize="small"/>
-                                </Button>
-                                <Button key="03" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatSpace("#### ", 5)
-                                }}>
-                                    <HMobiledataOutlined fontSize="small"/>
-                                </Button>
-                            </ButtonGroup>
-
-                            {/*Group add components*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="small button group">
-                                <Button key="7-2" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatSpace(
-                                        "- \n" +
-                                        "- \n" +
-                                        "- \n" +
-                                        "- \n" +
-                                        "- \n",
-                                        2,
-                                        "\n",
-                                        "\n"
-                                    )
-                                }}>
-                                    <FormatListBulletedOutlined fontSize="small"/>
-                                </Button>
-
-                                <Button key="7" onBlur={onFocus} onFocus={onFocus} onClick={() => {
-                                    addFormatSpace(
-                                        "1. \n" +
-                                        "2. \n" +
-                                        "3. \n" +
-                                        "4. \n" +
-                                        "5. \n",
-                                        3,
-                                        "\n",
-                                        "\n"
-                                    )
-                                }}>
-                                    <FormatListNumberedOutlined fontSize="small"/>
-                                </Button>
-
-                            </ButtonGroup>
-                        </Stack>
-
-
                         {/*Group settings*/}
                         <ToggleButtonGroup
                             value={settings}
@@ -331,18 +232,116 @@ export function MarkdownEditorFilled(props) {
                                 }
                             }}
                         >
-                            <ToggleButton value="dark" aria-label="dark" key="1-1" onBlur={onFocus} onFocus={onFocus} onClick={() => { view.focus() }}>
-                                <Brightness4Outlined fontSize="small"/>
-                            </ToggleButton>
-
                             <ToggleButton value="preview" aria-label="preview" key="1-2" onBlur={onFocus} onFocus={onFocus} onClick={() => { view.focus() }}>
                                 <VisibilityOutlined fontSize="small"/>
                             </ToggleButton>
+                            <ToggleButton value="dark" aria-label="dark" key="1-1" onBlur={onFocus} onFocus={onFocus} onClick={() => { view.focus() }}>
+                                <Brightness4Outlined fontSize="small"/>
+                            </ToggleButton>
                         </ToggleButtonGroup>
+
+                        <Divider sx={{width: '100%'}}/>
+
+                        <Stack
+                            alignItems="center"
+                            spacing={1}
+                        >
+                            {/*Group format text*/}
+                            <ButtonGroup orientation="vertical" size="small" color={'info'}
+                                         aria-label="Group format text">
+                                <Button key="item-bold" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatWithSelect('**', '**')
+                                }}>
+                                    <FormatBoldOutlined fontSize="small"/>
+                                </Button>
+                                <Button key="item-italic" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatWithSelect('*', '*')
+                                }}>
+                                    <FormatItalicOutlined fontSize="small"/>
+                                </Button>
+                            </ButtonGroup>
+
+                            {/*Group add links*/}
+                            <ButtonGroup orientation="vertical" size="small" color={'info'}
+                                         aria-label="Group add links">
+                                <Button key="item-link" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatSpace(
+                                        "[Link text]()",
+                                        12,
+                                        ' '
+                                    )
+                                }}>
+                                    <LinkOutlined fontSize="small"/>
+                                </Button>
+                                <Button key="item-img" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatSpace(
+                                        "![alt attribute]()",
+                                        17,
+                                        ' '
+                                    )
+                                }}>
+                                    <InsertPhotoOutlined fontSize="small"/>
+                                </Button>
+                            </ButtonGroup>
+
+                            {/*Group add headers*/}
+                            <ButtonGroup orientation="vertical" size="small" color={'info'}
+                                         aria-label="Group add headers">
+                                <Button key="item-title-big" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatSpace("\n===============")
+                                }}>
+                                    <TitleOutlined fontSize="small"/>
+                                </Button>
+                                <Button key="item-title-2" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatSpace("## ", 3)
+                                }}>
+                                    <HPlusMobiledataOutlined fontSize="small"/>
+                                </Button>
+                                <Button key="item-title-3" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatSpace("#### ", 5)
+                                }}>
+                                    <HMobiledataOutlined fontSize="small"/>
+                                </Button>
+                            </ButtonGroup>
+
+                            {/*Group add components*/}
+                            <ButtonGroup orientation="vertical" size="small" color={'info'}
+                                         aria-label="Group add components">
+                                <Button key="item-point-list" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatSpace(
+                                        "- \n" +
+                                        "- \n" +
+                                        "- \n" +
+                                        "- \n" +
+                                        "- \n",
+                                        2,
+                                        "\n",
+                                        "\n"
+                                    )
+                                }}>
+                                    <FormatListBulletedOutlined fontSize="small"/>
+                                </Button>
+
+                                <Button key="item-number-list" onBlur={onFocus} onFocus={onFocus} onClick={() => {
+                                    addFormatSpace(
+                                        "1. \n" +
+                                        "2. \n" +
+                                        "3. \n" +
+                                        "4. \n" +
+                                        "5. \n",
+                                        3,
+                                        "\n",
+                                        "\n"
+                                    )
+                                }}>
+                                    <FormatListNumberedOutlined fontSize="small"/>
+                                </Button>
+
+                            </ButtonGroup>
+                        </Stack>
                     </Stack>
 
                 </Stack>
-
 
             </Grid>
         </Grid>
