@@ -125,7 +125,7 @@ export function BlogPage({title}) {
                                     fullWidth
                                     multiline
                                     minRows={4}
-                                    label="Mini Description"
+                                    label="Description"
                                     variant="filled"
                                     helperText="Please fill in the description for list"
                                 />
