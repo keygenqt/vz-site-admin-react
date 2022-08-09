@@ -135,7 +135,7 @@ export function BlogPage({title}) {
 
                                 {errors.submit && (
                                     <Alert severity="error" sx={{
-                                        backgroundColor: '#ffadad',
+                                        backgroundColor: '#ffdbec',
                                         color: '#2e0000',
                                         borderRadius: 2,
                                         marginBottom: 2,
@@ -149,7 +149,7 @@ export function BlogPage({title}) {
 
                                 {status && status.success && (
                                     <Alert severity="success" sx={{
-                                        backgroundColor: '#bdffad',
+                                        backgroundColor: '#dcffd4',
                                         color: '#002e04',
                                         borderRadius: 2,
                                         marginBottom: 2,
