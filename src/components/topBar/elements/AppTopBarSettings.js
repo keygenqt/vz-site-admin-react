@@ -4,6 +4,7 @@ import {SettingsOutlined} from "@mui/icons-material";
 import * as React from "react";
 import {useWindowResize} from "../../../base";
 import PropTypes from "prop-types";
+import {useEffect} from "react";
 
 export function AppTopBarSettings(props) {
 
@@ -19,9 +20,11 @@ export function AppTopBarSettings(props) {
     const canBeOpen = open && Boolean(anchorEl);
     const id = canBeOpen ? 'transition-popper' : undefined;
 
-    useWindowResize(() => {
+    const sizeWindow = useWindowResize()
+
+    useEffect(() => {
         setOpen(false)
-    })
+    }, [sizeWindow])
 
     return (
         <React.Fragment>

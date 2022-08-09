@@ -148,6 +148,9 @@ export function AppGridData(props) {
                 '& .MuiDataGrid-row': {
                     width: '100%',
                 },
+                '& .MuiDataGrid-row:hover': {
+                    backgroundColor: 'inherit',
+                },
                 '& .MuiDataGrid-cell.MuiDataGrid-fullWith': {
                     width: '100% !important',
                     maxWidth: '100% !important'

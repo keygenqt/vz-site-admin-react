@@ -1,15 +1,22 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import {AppCard, AppMenu, AppTopBar} from "../components";
 import PropTypes from "prop-types";
 import {Grid, LinearProgress, Typography, useTheme} from "@mui/material";
 import {MenuLayout} from "./MenuLayout";
 import {linearProgressClasses} from "@mui/material/LinearProgress";
+import {useWindowResize} from "../base";
 
 export function BaseLayout(props) {
 
+    const sizeWindow = useWindowResize()
     const {palette} = useTheme();
 
-    const [isOpenMenu, setIsOpenMenu] = React.useState(null);
+    const [isOpenMenu, setIsOpenMenu] = React.useState(sizeWindow.width > 1400);
+
+    useEffect(() => {
+        setIsOpenMenu(sizeWindow.width > 1400)
+    }, [sizeWindow])
 
     return (
         <Grid container spacing={0} rowSpacing={0} style={{
@@ -29,8 +36,8 @@ export function BaseLayout(props) {
             }}>
                 <MenuLayout
                     isOpen={isOpenMenu}
-                    onChangeMenu={(isOpen) => {
-                        setIsOpenMenu(isOpen)
+                    onCloseMenu={() => {
+                        setIsOpenMenu(false)
                     }}
                     content={props.children}>
                     <AppMenu

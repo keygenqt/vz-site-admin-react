@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {Grid, useMediaQuery, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
 import corner15 from "../assets/images/common/corner15.png";
-import {useWindowResize, useWindowScroll} from "../base";
+import {useWindowResize} from "../base";
 import {isMobile} from 'react-device-detect';
 
 /**
@@ -20,33 +20,18 @@ export function MenuLayout(props) {
         menuBackgroundColor = 'white',
         contentBackgroundColor = '#e3f2fd',
         content = <div/>,
-        onChangeMenu,
+        onCloseMenu
     } = props
 
+    const size = useWindowResize();
     const {breakpoints} = useTheme();
     const isMD = useMediaQuery(breakpoints.down('md'));
-    const {width} = useWindowResize((size) => {
-        setIsOpenMenu(size.width > 1400)
-    })
 
     const [scrollHeight, setScrollHeight] = React.useState(document.body.scrollHeight);
-    const [isOpenMenu, setIsOpenMenu] = React.useState(width > 1400);
-
-    useEffect(() => {
-        if (isOpen !== null) {
-            setIsOpenMenu(isOpen)
-        }
-    }, [isOpen]);
-
-    useEffect(() => {
-        if (onChangeMenu) {
-            onChangeMenu(isOpenMenu)
-        }
-    }, [isOpenMenu]);
 
     useEffect(() => {
         if (isMD) {
-            if (isOpenMenu) {
+            if (isOpen) {
                 document.body.style.overflow = 'hidden';
                 if (document.body.offsetHeight < document.body.scrollHeight && !isMobile) {
                     document.body.style.width = 'calc(100% - 15px)';
@@ -57,21 +42,23 @@ export function MenuLayout(props) {
                 document.body.style.overflow = 'auto';
             }
         }
-    }, [isOpenMenu]);
+    }, [isOpen, isMD]);
 
-    useWindowResize(() => {
+    useEffect(() => {
         setScrollHeight(document.body.scrollHeight)
-    })
+    }, [size])
 
     return (
         <React.Fragment>
             <div onClick={() => {
-                setIsOpenMenu(false)
+                if (onCloseMenu) {
+                    onCloseMenu(false)
+                }
             }} style={{
                 display: isOpen && isMD ? 'block' : 'none',
                 backgroundColor: 'black',
                 position: 'absolute',
-                opacity: isOpenMenu ? 0.5 : 0,
+                opacity: isOpen ? 0.5 : 0,
                 top: paddingTop,
                 left: 0,
                 right: 0,
@@ -85,7 +72,7 @@ export function MenuLayout(props) {
                 height: 10,
                 width: 10,
                 top: paddingTop,
-                marginLeft: isOpenMenu ? menuWidth : 0,
+                marginLeft: isOpen ? menuWidth : 0,
                 backgroundImage: `url(${corner15})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
@@ -97,7 +84,7 @@ export function MenuLayout(props) {
                 backgroundColor: menuBackgroundColor,
                 position: 'absolute',
                 top: paddingTop,
-                left: isOpenMenu ? 0 : menuWidth * -1,
+                left: isOpen ? 0 : menuWidth * -1,
                 width: menuWidth,
                 height: isMD ? 'auto' : scrollHeight - paddingTop,
                 bottom: !isMD ? 'auto' : 0,
@@ -111,7 +98,7 @@ export function MenuLayout(props) {
             </div>
 
             <Grid container spacing={0} rowSpacing={0} style={{
-                paddingLeft: isOpenMenu && !isMD ? menuWidth : 20,
+                paddingLeft: isOpen && !isMD ? menuWidth : 20,
                 paddingRight: 20,
                 height: '100%',
                 transitionDuration: '300ms'
@@ -137,5 +124,5 @@ MenuLayout.propTypes = {
     contentBackgroundColor: PropTypes.string,
     content: PropTypes.element,
     children: PropTypes.element.isRequired,
-    onChangeMenu: PropTypes.func
+    onCloseMenu: PropTypes.func
 };
