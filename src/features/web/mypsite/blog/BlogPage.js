@@ -90,7 +90,7 @@ export function BlogPage({title}) {
                     color={'blueLight'}
                     variant={'circles4'}
                     icon={<ViewListOutlined/>}
-                    title={id === 'add' ? 'Here you can create a new post' : 'Here you can edit the post'}
+                    title={id ? 'Here you can edit the post' : 'Here you can create a new post'}
                     contentHeight={504}
                 >
                     <FormGroup>

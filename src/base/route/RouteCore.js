@@ -3,6 +3,7 @@ import {ScrollToTop} from "../../components";
 import {Route, Routes} from "react-router-dom";
 import {GuestLayout} from "../../layouts";
 import {ErrorPage} from "../../features/error/ErrorPage";
+import {RouteType} from "./RouteType";
 
 export default class RouteCore {
 
@@ -229,9 +230,38 @@ export default class RouteCore {
 
         Object.keys(this.conf.routes).forEach((group, groupIndex) => {
             Object.keys(this.conf.routes[group]).forEach((page, pageIndex) => {
-                const {path, title, render} = this.conf.routes[group][page]
+
+                const {path, title, render, match} = this.conf.routes[group][page]
+
                 if (render !== undefined) {
-                    pages.push(render(groupIndex + pageIndex, path, title))
+                    if (match) {
+                        const clearPath = path.slice(0, path.indexOf(':'))
+                        const paramsUrl = this.location.pathname.replace(clearPath, '').split("/")
+                        const paramsPath = path.replace(clearPath, '').split("/").map((e) => e.replace(':', ''))
+                        const validate = []
+                        paramsPath.forEach((key, index) => {
+                            const type = match[key] ? match[key] : RouteType.string
+                            const value = paramsUrl[index]
+                            validate.push(RouteType.validate(type, value))
+                        })
+                        if (validate.includes(false)) {
+                            pages.push(
+                                <Route
+                                    key={groupIndex + pageIndex}
+                                    path={path}
+                                    element={
+                                        <GuestLayout>
+                                            <ErrorPage onError={onError} title={"Error | 404"}/>
+                                        </GuestLayout>
+                                    }
+                                />
+                            )
+                        } else {
+                            pages.push(render(groupIndex + pageIndex, path, title))
+                        }
+                    } else {
+                        pages.push(render(groupIndex + pageIndex, path, title))
+                    }
                 }
             })
         });

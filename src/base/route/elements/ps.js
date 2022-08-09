@@ -2,10 +2,11 @@ import {Route} from "react-router-dom";
 import {BaseLayout} from "../../../layouts";
 import {BlogPage, BlogsPage, DashboardPage, ProjectPage, ProjectsPage} from "../../../features/web/mypsite";
 import * as React from "react";
+import {RouteType} from "../RouteType";
 
-export const mps = {
+export const ps = {
     dashboard: {
-        title: 'Adminka | MPS',
+        title: 'Adminka | PS',
         path: '/',
         render: function (key, path, title) {
             return <Route
@@ -20,9 +21,28 @@ export const mps = {
             />
         }
     },
-    blog: {
-        title: 'Adminka | MPS',
-        path: '/mps/blog/:id',
+    blogCreate: {
+        title: 'Adminka | PS',
+        path: '/ps/blog/add',
+        render: function (key, path, title) {
+            return <Route
+                key={key}
+                exact
+                path={path}
+                element={
+                    <BaseLayout>
+                        <BlogPage title={title}/>
+                    </BaseLayout>
+                }
+            />
+        }
+    },
+    blogUpdate: {
+        title: 'Adminka | PS',
+        path: '/ps/blog/:id',
+        match: {
+            id: RouteType.integer,
+        },
         render: function (key, path, title) {
             return <Route
                 key={key}
@@ -37,8 +57,8 @@ export const mps = {
         }
     },
     blogs: {
-        title: 'Adminka | MPS',
-        path: '/mps/blog',
+        title: 'Adminka | PS',
+        path: '/ps/blog',
         render: function (key, path, title) {
             return <Route
                 key={key}
@@ -53,8 +73,8 @@ export const mps = {
         }
     },
     project: {
-        title: 'Adminka | MPS',
-        path: '/mps/project/:id',
+        title: 'Adminka | PS',
+        path: '/ps/project/:id',
         render: function (key, path, title) {
             return <Route
                 key={key}
@@ -69,8 +89,8 @@ export const mps = {
         }
     },
     projects: {
-        title: 'Adminka | MPS',
-        path: '/mps/projects',
+        title: 'Adminka | PS',
+        path: '/ps/projects',
         render: function (key, path, title) {
             return <Route
                 key={key}

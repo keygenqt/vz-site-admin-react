@@ -134,7 +134,7 @@ export function BlogsPage({title}) {
                     size={'medium'}
                     startIcon={<AddOutlined/>}
                     onClick={() => {
-                        route.toLocation(route.createLink(conf.routes.mps.blog, 'add'))
+                        route.toLocation(conf.routes.ps.blogCreate)
                     }}
                 >
                     Add
@@ -197,10 +197,10 @@ export function BlogsPage({title}) {
                             }
                         ]}
                         onClickView={(e, id) => {
-                            route.openUrlNewTab(route.createLink(ConstantOther.mpsBlogViewUrl, id))
+                            route.openUrlNewTab(route.createLink(ConstantOther.psBlogViewUrl, id))
                         }}
                         onClickEdit={(e, id) => {
-                            route.toLocation(route.createLink(conf.routes.mps.blog, id))
+                            route.toLocation(route.createLink(conf.routes.ps.blogUpdate, id))
                         }}
                     />
                 </AppCard>

@@ -3,7 +3,8 @@ import {useEffect} from 'react';
 import {Grid, useMediaQuery, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
 import corner15 from "../assets/images/common/corner15.png";
-import {useWindowResize} from "../base";
+import {useWindowResize, useWindowScroll} from "../base";
+import {isMobile} from 'react-device-detect';
 
 /**
  * Top bar fot app with adaptive layout
@@ -14,13 +15,12 @@ export function MenuLayout(props) {
 
     const {
         isOpen = true,
-        menuWidth = 300,
+        menuWidth = isMobile ? 270 : 300,
         paddingTop = 64,
         menuBackgroundColor = 'white',
         contentBackgroundColor = '#e3f2fd',
         content = <div/>,
-        onChangeMenu = (isOpen) => {
-        },
+        onChangeMenu,
     } = props
 
     const {breakpoints} = useTheme();
@@ -39,14 +39,16 @@ export function MenuLayout(props) {
     }, [isOpen]);
 
     useEffect(() => {
-        onChangeMenu(isOpenMenu)
+        if (onChangeMenu) {
+            onChangeMenu(isOpenMenu)
+        }
     }, [isOpenMenu]);
 
     useEffect(() => {
         if (isMD) {
             if (isOpenMenu) {
                 document.body.style.overflow = 'hidden';
-                if (document.body.offsetHeight < document.body.scrollHeight) {
+                if (document.body.offsetHeight < document.body.scrollHeight && !isMobile) {
                     document.body.style.width = 'calc(100% - 15px)';
                 }
                 window.scrollTo(0, 0);
@@ -73,7 +75,7 @@ export function MenuLayout(props) {
                 top: paddingTop,
                 left: 0,
                 right: 0,
-                bottom: 0,
+                bottom: -200,
                 zIndex: 1099,
                 transitionDuration: '300ms',
             }}/>
@@ -102,7 +104,8 @@ export function MenuLayout(props) {
                 transitionDuration: '300ms',
                 margin: 0,
                 zIndex: 1100,
-                overflow: 'auto'
+                overflow: 'auto',
+                borderBottomRightRadius: 13
             }}>
                 {props.children}
             </div>

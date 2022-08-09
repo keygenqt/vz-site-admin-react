@@ -32,24 +32,29 @@ export const web = {
     children: [
         {
             icon: icons.CoPresent,
-            title: 'My Personal Site',
+            title: 'Personal Site',
             color: '#1e88e5',
             children: [
                 {
                     selected: true,
-                    route: RouteConf.routes.mps.dashboard,
+                    route: RouteConf.routes.ps.dashboard,
                     type: 'primary',
                     icon: icons.DashboardOutlined,
                     title: 'Dashboard',
                 },
                 {
-                    route: RouteConf.routes.mps.blogs,
+                    route: RouteConf.routes.ps.blogs,
+                    actions: [
+                        RouteConf.routes.ps.blogs,
+                        RouteConf.routes.ps.blogUpdate,
+                        RouteConf.routes.ps.blogCreate,
+                    ],
                     type: 'primary',
                     icon: icons.ViewListOutlined,
                     title: 'Blog',
                 },
                 {
-                    route: RouteConf.routes.mps.projects,
+                    route: RouteConf.routes.ps.projects,
                     type: 'primary',
                     icon: icons.ViewListOutlined,
                     title: 'Projects',

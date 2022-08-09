@@ -3,6 +3,7 @@ import {ExitToAppOutlined, SettingsOutlined} from "@mui/icons-material";
 import {AppCard} from "../../card/AppCard";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import {isMobile} from 'react-device-detect';
 
 export function AppTopBarPopper() {
 
@@ -15,17 +16,15 @@ export function AppTopBarPopper() {
                 title={'Good Morning!'}
                 style={{
                     border: 'none',
-                    minWidth: 300
+                    minWidth: isMobile ? 250 : 300
                 }}
             >
                 <Stack spacing={2}>
                     <Divider/>
                     <List
-
                         component="nav"
                         sx={{
                             width: '100%',
-                            // selected and (selected + hover) states
                             '& .MuiListItemButton-root': {
                                 borderRadius: 2,
                             },

@@ -1,9 +1,9 @@
 import * as React from "react";
-import {mps} from "./elements/mps";
+import {ps} from "./elements/ps";
 
 export const RouteConf = {
     delay: 200,
     routes: {
-        mps: mps,
+        ps: ps,
     },
 }
