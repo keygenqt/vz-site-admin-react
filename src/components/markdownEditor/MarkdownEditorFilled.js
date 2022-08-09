@@ -3,7 +3,7 @@ import {langs} from "@uiw/codemirror-extensions-langs";
 import {githubDark, githubLight} from '@uiw/codemirror-theme-github';
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Button, ButtonGroup, Divider, Grid, Stack, ToggleButton, ToggleButtonGroup, useTheme} from "@mui/material";
+import {Button, ButtonGroup, Divider, Grid, Stack, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import {
     Brightness4Outlined,
     FormatBoldOutlined,
@@ -28,9 +28,21 @@ export function MarkdownEditorFilled(props) {
         onChangeValue
     } = props
 
+    const editor = useRef();
     const [valueInner, setValueInner] = React.useState(value);
     const [isFocus, setIsFocus] = React.useState(false);
     const [settings, setSettings] = React.useState(() => []);
+
+    const onFocus = (v) => {
+        setIsFocus(v.type === 'focus')
+    }
+
+    const onChange = (v) => {
+        setValueInner(v)
+        if (onChangeValue) {
+            onChangeValue(v)
+        }
+    }
 
     const handleSettings = (event, update) => {
         setSettings(update);
@@ -88,19 +100,6 @@ export function MarkdownEditorFilled(props) {
         }, 10);
     };
 
-    const onFocus = React.useCallback((v) => {
-        setIsFocus(v.type === 'focus')
-    }, []);
-
-    const onChange = React.useCallback((v) => {
-        setValueInner(v)
-        if (onChangeValue) {
-            onChangeValue(v)
-        }
-    }, []);
-
-    const editor = useRef();
-
     const {view, setContainer} = useCodeMirror({
         container: editor.current,
         theme: settings.includes('dark') ? githubDark : githubLight,
@@ -118,7 +117,7 @@ export function MarkdownEditorFilled(props) {
         if (editor.current) {
             setContainer(editor.current);
         }
-    }, [editor.current]);
+    }, [setContainer]);
 
     return (
         <Grid container spacing={1} sx={{
@@ -236,10 +235,27 @@ export function MarkdownEditorFilled(props) {
                                 }
                             }}
                         >
-                            <ToggleButton value="preview" aria-label="preview" key="1-2" onBlur={onFocus} onFocus={onFocus} onClick={() => { view.focus() }}>
+                            <ToggleButton
+                                value="preview"
+                                aria-label="preview"
+                                key="preview"
+                                onBlur={onFocus}
+                                onFocus={onFocus}
+                                onClick={() => {
+                                    view.focus()
+                                }}>
                                 <VisibilityOutlined fontSize="small"/>
                             </ToggleButton>
-                            <ToggleButton value="dark" aria-label="dark" key="1-1" onBlur={onFocus} onFocus={onFocus} onClick={() => { view.focus() }}>
+
+                            <ToggleButton
+                                value="dark"
+                                aria-label="dark"
+                                key="theme"
+                                onBlur={onFocus}
+                                onFocus={onFocus}
+                                onClick={() => {
+                                    view.focus()
+                                }}>
                                 <Brightness4Outlined fontSize="small"/>
                             </ToggleButton>
                         </ToggleButtonGroup>
