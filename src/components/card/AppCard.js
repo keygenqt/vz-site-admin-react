@@ -5,6 +5,7 @@ import {MoreVert} from "@mui/icons-material";
 import Chart from 'react-apexcharts';
 import {SkeletonNormal} from "./elements/SkeletonNormal";
 import {SkeletonSmall} from "./elements/SkeletonSmall";
+import {LoaderPage} from "./elements/LoaderPage";
 
 const colors = {
     blue: {
@@ -106,6 +107,7 @@ export function AppCard(props) {
         type = 'inline',
         color = 'blue',
         variant = 'circles3',
+        backdrop,
         style,
         icon,
         title,
@@ -207,8 +209,8 @@ export function AppCard(props) {
                     /> : null}
 
                     {type === 'card' || props.children ? <CardContent sx={{
-                        padding: '0 16px',
-                        minHeight: type === 'card' ? '106px' : 'auto',
+                        padding: type === 'page' ? '0 16px 16px 16px !important' : '0 16px',
+                        minHeight: type === 'card' ? '109px' : 'auto',
                         '&:last-child': {
                             paddingBottom: '15px'
                         }
@@ -240,6 +242,10 @@ export function AppCard(props) {
 
                     </CardContent> : null}
 
+                    {backdrop && (
+                        <LoaderPage/>
+                    )}
+
                 </Card>)}
         </>
     );
@@ -252,6 +258,7 @@ AppCard.propTypes = {
     style: PropTypes.object,
     contentHeight: PropTypes.number,
     isLoading: PropTypes.bool,
+    backdrop: PropTypes.bool,
     icon: PropTypes.node,
     title: PropTypes.string,
     subheader: PropTypes.string,

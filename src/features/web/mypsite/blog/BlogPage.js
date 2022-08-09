@@ -1,10 +1,12 @@
 import * as React from 'react';
-import {useEffect} from 'react';
-import {FormControlLabel, FormGroup, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
+import {useEffect, useState} from 'react';
+import {Alert, FormControlLabel, FormGroup, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
 import {AppCard, MarkdownEditorFilled, SplitButton} from "../../../../components";
 import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
+import {Formik} from "formik";
+import * as Yup from 'yup';
 
 const categories = [
     {
@@ -71,12 +73,7 @@ export function BlogPage({title}) {
 
     let {id} = useParams();
 
-    const [category, setCategory] = React.useState('android');
-    const [content, setContent] = React.useState(markdown);
-
-    const handleChange = (event) => {
-        setCategory(event.target.value);
-    };
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         document.title = title;
@@ -86,81 +83,173 @@ export function BlogPage({title}) {
         <Grid container spacing={1}>
             <Grid item xs={12}>
                 <AppCard
+                    backdrop={isLoading}
                     type={'page'}
                     color={'blueLight'}
                     variant={'circles4'}
                     icon={<ViewListOutlined/>}
                     title={id ? 'Here you can edit the post' : 'Here you can create a new post'}
-                    contentHeight={504}
                 >
-                    <FormGroup>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Select"
-                                    value={category}
-                                    onChange={handleChange}
-                                    helperText="Please select category pose"
-                                    variant="filled"
-                                >
-                                    {categories.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    label="Title"
-                                    variant="filled"
-                                    helperText="Please fill in the title"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    multiline
-                                    minRows={4}
-                                    label="Description"
-                                    variant="filled"
-                                    helperText="Please fill in the description for list"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <MarkdownEditorFilled
-                                    label="Post content"
-                                    value={content}
-                                    onChangeValue={(value) => {
-                                        setContent(value)
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Switch defaultChecked/>}
-                                    label="Post published"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sx={{
-                                textAlign: 'end'
-                            }}>
-                                <SplitButton
-                                    color={theme.palette.success.main}
-                                    size={'medium'}
-                                    endIcon={<Done/>}
-                                    onClick={() => {
+                    <Formik
+                        initialValues={{
+                            category: 'android',
+                            title: '',
+                            description: '',
+                            content: markdown,
+                            submit: null
+                        }}
+                        validationSchema={Yup.object().shape({
+                            category: Yup.string().required('Title is required'),
+                            title: Yup.string().required('Title is required'),
+                            description: Yup.string().required('Description is required'),
+                            content: Yup.string().required('Content is required'),
+                        })}
+                        onSubmit={async (values, {setErrors, setStatus, setSubmitting}) => {
 
-                                    }}
-                                >
-                                    Add
-                                </SplitButton>
-                            </Grid>
-                        </Grid>
-                    </FormGroup>
+                            setLoading(true)
+                            setStatus({success: null});
+                            setErrors({submit: null});
+
+                            await new Promise(r => setTimeout(r, 1000));
+
+                            try {
+
+                                if (Math.random() < 0.5) {
+                                    throw 'Error update data!';
+                                }
+
+                                setStatus({success: true});
+                                setSubmitting(false);
+                                setLoading(false);
+                            } catch (err) {
+                                setStatus({success: false});
+                                setErrors({submit: err});
+                                setSubmitting(false);
+                                setLoading(false);
+                                console.error(err);
+                            }
+                        }}
+                    >
+                        {({status, errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values}) => (
+                            <form noValidate onSubmit={handleSubmit}>
+
+                                {errors.submit && (
+                                    <Alert severity="error" sx={{
+                                        backgroundColor: '#ffadad',
+                                        color: '#2e0000',
+                                        borderRadius: 2,
+                                        marginBottom: 2,
+                                        '& svg': {
+                                            color: '#2e0000',
+                                        }
+                                    }}>
+                                        {errors.submit}
+                                    </Alert>
+                                )}
+
+                                {status && status.success && (
+                                    <Alert severity="success" sx={{
+                                        backgroundColor: '#bdffad',
+                                        color: '#002e04',
+                                        borderRadius: 2,
+                                        marginBottom: 2,
+                                        '& svg': {
+                                            color: '#002e04',
+                                        }
+                                    }}>
+                                        Success update data!
+                                    </Alert>
+                                )}
+
+                                <FormGroup>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                type={'text'}
+                                                name={'category'}
+                                                value={values.category}
+                                                helperText={touched.category ? errors.category : ''}
+                                                error={Boolean(touched.category && errors.category)}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                select
+                                                fullWidth
+                                                label='Category'
+                                                variant="filled"
+                                            >
+                                                {categories.map((option) => (
+                                                    <MenuItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                type={'text'}
+                                                name={'title'}
+                                                value={values.title}
+                                                helperText={touched.title ? errors.title : ''}
+                                                error={Boolean(touched.title && errors.title)}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                fullWidth
+                                                label="Title"
+                                                variant="filled"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                type={'text'}
+                                                name={'description'}
+                                                value={values.description}
+                                                helperText={touched.description ? errors.description : ''}
+                                                error={Boolean(touched.description && errors.description)}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                fullWidth
+                                                multiline
+                                                minRows={4}
+                                                label="Description"
+                                                variant="filled"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <MarkdownEditorFilled
+                                                name={'content'}
+                                                value={values.content}
+                                                helperText={touched.content ? errors.content : ''}
+                                                error={Boolean(touched.content && errors.content)}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                label="Post content"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <FormControlLabel
+                                                control={<Switch defaultChecked/>}
+                                                label="Post published"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sx={{
+                                            textAlign: 'end'
+                                        }}>
+                                            <SplitButton
+                                                disabled={isSubmitting}
+                                                type="submit"
+                                                color={theme.palette.success.main}
+                                                size={'medium'}
+                                                endIcon={<Done/>}
+                                            >
+                                                {id ? 'Update' : 'Add'}
+                                            </SplitButton>
+                                        </Grid>
+                                    </Grid>
+                                </FormGroup>
+                            </form>
+                        )}
+                    </Formik>
+
                 </AppCard>
             </Grid>
         </Grid>

@@ -7,6 +7,8 @@ export function SplitButton(props) {
     const theme = useTheme()
 
     const {
+        type,
+        disabled,
         color = theme.palette.primary.main,
         startIcon,
         endIcon,
@@ -17,6 +19,8 @@ export function SplitButton(props) {
     return (
         <>
             <Button
+                type={type}
+                disabled={disabled}
                 onClick={onClick}
                 variant="contained"
                 size={size}
@@ -86,6 +90,8 @@ export function SplitButton(props) {
 
 SplitButton.propTypes = {
     color: PropTypes.string,
+    type: PropTypes.string,
+    disabled: PropTypes.bool,
     startIcon: PropTypes.element,
     endIcon: PropTypes.element,
     onClick: PropTypes.func,

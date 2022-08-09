@@ -9,8 +9,12 @@ export function SkeletonNormal(props) {
         isChart = false,
     } = props
 
-    return (<Card variant={"outlined"}>
-        <CardContent className={"AppCardSkeleton"}>
+    return (<Card variant={"outlined"} sx={{
+        '& .MuiCardContent-root': {
+            padding: '16px !important'
+        }
+    }}>
+        <CardContent>
             <Grid container spacing={1}>
                 <Grid item xs={12}>
                     <Grid container justifyContent="space-between">

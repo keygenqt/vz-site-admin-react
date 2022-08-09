@@ -119,6 +119,7 @@ export function ProjectsPage({title}) {
             </Grid>
             <Grid item xs={12}>
                 <AppCard
+                    backdrop={isLoading}
                     type={'page'}
                     color={'blueLight'}
                     variant={'circles4'}
@@ -129,7 +130,6 @@ export function ProjectsPage({title}) {
                     }}
                 >
                     <AppGridData
-                        loading={isLoading}
                         checkboxSelection={false}
                         rows={rows}
                         columns={[

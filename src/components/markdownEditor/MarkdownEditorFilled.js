@@ -3,7 +3,17 @@ import {langs} from "@uiw/codemirror-extensions-langs";
 import {githubDark, githubLight} from '@uiw/codemirror-theme-github';
 import * as React from "react";
 import {useEffect, useRef} from "react";
-import {Button, ButtonGroup, Divider, Grid, Stack, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {
+    Button,
+    ButtonGroup,
+    Divider,
+    FormHelperText,
+    Grid,
+    Stack,
+    TextField,
+    ToggleButton,
+    ToggleButtonGroup
+} from "@mui/material";
 import {
     Brightness4Outlined,
     FormatBoldOutlined,
@@ -20,28 +30,72 @@ import {
 import ReactMarkdown from "react-markdown";
 import PropTypes from "prop-types";
 
+/**
+ * Delay error show
+ */
+let timeoutError = null
+
+/**
+ * Colors component
+ */
+const colors = {
+    light: {
+        error: '#d32f2f',
+        active: '#2196f3',
+        default: '#808080',
+        background: '#0000000f',
+    },
+    dark: {
+        error: '#d32f2f',
+        active: '#2196f3',
+        default: '#bebebe',
+        background: '#0D1117',
+    }
+}
+
 export function MarkdownEditorFilled(props) {
 
     const {
+        name,
+        error = false,
+        helperText = "",
         label = "",
         value = "",
-        onChangeValue
+        onBlur,
+        onChange,
     } = props
 
     const editor = useRef();
+    const field = useRef();
     const [valueInner, setValueInner] = React.useState(value);
+    const [errorInner, setErrorInner] = React.useState(false);
     const [isFocus, setIsFocus] = React.useState(false);
+    const [isDelayError, setIsDelayError] = React.useState(false);
     const [settings, setSettings] = React.useState(() => []);
+
+    const getColor = () => {
+        return settings.includes('dark') ? colors.dark : colors.light
+    }
+
+    const emitOnChange = () => {
+        setTimeout(function () {
+            field.current.querySelector('textarea').dispatchEvent(new Event('change', {bubbles: true}));
+        }, 10);
+    }
+
+    const emitOnBlur = () => {
+        const t = field.current.querySelector('textarea')
+        t.focus();
+        t.blur();
+    }
 
     const onFocus = (v) => {
         setIsFocus(v.type === 'focus')
     }
 
-    const onChange = (v) => {
+    const onChangeInner = (v) => {
         setValueInner(v)
-        if (onChangeValue) {
-            onChangeValue(v)
-        }
+        emitOnChange(v)
     }
 
     const handleSettings = (event, update) => {
@@ -110,7 +164,7 @@ export function MarkdownEditorFilled(props) {
         extensions: [langs.markdown()],
         height: '450px',
         value: valueInner,
-        onChange: onChange
+        onChange: onChangeInner
     });
 
     useEffect(() => {
@@ -118,6 +172,25 @@ export function MarkdownEditorFilled(props) {
             setContainer(editor.current);
         }
     }, [setContainer]);
+
+    useEffect(() => {
+        if (error) {
+            timeoutError = setTimeout(function () {
+                setErrorInner(error)
+            }, isDelayError ? 150 : 0);
+        } else {
+            clearTimeout(timeoutError);
+            setErrorInner(false)
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (field.current) {
+            field.current.querySelector('textarea').onchange = (e) => {
+                onChange(e)
+            }
+        }
+    }, [field.current]);
 
     return (
         <Grid container spacing={1} sx={{
@@ -129,20 +202,20 @@ export function MarkdownEditorFilled(props) {
                 maxWidth: 'calc(100% - 48px)',
             },
             '& .react-markdown': {
-                backgroundColor: settings.includes('dark') ? '#0D1117' : '#0000000f',
+                backgroundColor: getColor().background,
                 color: settings.includes('dark') ? 'white' : 'black',
                 fontSize: 15,
                 borderTopLeftRadius: 4,
                 borderTopRightRadius: 4,
                 padding: '10px',
-                borderBottom: '1px solid #808080',
                 minHeight: '429px',
                 width: '100%',
                 margin: 0,
-                overflow: 'auto'
+                overflow: 'auto',
+                borderBottom: (errorInner ? 2 : 1) + 'px solid ' + (errorInner ? getColor().error : getColor().active)
             },
             '& .react-markdown a': {
-                color: '#2196f3',
+                color: getColor().active,
                 textDecoration: 'underline'
             },
             '& .react-markdown img': {
@@ -153,7 +226,7 @@ export function MarkdownEditorFilled(props) {
                 overflow: 'auto'
             },
             '& .cm-theme .cm-editor': {
-                backgroundColor: settings.includes('dark') ? '#0D1117' : '#0000000f',
+                backgroundColor: getColor().background,
                 paddingTop: '25px',
                 paddingRight: '10px',
                 paddingLeft: '10px',
@@ -161,12 +234,12 @@ export function MarkdownEditorFilled(props) {
                 borderTopLeftRadius: 4,
                 borderTopRightRadius: 4,
                 position: 'relative',
-                borderBottom: '1px solid #808080',
+                borderBottom: '1px solid ' + getColor().default,
             },
-            '& .cm-theme .cm-editor:before': {
+            '& .cm-theme .cm-editor:before, & .cm-theme.cm-error .cm-editor:before': {
                 content: `"${label}"`,
                 position: 'absolute',
-                color: settings.includes('dark') ? '#ffffffd9' : '#0009',
+                color: errorInner ? (getColor().error + '!important') : getColor().default,
                 left: '13px',
                 transitionDuration: '200ms',
                 fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
@@ -181,7 +254,7 @@ export function MarkdownEditorFilled(props) {
             '& .cm-theme.cm-focused .cm-editor:before, & .cm-theme .cm-editor.cm-focused:before': {
                 top: '7px',
                 fontSize: '13px',
-                color: '#2196f3',
+                color: getColor().active,
             },
             '& .cm-theme .cm-activeLine': {
                 backgroundColor: 'transparent',
@@ -195,21 +268,55 @@ export function MarkdownEditorFilled(props) {
                 right: 0,
                 width: 0,
                 transitionDuration: '200ms',
-                borderBottom: '2px solid #2196f3',
+                borderBottom: '2px solid ' + (errorInner ? getColor().error : getColor().active)
             },
-            '& .cm-theme.cm-focused .cm-editor:after, & .cm-theme .cm-editor.cm-focused:after': {
+            '& .cm-theme.cm-focused .cm-editor:after, & .cm-theme .cm-editor.cm-focused:after , & .cm-theme.cm-error .cm-editor:after': {
                 width: '100%',
             },
         }}>
             <Grid item xs={12}>
 
+                <TextField
+                    ref={field}
+                    name={name}
+                    multiline
+                    type="text"
+                    value={valueInner}
+                    onBlur={onBlur}
+                    rows={10}
+                    sx={{
+                        position: 'absolute',
+                        opacity: 0,
+                        '& .MuiOutlinedInput-root': {
+                            padding: 0,
+                            height: 0,
+                        },
+                        '& textarea': {
+                            height: 1 + "px !important",
+                            fontSize: 0
+                        }
+                    }}
+                />
+
                 <Stack
                     direction="row"
                     spacing={1}
                 >
-                    <div className={'cm-theme' + (isFocus ? ' cm-focused' : '')} ref={editor} style={{
-                        display: settings.includes('preview') ? 'none' : 'block'
-                    }}/>
+                    <div
+                        className={'cm-theme' + (isFocus ? ' cm-focused' : '') + (errorInner ? ' cm-error' : '')}
+                        ref={editor}
+                        onBlur={() => {
+                            if (onBlur) {
+                                emitOnBlur()
+                            }
+                        }}
+                        onFocus={() => {
+                            setIsDelayError(true)
+                        }}
+                        style={{
+                            display: settings.includes('preview') ? 'none' : 'block'
+                        }}
+                    />
 
                     {settings.includes('preview') ? <ReactMarkdown className={"react-markdown"}>
                         {valueInner}
@@ -363,14 +470,24 @@ export function MarkdownEditorFilled(props) {
 
                 </Stack>
 
+                {errorInner ? <FormHelperText error={true} sx={{
+                    marginLeft: 2,
+                    marginRight: 2,
+                }}>
+                    {helperText}
+                </FormHelperText> : null}
+
             </Grid>
         </Grid>
-
     )
 }
 
 MarkdownEditorFilled.propTypes = {
+    error: PropTypes.bool,
+    name: PropTypes.string,
+    helperText: PropTypes.string,
     label: PropTypes.string,
     value: PropTypes.string,
-    onChangeValue: PropTypes.func,
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func
 };
