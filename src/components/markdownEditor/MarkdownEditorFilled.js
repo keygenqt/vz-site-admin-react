@@ -149,6 +149,10 @@ export function MarkdownEditorFilled(props) {
             '& .react-markdown img': {
                 maxWidth: '100%'
             },
+            '& .react-markdown pre': {
+                maxWidth: '100%',
+                overflow: 'auto'
+            },
             '& .cm-theme .cm-editor': {
                 backgroundColor: settings.includes('dark') ? '#0D1117' : '#0000000f',
                 paddingTop: '25px',
