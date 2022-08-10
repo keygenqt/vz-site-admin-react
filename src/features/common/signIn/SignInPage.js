@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from 'react';
 import {
     Alert,
     Box,
-    Button,
+    Button, CircularProgress,
     Container,
     Divider,
     FilledInput,
@@ -276,7 +276,9 @@ export function SignInPage({title}) {
                                                 type={'submit'}
                                                 size={'large'}
                                             >
-                                                Sign In
+                                                {isSubmitting ? <CircularProgress color="inherit" size={21} sx={{
+                                                    padding: '3px'
+                                                }}/> : 'Sign In'}
                                             </Button>
                                         </Grid>
                                     </Grid>
