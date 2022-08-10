@@ -4,7 +4,7 @@ import {BlogPage, BlogsPage, DashboardPage, ProjectPage, ProjectsPage} from "../
 import * as React from "react";
 import {RouteType} from "../RouteType";
 
-export const ps = {
+export const routePS = {
     dashboard: {
         title: 'Adminka | PS',
         path: '/',

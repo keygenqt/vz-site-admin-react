@@ -1,9 +1,11 @@
 import * as React from "react";
-import {ps} from "./elements/ps";
+import {routePS} from "./elements/ps";
+import {routeCommon} from "./elements/common";
 
 export const RouteConf = {
     delay: 200,
     routes: {
-        ps: ps,
+        common: routeCommon,
+        ps: routePS,
     },
 }

@@ -208,11 +208,11 @@ export function MarkdownEditorFilled(props) {
                 borderTopLeftRadius: 4,
                 borderTopRightRadius: 4,
                 padding: '10px',
-                minHeight: '429px',
                 width: '100%',
                 margin: 0,
                 overflow: 'auto',
-                borderBottom: (errorInner ? 2 : 1) + 'px solid ' + (errorInner ? getColor().error : getColor().active)
+                borderBottom: (errorInner ? 2 : 1) + 'px solid ' + (errorInner ? getColor().error : '#c5c5c5'),
+                height: '429px'
             },
             '& .react-markdown a': {
                 color: getColor().active,

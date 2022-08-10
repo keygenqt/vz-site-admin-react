@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {Alert, FormControlLabel, FormGroup, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
 import {AppCard, MarkdownEditorFilled, SplitButton} from "../../../../components";
@@ -7,6 +7,7 @@ import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
 import {Formik} from "formik";
 import * as Yup from 'yup';
+import {AppContext} from "../../../../base";
 
 const categories = [
     {
@@ -70,6 +71,7 @@ limitations under the License.
 export function BlogPage({title}) {
 
     const theme = useTheme()
+    const {route} = useContext(AppContext)
 
     let {id} = useParams();
 
@@ -240,6 +242,9 @@ export function BlogPage({title}) {
                                                 color={theme.palette.success.main}
                                                 size={'medium'}
                                                 endIcon={<Done/>}
+                                                onClick={() => {
+                                                    route.scrollToTop()
+                                                }}
                                             >
                                                 {id ? 'Update' : 'Add'}
                                             </SplitButton>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useContext, useEffect} from 'react';
 import {Container, Stack, Typography, Zoom} from "@mui/material";
-import {AppContext} from "../../base";
+import {AppContext} from "../../../base";
 import PropTypes from "prop-types";
 
 export function ErrorPage({title}) {
