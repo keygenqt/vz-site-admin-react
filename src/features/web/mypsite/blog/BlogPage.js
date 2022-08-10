@@ -8,6 +8,8 @@ import {useParams} from "react-router-dom";
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import {AppContext} from "../../../../base";
+import {AlertError} from "../../../../components/alerts/AlertError";
+import {AlertSuccess} from "../../../../components/alerts/AlertSuccess";
 
 const categories = [
     {
@@ -136,31 +138,15 @@ export function BlogPage({title}) {
                             <form noValidate onSubmit={handleSubmit}>
 
                                 {errors.submit && (
-                                    <Alert severity="error" sx={{
-                                        backgroundColor: '#ffdbec',
-                                        color: '#2e0000',
-                                        borderRadius: 2,
-                                        marginBottom: 2,
-                                        '& svg': {
-                                            color: '#2e0000',
-                                        }
-                                    }}>
+                                    <AlertError>
                                         {errors.submit}
-                                    </Alert>
+                                    </AlertError>
                                 )}
 
                                 {status && status.success && (
-                                    <Alert severity="success" sx={{
-                                        backgroundColor: '#dcffd4',
-                                        color: '#002e04',
-                                        borderRadius: 2,
-                                        marginBottom: 2,
-                                        '& svg': {
-                                            color: '#002e04',
-                                        }
-                                    }}>
-                                        Success update data!
-                                    </Alert>
+                                    <AlertSuccess>
+                                        Success submit form!
+                                    </AlertSuccess>
                                 )}
 
                                 <FormGroup>
