@@ -10,7 +10,7 @@ import {ConstantOther, CoreRequest} from "../../../../base";
  * @return {Promise<*>}
  */
 export default async function auth(email, password) {
-    return await CoreRequest.fetchPost('/ps/auth', {
+    return await CoreRequest.fetchPost('/api/ps/auth', {
         deviceId: ConstantOther.deviceId,
         email: email,
         password: password
