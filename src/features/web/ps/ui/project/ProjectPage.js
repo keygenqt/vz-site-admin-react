@@ -6,12 +6,7 @@ import {AppCard} from "../../../../../components";
 import {ViewListOutlined} from "@mui/icons-material";
 
 
-export function ProjectPage({title}) {
-
-    useEffect(() => {
-        document.title = title;
-    });
-
+export function ProjectPage() {
     return (
         <Grid container spacing={1}>
             <Grid item xs={12}>
@@ -32,6 +27,4 @@ export function ProjectPage({title}) {
     );
 }
 
-ProjectPage.propTypes = {
-    title: PropTypes.string,
-};
+ProjectPage.propTypes = {};

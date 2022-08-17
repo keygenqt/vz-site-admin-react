@@ -5,12 +5,11 @@ import {ConstantAuth, ConstantLottie, NavigateContext} from "../../../../base";
 import PropTypes from "prop-types";
 import Lottie from "lottie-react";
 
-export function SplashPage({title, done}) {
+export function SplashPage({done}) {
 
     const {route, conf} = useContext(NavigateContext)
 
     useEffect(() => {
-        document.title = title;
         setTimeout(() => {
             // emit disable start
             done()
@@ -28,7 +27,7 @@ export function SplashPage({title, done}) {
     });
 
     return (
-        <Container maxWidth={"sm"} className={"ErrorPage"}>
+        <Container maxWidth={"sm"}>
             <Stack alignItems={"center"} spacing={2}>
                 <Lottie style={{
                     width: 250
@@ -39,6 +38,5 @@ export function SplashPage({title, done}) {
 }
 
 SplashPage.propTypes = {
-    title: PropTypes.string,
     done: PropTypes.func,
 };

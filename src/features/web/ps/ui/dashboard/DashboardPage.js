@@ -145,13 +145,11 @@ export const chartData2 = {
     ]
 };
 
-export function DashboardPage({title}) {
+export function DashboardPage() {
 
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        document.title = title;
-
         // @todo demo
         setTimeout(function () {
             setLoading(false)
@@ -459,6 +457,4 @@ export function DashboardPage({title}) {
     );
 }
 
-DashboardPage.propTypes = {
-    title: PropTypes.string,
-};
+DashboardPage.propTypes = {};

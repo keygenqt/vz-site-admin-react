@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
 import {Avatar, Grid, useTheme} from "@mui/material";
-import PropTypes from "prop-types";
 import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
 import {AppCard, AppGridData, SplitButton} from "../../../../../components";
-import {NavigateContext, ConstantOther} from "../../../../../base";
+import {ConstantOther, NavigateContext} from "../../../../../base";
 
 const rows = [
     {
@@ -111,15 +110,13 @@ const rows = [
     },
 ];
 
-export function BlogsPage({title}) {
+export function BlogsPage() {
 
     const theme = useTheme()
     const {route, conf} = useContext(NavigateContext)
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        document.title = title;
-
         // @todo demo
         setTimeout(function () {
             setLoading(false)
@@ -209,6 +206,4 @@ export function BlogsPage({title}) {
     );
 }
 
-BlogsPage.propTypes = {
-    title: PropTypes.string,
-};
+BlogsPage.propTypes = {};

@@ -92,14 +92,12 @@ const rows = [
     }
 ];
 
-export function ProjectsPage({title}) {
+export function ProjectsPage() {
 
     const theme = useTheme()
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        document.title = title;
-
         // @todo demo
         setTimeout(function () {
             setLoading(false)
@@ -190,6 +188,4 @@ export function ProjectsPage({title}) {
     );
 }
 
-ProjectsPage.propTypes = {
-    title: PropTypes.string,
-};
+ProjectsPage.propTypes = {};

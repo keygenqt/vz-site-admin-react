@@ -1,7 +1,8 @@
-import React, {createContext, useState} from "react";
+import React, {createContext, useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import RouteCore from "../route/RouteCore";
 import {RouteConf} from "../route/RouteConf";
+import {ConstantAuth} from "../constants/ConstantAuth";
 
 export const NavigateContext = createContext({})
 

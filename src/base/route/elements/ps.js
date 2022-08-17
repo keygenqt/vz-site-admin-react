@@ -6,99 +6,93 @@ import {RouteType} from "../RouteType";
 
 export const routePS = {
     dashboard: {
-        title: 'Adminka | PS',
         path: '/',
-        render: function (key, path, title) {
+        render: function (key, path) {
             return <Route
                 key={key}
                 exact
                 path={path}
                 element={
                     <BaseLayout>
-                        <DashboardPage title={title}/>
+                        <DashboardPage/>
                     </BaseLayout>
                 }
             />
         }
     },
     blogCreate: {
-        title: 'Adminka | PS',
         path: '/ps/blog/add',
-        render: function (key, path, title) {
+        render: function (key, path) {
             return <Route
                 key={key}
                 exact
                 path={path}
                 element={
                     <BaseLayout>
-                        <BlogPage title={title}/>
+                        <BlogPage/>
                     </BaseLayout>
                 }
             />
         }
     },
     blogUpdate: {
-        title: 'Adminka | PS',
         path: '/ps/blog/:id',
         match: {
             id: RouteType.integer,
         },
-        render: function (key, path, title) {
+        render: function (key, path) {
             return <Route
                 key={key}
                 exact
                 path={path}
                 element={
                     <BaseLayout>
-                        <BlogPage title={title}/>
+                        <BlogPage/>
                     </BaseLayout>
                 }
             />
         }
     },
     blogs: {
-        title: 'Adminka | PS',
         path: '/ps/blog',
-        render: function (key, path, title) {
+        render: function (key, path) {
             return <Route
                 key={key}
                 exact
                 path={path}
                 element={
                     <BaseLayout>
-                        <BlogsPage title={title}/>
+                        <BlogsPage/>
                     </BaseLayout>
                 }
             />
         }
     },
     project: {
-        title: 'Adminka | PS',
         path: '/ps/project/:id',
-        render: function (key, path, title) {
+        render: function (key, path) {
             return <Route
                 key={key}
                 exact
                 path={path}
                 element={
                     <BaseLayout>
-                        <ProjectPage title={title}/>
+                        <ProjectPage/>
                     </BaseLayout>
                 }
             />
         }
     },
     projects: {
-        title: 'Adminka | PS',
         path: '/ps/projects',
-        render: function (key, path, title) {
+        render: function (key, path) {
             return <Route
                 key={key}
                 exact
                 path={path}
                 element={
                     <BaseLayout>
-                        <ProjectsPage title={title}/>
+                        <ProjectsPage/>
                     </BaseLayout>
                 }
             />

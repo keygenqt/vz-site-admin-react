@@ -5,6 +5,7 @@ import {GuestLayout} from "../../layouts";
 import {ErrorPage} from "../../features/common/ui/error/ErrorPage";
 import {SplashPage} from "../../features/common/ui/splash/SplashPage";
 import {RouteType} from "./RouteType";
+import {ConstantAuth} from "../constants/ConstantAuth";
 
 export default class RouteCore {
 
@@ -18,6 +19,7 @@ export default class RouteCore {
         this.navigate = navigate;
         this.conf = conf;
         this.isRunStart = true;
+        this.pathLogin = conf.routes.common.signIn.path
     }
 
     updateLocation(location) {
@@ -233,18 +235,17 @@ export default class RouteCore {
         Object.keys(this.conf.routes).forEach((group, groupIndex) => {
             Object.keys(this.conf.routes[group]).forEach((page, pageIndex) => {
 
-                const {path, title, render, match} = this.conf.routes[group][page]
+                const {path, render, match} = this.conf.routes[group][page]
 
                 if (render !== undefined) {
-
-                    if (this.isRunStart) {
+                    if (this.isRunStart || !ConstantAuth.isAuth() && this.location.pathname !== this.pathLogin) {
                         pages.push(
                             <Route
                                 key={groupIndex + pageIndex}
                                 path={path}
                                 element={
                                     <GuestLayout>
-                                        <SplashPage title={"..."} done={() => {
+                                        <SplashPage done={() => {
                                             this.isRunStart = false
                                         }}/>
                                     </GuestLayout>
@@ -268,16 +269,16 @@ export default class RouteCore {
                                     path={path}
                                     element={
                                         <GuestLayout>
-                                            <ErrorPage title={"Error | 404"}/>
+                                            <ErrorPage/>
                                         </GuestLayout>
                                     }
                                 />
                             )
                         } else {
-                            pages.push(render(groupIndex + pageIndex, path, title))
+                            pages.push(render(groupIndex + pageIndex, path))
                         }
                     } else {
-                        pages.push(render(groupIndex + pageIndex, path, title))
+                        pages.push(render(groupIndex + pageIndex, path))
                     }
                 }
             })
@@ -292,7 +293,7 @@ export default class RouteCore {
                         path="*"
                         element={
                             <GuestLayout>
-                                <ErrorPage title={"Error | 404"}/>
+                                <ErrorPage/>
                             </GuestLayout>
                         }
                     />

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import {FormControlLabel, FormGroup, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
-import PropTypes from "prop-types";
 import {AppCard, MarkdownEditorFilled, SplitButton} from "../../../../../components";
 import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
@@ -70,7 +69,7 @@ limitations under the License.
 `;
 
 
-export function BlogPage({title}) {
+export function BlogPage() {
 
     const theme = useTheme()
     const {route} = useContext(NavigateContext)
@@ -78,10 +77,6 @@ export function BlogPage({title}) {
     let {id} = useParams();
 
     const [isLoading, setLoading] = useState(false);
-
-    useEffect(() => {
-        document.title = title;
-    });
 
     return (
         <Grid container spacing={1}>
@@ -247,6 +242,4 @@ export function BlogPage({title}) {
     );
 }
 
-BlogPage.propTypes = {
-    title: PropTypes.string,
-};
+BlogPage.propTypes = {};
