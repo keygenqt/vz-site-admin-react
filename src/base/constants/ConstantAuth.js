@@ -7,6 +7,8 @@ import {ConstantOther} from "./ConstantOther";
 export const ConstantAuth = {
     // key for save to localStorage
     key: 'auth-data',
+    // key secret for encryption
+    secret: ConstantOther.deviceId,
 
     // works
     isAuth: () => {
@@ -33,14 +35,10 @@ export const ConstantAuth = {
         return ConstantAuth.getData('token')
     },
 
-    // TODO
-    // I did not find a 100% reliable way to securely store the secret of the key, as I understand it is not.
-    // Based on the fact that breaking is not building, I think this is a fairly reliable solution,
-    // until I found the right way.
     getData: (key) => {
         try {
             const item = localStorage.getItem(ConstantAuth.key)
-            const bytes = CryptoJS.AES.decrypt(item, ConstantOther.deviceId);
+            const bytes = CryptoJS.AES.decrypt(item, ConstantAuth.secret);
             const data = bytes.toString(CryptoJS.enc.Utf8)
             return JSON.parse(data)[key]
         } catch (e) {
@@ -51,7 +49,7 @@ export const ConstantAuth = {
     setData: (data) => {
         localStorage.setItem(
             ConstantAuth.key,
-            CryptoJS.AES.encrypt(JSON.stringify(data), ConstantOther.deviceId).toString()
+            CryptoJS.AES.encrypt(JSON.stringify(data), ConstantAuth.secret).toString()
         )
     },
     clearData: () => {

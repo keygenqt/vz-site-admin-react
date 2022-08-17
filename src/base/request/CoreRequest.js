@@ -52,7 +52,7 @@ async function fetchGet(
     path
 ) {
     return await _query(
-        methods.post,
+        methods.get,
         path,
         null
     );
