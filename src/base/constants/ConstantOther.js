@@ -9,7 +9,7 @@ export const ConstantOther = {
     email: 'dev@keygenqt.com',
     copy: '© 2022 KeyGenQt',
     psBlogViewUrl: 'https://version2.keygenqt.com/blog',
-    deviceId: md5("React app" + browserName + osName + mobileVendor),
+    deviceId: md5("wnIwF1OMwTu8Qxwg" + browserName + osName + mobileVendor),
     languages: {
         ru: 'ru',
         en: 'en'

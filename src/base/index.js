@@ -2,6 +2,7 @@
 export * from './constants/ConstantOther';
 export * from './constants/ConstantAuth';
 export * from './constants/ConstantImage';
+export * from './constants/ConstantLottie';
 // hooks
 export * from './hooks/WindowResize';
 export * from './hooks/WindowScroll';

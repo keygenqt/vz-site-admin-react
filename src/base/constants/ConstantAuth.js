@@ -1,9 +1,20 @@
+import CryptoJS from 'crypto-js';
+import {ConstantOther} from "./ConstantOther";
+
 /**
  * Auth user
  */
 export const ConstantAuth = {
     // key for save to localStorage
     key: 'auth-data',
+
+    // works
+    isAuth: () => {
+        return ConstantAuth.getData('token') !== undefined
+    },
+    logout: () => {
+        ConstantAuth.clearData()
+    },
 
     // get values
     getId: () => {
@@ -22,12 +33,28 @@ export const ConstantAuth = {
         return ConstantAuth.getData('token')
     },
 
-    // set/get response aut data
+    // TODO
+    // I did not find a 100% reliable way to securely store the secret of the key, as I understand it is not.
+    // Based on the fact that breaking is not building, I think this is a fairly reliable solution,
+    // until I found the right way.
     getData: (key) => {
-        const item = localStorage.getItem(ConstantAuth.key)
-        return item ? JSON.parse(item)[key] : undefined
+        try {
+            const item = localStorage.getItem(ConstantAuth.key)
+            const bytes = CryptoJS.AES.decrypt(item, ConstantOther.deviceId);
+            const data = bytes.toString(CryptoJS.enc.Utf8)
+            return JSON.parse(data)[key]
+        } catch (e) {
+            ConstantAuth.clearData()
+            return undefined
+        }
     },
-    setData: (obj) => {
-        localStorage.setItem(ConstantAuth.key, JSON.stringify(obj))
+    setData: (data) => {
+        localStorage.setItem(
+            ConstantAuth.key,
+            CryptoJS.AES.encrypt(JSON.stringify(data), ConstantOther.deviceId).toString()
+        )
+    },
+    clearData: () => {
+        localStorage.removeItem(ConstantAuth.key)
     }
 };

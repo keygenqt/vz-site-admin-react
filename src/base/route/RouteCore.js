@@ -3,6 +3,7 @@ import {ScrollToTop} from "../../components";
 import {Route, Routes} from "react-router-dom";
 import {GuestLayout} from "../../layouts";
 import {ErrorPage} from "../../features/common/ui/error/ErrorPage";
+import {SplashPage} from "../../features/common/ui/splash/SplashPage";
 import {RouteType} from "./RouteType";
 
 export default class RouteCore {
@@ -16,6 +17,15 @@ export default class RouteCore {
         this.location = location;
         this.navigate = navigate;
         this.conf = conf;
+        this.isRunStart = true;
+    }
+
+    updateLocation(location) {
+        this.location = location;
+    }
+
+    updateNavigate(navigate) {
+        this.navigate = navigate;
     }
 
     /**
@@ -44,16 +54,10 @@ export default class RouteCore {
      *
      * @param route {String | Object}
      * @param arg
-     *
-     * @returns {(function(): void)|*}
      */
     toLocation(route, ...arg) {
         const path = this.getPathFromObject(route)
-        if (this.isPage(path)) {
-            this.navigate(0)
-        } else {
-            this.navigate(this.createLink(path, arg));
-        }
+        this.navigate(this.createLink(path, arg));
     }
 
     /**
@@ -190,7 +194,7 @@ export default class RouteCore {
         const path = this.getPathFromObject(route)
 
         if (path.includes('http')) {
-            return  path + (arg.length === 0 ? '' : '/' + arg.join('/'));
+            return path + (arg.length === 0 ? '' : '/' + arg.join('/'));
         }
 
         if (!path.includes(":")) {
@@ -232,7 +236,22 @@ export default class RouteCore {
                 const {path, title, render, match} = this.conf.routes[group][page]
 
                 if (render !== undefined) {
-                    if (match) {
+
+                    if (this.isRunStart) {
+                        pages.push(
+                            <Route
+                                key={groupIndex + pageIndex}
+                                path={path}
+                                element={
+                                    <GuestLayout>
+                                        <SplashPage title={"..."} done={() => {
+                                            this.isRunStart = false
+                                        }}/>
+                                    </GuestLayout>
+                                }
+                            />
+                        )
+                    } else if (match) {
                         const clearPath = path.slice(0, path.indexOf(':'))
                         const paramsUrl = this.location.pathname.replace(clearPath, '').split("/")
                         const paramsPath = path.replace(clearPath, '').split("/").map((e) => e.replace(':', ''))
@@ -312,5 +331,19 @@ export default class RouteCore {
      */
     scrollToTopSmooth() {
         window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    /**
+     * Refresh page
+     */
+    refreshPage() {
+        this.navigate(0);
+    }
+
+    /**
+     * Refresh location
+     */
+    refreshLocation() {
+        this.navigate(this.location);
     }
 }

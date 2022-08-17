@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {isMobile} from 'react-device-detect';
 import {useContext} from "react";
-import {NavigateContext} from "../../../base";
+import {ConstantAuth, NavigateContext} from "../../../base";
 
 export function AppTopBarPopper() {
 
@@ -46,6 +46,7 @@ export function AppTopBarPopper() {
                             <ListItemText primary={<Typography variant="body2">Account Settings</Typography>}/>
                         </ListItemButton>
                         <ListItemButton onClick={() => {
+                            ConstantAuth.logout()
                             route.toLocation(conf.routes.common.signIn)
                         }}>
                             <ListItemIcon>

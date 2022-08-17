@@ -1,4 +1,4 @@
-import React, {createContext} from "react";
+import React, {createContext, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import RouteCore from "../route/RouteCore";
 import {RouteConf} from "../route/RouteConf";
@@ -11,7 +11,11 @@ export default function NavigateContextProvider(props) {
     const navigate = useNavigate()
 
     const conf = RouteConf
-    const route = new RouteCore(location, navigate, conf)
+
+    const [route] = useState(new RouteCore(location, navigate, conf));
+
+    route.updateLocation(location)
+    route.updateNavigate(navigate)
 
     return (
         <NavigateContext.Provider
