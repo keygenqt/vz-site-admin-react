@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
-import {Alert, FormControlLabel, FormGroup, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
+import {FormControlLabel, FormGroup, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
-import {AppCard, MarkdownEditorFilled, SplitButton} from "../../../../components";
+import {AppCard, MarkdownEditorFilled, SplitButton} from "../../../../../components";
 import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import {AppContext} from "../../../../base";
-import {AlertError} from "../../../../components/alerts/AlertError";
-import {AlertSuccess} from "../../../../components/alerts/AlertSuccess";
+import {NavigateContext} from "../../../../../base";
+import {AlertError} from "../../../../../components/alerts/AlertError";
+import {AlertSuccess} from "../../../../../components/alerts/AlertSuccess";
 
 const categories = [
     {
@@ -73,7 +73,7 @@ limitations under the License.
 export function BlogPage({title}) {
 
     const theme = useTheme()
-    const {route} = useContext(AppContext)
+    const {route} = useContext(NavigateContext)
 
     let {id} = useParams();
 

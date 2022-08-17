@@ -11,6 +11,7 @@ export function AlertSuccess(props) {
     return (
         <Collapse in={collapse}>
             <Alert
+                style={props.style}
                 severity="success"
                 sx={{
                     backgroundColor: '#dcffd4',
@@ -43,5 +44,6 @@ export function AlertSuccess(props) {
 }
 
 AlertSuccess.propTypes = {
-    children: PropTypes.element.isRequired
+    style: PropTypes.object,
+    children: PropTypes.string.isRequired
 };

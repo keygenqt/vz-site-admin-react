@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
 import {
-    Alert,
     Box,
-    Button, CircularProgress,
+    Button,
+    CircularProgress,
     Container,
     Divider,
     FilledInput,
@@ -22,18 +22,20 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {AppContext} from "../../../base";
+import {ConstantAuth, MethodsRequest, NavigateContext} from "../../../../base";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import Typography from "@mui/material/Typography";
-import {AlertError} from "../../../components/alerts/AlertError";
-import {AlertSuccess} from "../../../components/alerts/AlertSuccess";
+import {AlertError} from "../../../../components/alerts/AlertError";
+import {AlertSuccess} from "../../../../components/alerts/AlertSuccess";
 
 export function SignInPage({title}) {
 
     const theme = useTheme()
-    const {route, conf} = useContext(AppContext)
-    const [isLoading, setLoading] = useState(true);
+
+    const {route, conf} = useContext(NavigateContext)
+
+    const [isLoading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => {
@@ -85,6 +87,7 @@ export function SignInPage({title}) {
                     </Typography>
 
                     <Button
+                        disabled={isLoading}
                         variant={'outlined'}
                         fullWidth
                         size={'large'}
@@ -102,12 +105,12 @@ export function SignInPage({title}) {
                         }}
                     >
                         Sign in with&nbsp;
-                        <span style={{color: '#4285F4'}}>G</span>
-                        <span style={{color: '#EA4335'}}>o</span>
-                        <span style={{color: '#FBBC05'}}>o</span>
-                        <span style={{color: '#4285F4'}}>g</span>
-                        <span style={{color: '#34A853'}}>l</span>
-                        <span style={{color: '#EA4335'}}>e</span>
+                        <span style={{color: isLoading? '#BDBDBD' : '#4285F4'}}>G</span>
+                        <span style={{color: isLoading? '#BDBDBD' : '#EA4335'}}>o</span>
+                        <span style={{color: isLoading? '#BDBDBD' : '#FBBC05'}}>o</span>
+                        <span style={{color: isLoading? '#BDBDBD' : '#4285F4'}}>g</span>
+                        <span style={{color: isLoading? '#BDBDBD' : '#34A853'}}>l</span>
+                        <span style={{color: isLoading? '#BDBDBD' : '#EA4335'}}>e</span>
                     </Button>
 
                     <Box
@@ -121,6 +124,7 @@ export function SignInPage({title}) {
 
                         <Button
                             variant="outlined"
+                            disabled
                             sx={{
                                 cursor: 'unset',
                                 m: 2,
@@ -132,7 +136,6 @@ export function SignInPage({title}) {
                                 borderRadius: 2
                             }}
                             disableRipple
-                            disabled
                         >
                             OR
                         </Button>
@@ -167,23 +170,27 @@ export function SignInPage({title}) {
                             setStatus({success: null});
                             setErrors({submit: null});
 
-                            await new Promise(r => setTimeout(r, 1000));
-
                             try {
+                                // query
+                                const response = await MethodsRequest.common.auth(values.email, values.password)
 
-                                if (Math.random() < 0.5) {
-                                    throw 'Error login!';
-                                }
+                                await new Promise(r => setTimeout(r, 1000));
 
+                                // set auth
+                                ConstantAuth.setData(response)
+                                // set result
                                 setStatus({success: true});
                                 setSubmitting(false);
-                                setLoading(false);
-                            } catch (err) {
+
+                                await new Promise(r => setTimeout(r, 1000));
+
+                                route.toLocation(conf.routes.ps.dashboard)
+
+                            } catch (error) {
                                 setStatus({success: false});
-                                setErrors({submit: err});
+                                setErrors({submit: error.message});
                                 setSubmitting(false);
                                 setLoading(false);
-                                console.error(err);
                             }
                         }}
                     >
@@ -191,13 +198,17 @@ export function SignInPage({title}) {
                             <form noValidate onSubmit={handleSubmit}>
 
                                 {errors.submit && (
-                                    <AlertError>
-                                        {errors.submit}
+                                    <AlertError style={{
+                                        maxWidth: 345
+                                    }}>
+                                        Something wrong, please try again later
                                     </AlertError>
                                 )}
 
                                 {status && status.success && (
-                                    <AlertSuccess>
+                                    <AlertSuccess style={{
+                                        maxWidth: 345
+                                    }}>
                                         Success submit form!
                                     </AlertSuccess>
                                 )}
@@ -216,6 +227,7 @@ export function SignInPage({title}) {
                                                     value={values.email}
                                                     onBlur={handleBlur}
                                                     onChange={handleChange}
+                                                    disabled={isSubmitting || isLoading}
                                                     fullWidth
                                                     variant="filled"
                                                 />
@@ -237,6 +249,7 @@ export function SignInPage({title}) {
                                                     value={values.password}
                                                     onBlur={handleBlur}
                                                     onChange={handleChange}
+                                                    disabled={isSubmitting || isLoading}
                                                     fullWidth
                                                     variant="filled"
                                                     endAdornment={
@@ -261,7 +274,7 @@ export function SignInPage({title}) {
                                         </Grid>
                                         <Grid item xs={12}>
                                             <FormControlLabel
-                                                control={<Switch defaultChecked/>}
+                                                control={<Switch defaultChecked disabled={isSubmitting || isLoading}/>}
                                                 label="Remember me"
                                             />
                                         </Grid>
@@ -271,12 +284,12 @@ export function SignInPage({title}) {
                                             <Button
                                                 variant={'contained'}
                                                 color={'primary'}
-                                                disabled={isSubmitting}
+                                                disabled={isSubmitting || isLoading}
                                                 fullWidth
                                                 type={'submit'}
                                                 size={'large'}
                                             >
-                                                {isSubmitting ? <CircularProgress color="inherit" size={21} sx={{
+                                                {isSubmitting || isLoading ? <CircularProgress color="inherit" size={21} sx={{
                                                     padding: '3px'
                                                 }}/> : 'Sign In'}
                                             </Button>

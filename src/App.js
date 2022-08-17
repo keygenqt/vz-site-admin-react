@@ -2,18 +2,16 @@ import * as React from 'react';
 import {useContext} from 'react';
 import {ThemeProvider} from "@mui/material";
 import {AppTheme} from "./base/theme/AppTheme";
-import {AppContext} from "./base";
+import {NavigateContext} from "./base";
 
 function App() {
 
-    const {route} = useContext(AppContext)
+    const {route} = useContext(NavigateContext)
 
     return (
         <ThemeProvider theme={AppTheme}>
             <div className={"App"}>
-                {route.render(() => {
-                    console.log('page error')
-                })}
+                {route.render()}
             </div>
         </ThemeProvider>
     );

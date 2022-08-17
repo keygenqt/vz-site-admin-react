@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
-import {AppContext} from "../../base";
+import {NavigateContext} from "../../base";
 import {web} from "./elements/web";
 import {pc} from "./elements/pc";
 import {android} from "./elements/android";
@@ -39,7 +39,7 @@ export function AppMenu(props) {
         onChangeMenu
     } = props
 
-    const {route} = useContext(AppContext)
+    const {route} = useContext(NavigateContext)
     const {palette, breakpoints} = useTheme();
     const isMD = useMediaQuery(breakpoints.down('md'));
     const [open, setOpen] = React.useState([]);

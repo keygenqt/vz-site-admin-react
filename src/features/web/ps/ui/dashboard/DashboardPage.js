@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Avatar, Button, Card, CardContent, Divider, Grid, Stack, Typography} from "@mui/material";
-import {AppCard} from "../../../../components";
+import {AppCard} from "../../../../../components";
 import {
     AllInbox,
     AssignmentInd,

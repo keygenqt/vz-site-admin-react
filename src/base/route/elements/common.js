@@ -1,9 +1,7 @@
 import {Route} from "react-router-dom";
-import {BaseLayout, GuestLayout} from "../../../layouts";
-import {BlogPage, BlogsPage, DashboardPage, ProjectPage, ProjectsPage} from "../../../features/web/mypsite";
+import {GuestLayout} from "../../../layouts";
 import * as React from "react";
-import {RouteType} from "../RouteType";
-import {SignInPage} from "../../../features/common/signIn/SignInPage";
+import {SignInPage} from "../../../features/common/ui/signIn/SignInPage";
 
 export const routeCommon = {
     signIn: {

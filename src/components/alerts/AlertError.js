@@ -11,6 +11,7 @@ export function AlertError(props) {
     return (
         <Collapse in={collapse}>
             <Alert
+                style={props.style}
                 severity="error"
                 sx={{
                     backgroundColor: '#ffdbec',
@@ -43,5 +44,6 @@ export function AlertError(props) {
 }
 
 AlertError.propTypes = {
-    children: PropTypes.element.isRequired
+    style: PropTypes.object,
+    children: PropTypes.string.isRequired
 };

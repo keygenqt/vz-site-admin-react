@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {useContext, useEffect} from 'react';
 import {Container, Stack, Typography, Zoom} from "@mui/material";
-import {AppContext} from "../../../base";
+import {NavigateContext} from "../../../../base";
 import PropTypes from "prop-types";
 
 export function ErrorPage({title}) {
 
-    const {route} = useContext(AppContext)
+    const {route} = useContext(NavigateContext)
 
     useEffect(() => {
         document.title = title;

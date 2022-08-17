@@ -3,9 +3,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import RouteCore from "../route/RouteCore";
 import {RouteConf} from "../route/RouteConf";
 
-export const AppContext = createContext({})
+export const NavigateContext = createContext({})
 
-export default function AppContextProvider(props) {
+export default function NavigateContextProvider(props) {
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -14,7 +14,7 @@ export default function AppContextProvider(props) {
     const route = new RouteCore(location, navigate, conf)
 
     return (
-        <AppContext.Provider
+        <NavigateContext.Provider
             value={{
                 location,
                 navigate,
@@ -22,6 +22,6 @@ export default function AppContextProvider(props) {
                 conf,
             }}>
             {props.children}
-        </AppContext.Provider>
+        </NavigateContext.Provider>
     )
 }

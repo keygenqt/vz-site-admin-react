@@ -5,11 +5,11 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {isMobile} from 'react-device-detect';
 import {useContext} from "react";
-import {AppContext} from "../../../base";
+import {NavigateContext} from "../../../base";
 
 export function AppTopBarPopper() {
 
-    const {route, conf} = useContext(AppContext)
+    const {route, conf} = useContext(NavigateContext)
 
     return (
         <React.Fragment>

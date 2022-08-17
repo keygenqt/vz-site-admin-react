@@ -2,7 +2,7 @@ import * as React from "react";
 import {ScrollToTop} from "../../components";
 import {Route, Routes} from "react-router-dom";
 import {GuestLayout} from "../../layouts";
-import {ErrorPage} from "../../features/common/error/ErrorPage";
+import {ErrorPage} from "../../features/common/ui/error/ErrorPage";
 import {RouteType} from "./RouteType";
 
 export default class RouteCore {
@@ -220,11 +220,9 @@ export default class RouteCore {
     /**
      * Render pages by conf
      *
-     * @param onError callback if open page error
-     *
      * @returns {JSX.Element}
      */
-    render(onError) {
+    render() {
 
         const pages = []
 
@@ -251,7 +249,7 @@ export default class RouteCore {
                                     path={path}
                                     element={
                                         <GuestLayout>
-                                            <ErrorPage onError={onError} title={"Error | 404"}/>
+                                            <ErrorPage title={"Error | 404"}/>
                                         </GuestLayout>
                                     }
                                 />
@@ -275,7 +273,7 @@ export default class RouteCore {
                         path="*"
                         element={
                             <GuestLayout>
-                                <ErrorPage onError={onError} title={"Error | 404"}/>
+                                <ErrorPage title={"Error | 404"}/>
                             </GuestLayout>
                         }
                     />
