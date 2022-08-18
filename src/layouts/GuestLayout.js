@@ -1,11 +1,7 @@
 import * as React from 'react';
 import PropTypes from "prop-types";
-import {useTheme} from "@mui/material";
 
 export function GuestLayout(props) {
-
-    const {palette} = useTheme()
-
     return (
         <div className={"App AppTable"} style={{
             backgroundColor: '#c5e6ff',
