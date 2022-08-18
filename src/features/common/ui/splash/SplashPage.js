@@ -30,7 +30,9 @@ export function SplashPage({done}) {
         <Container maxWidth={"sm"}>
             <Stack alignItems={"center"} spacing={2}>
                 <Lottie style={{
-                    width: 250
+                    width: 250,
+                    borderRadius: '50%',
+                    backgroundColor: 'white'
                 }} animationData={ConstantLottie.splash_loading}/>
             </Stack>
         </Container>

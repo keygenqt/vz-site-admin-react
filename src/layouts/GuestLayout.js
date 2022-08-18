@@ -8,7 +8,7 @@ export function GuestLayout(props) {
 
     return (
         <div className={"App AppTable"} style={{
-            backgroundColor: palette.primary.light,
+            backgroundColor: '#c5e6ff',
         }}>
             <div className={"AppTableRow"}>
                 <main className={"AppTableCell"} style={{
