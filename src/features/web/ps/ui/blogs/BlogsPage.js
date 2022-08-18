@@ -5,132 +5,31 @@ import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
 import {AppCard, AppGridData, SplitButton} from "../../../../../components";
 import {ConstantOther, MethodsRequest, NavigateContext} from "../../../../../base";
 
-const rows = [
-    {
-        id: 1,
-        icon: 'https://keygenqt.com/images/blog/601076d399c15.jpg',
-        title: 'Алгоритмы. Основы.',
-        create_at: 1659881551
-    },
-    {
-        id: 2,
-        icon: 'https://keygenqt.com/images/blog/5ef881c28b6c6.jpg',
-        title: 'Плохо написанные хорошие задачи.',
-        create_at: 1659881551
-    },
-    {
-        id: 3,
-        icon: 'https://keygenqt.com/images/blog/5e6e70713347a.jpg',
-        title: 'Дурные привычки.',
-        create_at: 1659881551
-    },
-    {
-        id: 4,
-        icon: 'https://keygenqt.com/images/blog/5eb1e22f20315.jpg',
-        title: 'Количество станет качеством.',
-        create_at: 1659881551
-    },
-    {
-        id: 5,
-        icon: 'https://keygenqt.com/images/blog/5ec6e29c20719.jpg',
-        title: 'Ментальная усталость.',
-        create_at: 1659881551
-    },
-    {
-        id: 6,
-        icon: 'https://keygenqt.com/images/blog/5ee7e4486df16.jpg',
-        title: 'Становление философии.',
-        create_at: 1659881551
-    },
-    {
-        id: 7,
-        icon: 'https://keygenqt.com/images/blog/5ed26eec8b8cd.jpg',
-        title: 'Оптимизация процессов.',
-        create_at: 1659881551
-    },
-    {
-        id: 8,
-        icon: 'https://keygenqt.com/images/blog/5e5d66c8b82dc.jpg',
-        title: 'Логика. Основы.',
-        create_at: 1659881551
-    },
-    {
-        id: 9,
-        icon: 'https://keygenqt.com/images/blog/5f0519630f1dd.jpg',
-        title: 'Деградируй или проиграешь.',
-        create_at: 1659881551
-    },
-    {
-        id: 10,
-        icon: 'https://keygenqt.com/images/blog/5e5d656a012f7.jpg',
-        title: 'Красная шапочка.',
-        create_at: 1659881551
-    },
-    {
-        id: 11,
-        icon: 'https://keygenqt.com/images/blog/5e5d5f715bb0d.jpg',
-        title: 'Безумие прогресса.',
-        create_at: 1659881551
-    },
-    {
-        id: 12,
-        icon: 'https://keygenqt.com/images/blog/5e5d6042aa75b.jpg',
-        title: 'Когда ты хороший.',
-        create_at: 1659881551
-    },
-    {
-        id: 13,
-        icon: 'https://keygenqt.com/images/blog/5e5e06b1245c3.jpg',
-        title: 'Смотрите под ноги.',
-        create_at: 1659881551
-    },
-    {
-        id: 14,
-        icon: 'https://keygenqt.com/images/blog/5e5e0d10466c7.jpg',
-        title: 'Философский пароход.',
-        create_at: 1659881551
-    },
-    {
-        id: 15,
-        icon: 'https://keygenqt.com/images/blog/5e5cc904a805d.jpg',
-        title: 'Углеродная форма.',
-        create_at: 1659881551
-    },
-    {
-        id: 16,
-        icon: 'https://keygenqt.com/images/blog/5e5d6662883b3.jpg',
-        title: 'Работа над собой.',
-        create_at: 1659881551
-    },
-    {
-        id: 17,
-        icon: 'https://keygenqt.com/images/blog/5ea5d50695947.jpg',
-        title: 'Пчелиный рой.',
-        create_at: 1659881551
-    },
-];
-
 export function BlogsPage() {
 
     const theme = useTheme()
     const {route, conf} = useContext(NavigateContext)
     const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await MethodsRequest.ps.articles()
-                await new Promise(r => setTimeout(r, 1000));
-                return response
-            } catch (error) {
-                console.log(error)
+        if (data.length === 0) {
+            const fetchData = async () => {
+                try {
+                    const response = await MethodsRequest.ps.articles()
+                    await new Promise(r => setTimeout(r, 1000));
+                    return response
+                } catch (error) {
+                    console.log(error)
+                }
             }
+
+            fetchData().then((response) => {
+                setData(response)
+                setLoading(false)
+            })
         }
 
-        fetchData().then((response) => {
-            console.log(response)
-            setLoading(false)
-        })
     });
 
     return (
@@ -149,7 +48,6 @@ export function BlogsPage() {
             </Grid>
             <Grid item xs={12}>
                 <AppCard
-                    backdrop={isLoading}
                     type={'page'}
                     color={'blueLight'}
                     variant={'circles4'}
@@ -159,8 +57,9 @@ export function BlogsPage() {
                     }}
                 >
                     <AppGridData
+                        loading={isLoading}
                         checkboxSelection={false}
-                        rows={rows}
+                        rows={data}
                         columns={[
                             {
                                 field: 'id',
@@ -189,7 +88,7 @@ export function BlogsPage() {
                                 editable: true,
                             },
                             {
-                                field: 'create_at',
+                                field: 'createAt',
                                 headerName: 'Created',
                                 width: 170,
                                 valueGetter: (params) => new Intl
@@ -200,7 +99,7 @@ export function BlogsPage() {
                                         hour: '2-digit',
                                         minute: '2-digit',
                                     })
-                                    .format(params.row.create_at * 1000)
+                                    .format(params.row.createAt)
                             }
                         ]}
                         onClickView={(e, id) => {
