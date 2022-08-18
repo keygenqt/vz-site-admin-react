@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from 'react';
 import {Avatar, Grid, useTheme} from "@mui/material";
 import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
 import {AppCard, AppGridData, SplitButton} from "../../../../../components";
-import {ConstantOther, NavigateContext} from "../../../../../base";
+import {ConstantOther, MethodsRequest, NavigateContext} from "../../../../../base";
 
 const rows = [
     {
@@ -117,10 +117,20 @@ export function BlogsPage() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        // @todo demo
-        setTimeout(function () {
+        const fetchData = async () => {
+            try {
+                const response = await MethodsRequest.ps.articles()
+                await new Promise(r => setTimeout(r, 1000));
+                return response
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchData().then((response) => {
+            console.log(response)
             setLoading(false)
-        }, 1000);
+        })
     });
 
     return (

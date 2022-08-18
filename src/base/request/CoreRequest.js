@@ -72,14 +72,9 @@ async function _query(
     path,
     body
 ) {
-    const token = ConstantAuth.getToken()
-
     return await fetch(path, {
         method: method,
-        headers: token ? {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        } : {
+        headers: {
             'Content-Type': 'application/json'
         },
         body: body ? JSON.stringify(body) : null

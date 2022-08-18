@@ -1,5 +1,6 @@
 import CryptoJS from 'crypto-js';
 import {ConstantOther} from "./ConstantOther";
+import {MethodsRequest} from "../request/MethodsRequest";
 
 /**
  * Auth user
@@ -12,10 +13,11 @@ export const ConstantAuth = {
 
     // works
     isAuth: () => {
-        return ConstantAuth.getData('token') !== undefined
+        return ConstantAuth.getData('id') !== undefined
     },
     logout: () => {
         ConstantAuth.clearData()
+        MethodsRequest.common.logout()
     },
 
     // get values
@@ -25,14 +27,8 @@ export const ConstantAuth = {
     getRole: () => {
         return ConstantAuth.getData('role')
     },
-    getRefreshToken: () => {
-        return ConstantAuth.getData('refreshToken')
-    },
     getEmail: () => {
         return ConstantAuth.getData('email')
-    },
-    getToken: () => {
-        return ConstantAuth.getData('token')
     },
 
     getData: (key) => {
