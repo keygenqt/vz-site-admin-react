@@ -2,7 +2,7 @@ import {CoreRequest} from "../../../../../base";
 import PropTypes from "prop-types";
 
 /**
- * Get list articles
+ * Get article by id
  *
  * @return {Promise<*>}
  */

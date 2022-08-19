@@ -17,19 +17,23 @@ import {MethodsRequest, NavigateContext, useRequest} from "../../../../../base";
 
 const categories = [
     {
-        value: 'android',
+        value: 'OTHER',
+        label: 'Other',
+    },
+    {
+        value: 'ANDROID',
         label: 'Android',
     },
     {
-        value: 'pc',
+        value: 'PC',
         label: 'PC',
     },
     {
-        value: 'web',
+        value: 'WEB',
         label: 'Web',
     },
     {
-        value: 'ios',
+        value: 'IOS',
         label: 'iOS',
     },
 ];
@@ -43,6 +47,7 @@ const BusinessLogic = ({id, onError, onLoading}) => {
         if (data) {
             setValues({
                 ...values,
+                category: data.category,
                 title: data.title,
                 description: data.description,
                 content: data.content,
@@ -61,12 +66,12 @@ const BusinessLogic = ({id, onError, onLoading}) => {
 export function BlogPage() {
 
     const theme = useTheme()
-    const {route} = useContext(NavigateContext)
-
-    const [loading, setLoading] = React.useState(true);
-    const [errorPage, setErrorPage] = React.useState(null);
+    const {route, navigate} = useContext(NavigateContext)
 
     let {id} = useParams();
+
+    const [loading, setLoading] = React.useState(id !== undefined);
+    const [errorPage, setErrorPage] = React.useState(null);
 
     return (
         <>
@@ -84,14 +89,14 @@ export function BlogPage() {
                     >
                         <Formik
                             initialValues={{
-                                category: 'android',
+                                category: '',
                                 title: '',
                                 description: '',
                                 content: '',
                                 submit: null
                             }}
                             validationSchema={Yup.object().shape({
-                                category: Yup.string().required('Title is required'),
+                                category: Yup.string().required('Category is required'),
                                 title: Yup.string().required('Title is required'),
                                 description: Yup.string().required('Description is required'),
                                 content: Yup.string().required('Content is required'),
@@ -101,21 +106,35 @@ export function BlogPage() {
                                 setStatus({success: null});
                                 setErrors({submit: null});
 
-                                await new Promise(r => setTimeout(r, 1000));
-
                                 try {
+                                    const response = id ?
+                                        (
+                                            await MethodsRequest.ps.articleUpdate(id, {
+                                                category: values.category,
+                                                title: values.title,
+                                                description: values.description,
+                                                content: values.content
+                                            })
+                                        ) : (
+                                            await MethodsRequest.ps.articleCreate({
+                                                category: values.category,
+                                                title: values.title,
+                                                description: values.description,
+                                                content: values.content
+                                            })
+                                        )
 
-                                    if (Math.random() < 0.5) {
-                                        throw 'Error update data!';
+                                    if (!id) {
+                                        navigate(`/ps/blog/${response.id}`)
                                     }
 
                                     setStatus({success: true});
                                     setSubmitting(false);
-                                } catch (err) {
+                                } catch (error) {
                                     setStatus({success: false});
-                                    setErrors({submit: err});
+                                    setErrors({submit: error.message});
                                     setSubmitting(false);
-                                    console.error(err);
+                                    console.error(error);
                                 }
                             }}
                         >
@@ -131,7 +150,7 @@ export function BlogPage() {
                               }) => (
                                 <form noValidate onSubmit={handleSubmit}>
 
-                                    <BusinessLogic
+                                    {id ? <BusinessLogic
                                         id={id}
                                         onError={(error) => {
                                             setErrorPage(error)
@@ -139,7 +158,7 @@ export function BlogPage() {
                                         onLoading={(state) => {
                                             setLoading(state)
                                         }}
-                                    />
+                                    /> : null}
 
                                     {errors.submit && (
                                         <AlertError>

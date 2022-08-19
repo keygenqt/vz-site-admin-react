@@ -5,6 +5,7 @@ import {ConstantAuth} from "../constants/ConstantAuth";
 export const CoreRequest = {
     fetchGet: fetchGet,
     fetchPost: fetchPost,
+    fetchPut: fetchPut,
 }
 
 /**
@@ -32,6 +33,24 @@ async function fetchPost(
 ) {
     return await _query(
         methods.post,
+        path,
+        body
+    );
+}
+
+/**
+ * Post query fetch
+ *
+ * @param path
+ * @param body
+ * @return {Promise<*>}
+ */
+async function fetchPut(
+    path,
+    body
+) {
+    return await _query(
+        methods.put,
         path,
         body
     );
