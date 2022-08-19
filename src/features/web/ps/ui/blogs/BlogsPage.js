@@ -2,9 +2,8 @@ import * as React from 'react';
 import {useContext} from 'react';
 import {Avatar, Grid, useTheme} from "@mui/material";
 import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
-import {AppCard, AppGridData, SplitButton} from "../../../../../components";
+import {AppCard, AppGridData, SnackbarError, SplitButton} from "../../../../../components";
 import {ConstantOther, MethodsRequest, NavigateContext, useRequest} from "../../../../../base";
-import {SnackbarError} from "../../../../../components/alerts/SnackbarError";
 
 
 export function BlogsPage() {
@@ -43,7 +42,7 @@ export function BlogsPage() {
                         <AppGridData
                             loading={loading}
                             checkboxSelection={false}
-                            rows={data}
+                            rows={data ?? []}
                             columns={[
                                 {
                                     field: 'id',

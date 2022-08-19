@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import {DataGrid, GridActionsCellItem, GridCellParams} from "@mui/x-data-grid";
 import * as React from "react";
+import {useContext, useEffect, useState} from "react";
 import clsx from "clsx";
 import {DeleteOutline, EditOutlined, VisibilityOutlined} from "@mui/icons-material";
-import {useEffect, useState} from "react";
+import {MD5} from "crypto-js";
+import {NavigateContext} from "../../base";
 
 const gridColumnsClasses = {
     headerClassName: (params: GridCellParams<number>) => {
@@ -31,12 +33,13 @@ export function AppGridData(props) {
         onClickDelete,
     } = props
 
-    const [key] = useState(JSON.stringify(columns));
-    const [actionPage, setActionPage] = useState(JSON.parse(localStorage.getItem(`page-${key}`)) ?? 0);
+    const {type} = useContext(NavigateContext)
+    const [key] = useState(`page-${MD5(JSON.stringify(columns))}`);
+    const [actionPage, setActionPage] = useState(type === 'POP' ? JSON.parse(localStorage.getItem(key)) : 0 ?? 0);
 
     useEffect(() => {
-        localStorage.setItem(`page-${key}`, JSON.stringify(actionPage))
-    }, [actionPage])
+        localStorage.setItem(key, JSON.stringify(actionPage))
+    }, [actionPage, type])
 
     const columnsMap = columns.map((item, index) => {
         return {

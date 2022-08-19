@@ -1,22 +1,26 @@
-import {useEffect, useReducer, useRef} from "react";
+import {useContext, useEffect, useReducer} from "react";
 import PropTypes from "prop-types";
+import {MD5} from "crypto-js";
+import {NavigateContext} from "../contexts/NavigateContext";
 
 /**
  * Request reducer
  *
  * @param method
- * @param delay
+ * @param params
  * @return {never}
  */
-export const useRequest = (method, delay = 0) => {
+export const useRequest = (method, params = {}) => {
 
-    const key = method.toString()
+    const {type} = useContext(NavigateContext)
+
+    const key = `request-${MD5(method.toString())}`
 
     const initialState = {
         status: 'idle',
         loading: true,
         error: null,
-        data: [],
+        data: null,
     };
 
     const [state, dispatch] = useReducer((state, action) => {
@@ -36,6 +40,10 @@ export const useRequest = (method, delay = 0) => {
         let cancelRequest = false;
         if (!key) return;
 
+        if (type === 'PUSH') {
+            localStorage.removeItem(key)
+        }
+
         const fetchData = async () => {
             if (localStorage.getItem(key)) {
                 const data = JSON.parse(localStorage.getItem(key));
@@ -43,10 +51,18 @@ export const useRequest = (method, delay = 0) => {
             } else {
                 dispatch({type: 'FETCHING'});
                 try {
-                    if (delay) {
-                        await new Promise(r => setTimeout(r, delay));
-                    }
-                    const response = await method()
+
+                    // @todo
+                    // await new Promise(r => setTimeout(r, 2000));
+
+                    let sortedArgs = [];
+
+                    _getParameterNames(method).forEach(function (item) {
+                        sortedArgs.push(params[item]);
+                    });
+
+                    const response = await method.apply(this, sortedArgs)
+
                     localStorage.setItem(key, JSON.stringify(response))
                     if (cancelRequest) return;
                     dispatch({type: 'FETCHED', payload: response});
@@ -62,12 +78,22 @@ export const useRequest = (method, delay = 0) => {
         return function cleanup() {
             cancelRequest = true;
         };
-    }, [key, delay]);
+    }, [key, type]);
 
     return state;
 }
 
+/**
+ * Get fun names arguments
+ * @param fn
+ * @return {string[]}
+ * @private
+ */
+function _getParameterNames(fn) {
+    return fn.toString().match(/\(.*?\)/)[0].replace(/[()]/gi, '').replace(/\s/gi, '').split(',');
+}
+
 useRequest.propTypes = {
     method: PropTypes.func.isRequired,
-    delay: PropTypes.number,
+    params: PropTypes.object,
 };

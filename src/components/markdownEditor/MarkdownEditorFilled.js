@@ -57,6 +57,7 @@ export function MarkdownEditorFilled(props) {
 
     const {
         name,
+        loading = true,
         error = false,
         helperText = "",
         label = "",
@@ -166,6 +167,12 @@ export function MarkdownEditorFilled(props) {
         value: valueInner,
         onChange: onChangeInner
     });
+
+    useEffect(() => {
+        if (loading) {
+            setValueInner(value);
+        }
+    }, [value]);
 
     useEffect(() => {
         if (editor.current) {
@@ -484,6 +491,7 @@ export function MarkdownEditorFilled(props) {
 
 MarkdownEditorFilled.propTypes = {
     error: PropTypes.bool,
+    loading: PropTypes.bool,
     name: PropTypes.string,
     helperText: PropTypes.string,
     label: PropTypes.string,

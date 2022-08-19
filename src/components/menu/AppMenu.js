@@ -62,7 +62,6 @@ export function AppMenu(props) {
                 const idApp = `app-item-${indexGroup}-${indexApp}`
                 app.children.forEach((page, indexPage) => {
                     const idPage = `icon-page-item-${indexGroup}-${indexApp}-${indexPage}`
-
                     const isSelected = page.actions ? page.actions.map((item) => {
                         return route.isPage(item)
                     }).includes(true) : route.isPage(page.route)

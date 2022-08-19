@@ -1,8 +1,7 @@
-import React, {createContext, useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import React, {createContext, useState} from "react";
+import {useLocation, useNavigate, useNavigationType} from "react-router-dom";
 import RouteCore from "../route/RouteCore";
 import {RouteConf} from "../route/RouteConf";
-import {ConstantAuth} from "../constants/ConstantAuth";
 
 export const NavigateContext = createContext({})
 
@@ -10,6 +9,7 @@ export default function NavigateContextProvider(props) {
 
     const location = useLocation()
     const navigate = useNavigate()
+    const type = useNavigationType()
 
     const conf = RouteConf
 
@@ -24,6 +24,7 @@ export default function NavigateContextProvider(props) {
                 location,
                 navigate,
                 route,
+                type,
                 conf,
             }}>
             {props.children}
