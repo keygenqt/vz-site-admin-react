@@ -3,6 +3,7 @@ import {DataGrid, GridActionsCellItem, GridCellParams} from "@mui/x-data-grid";
 import * as React from "react";
 import clsx from "clsx";
 import {DeleteOutline, EditOutlined, VisibilityOutlined} from "@mui/icons-material";
+import {useEffect, useState} from "react";
 
 const gridColumnsClasses = {
     headerClassName: (params: GridCellParams<number>) => {
@@ -29,6 +30,13 @@ export function AppGridData(props) {
         onClickEdit,
         onClickDelete,
     } = props
+
+    const [key] = useState(JSON.stringify(columns));
+    const [actionPage, setActionPage] = useState(JSON.parse(localStorage.getItem(`page-${key}`)) ?? 0);
+
+    useEffect(() => {
+        localStorage.setItem(`page-${key}`, JSON.stringify(actionPage))
+    }, [actionPage])
 
     const columnsMap = columns.map((item, index) => {
         return {
@@ -95,6 +103,10 @@ export function AppGridData(props) {
             rows={rows}
             columns={columnsMap}
             pageSize={12}
+            page={actionPage}
+            onPageChange={(page) => {
+                setActionPage(page)
+            }}
             rowsPerPageOptions={[12]}
             sx={{
                 '&': loading ? {

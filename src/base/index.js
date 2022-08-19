@@ -12,3 +12,4 @@ export * from './contexts/NavigateContext';
 // api
 export * from './request/MethodsRequest';
 export * from './request/CoreRequest';
+export * from './request/useRequest';

@@ -4,7 +4,7 @@ import {ConstantAuth} from "../constants/ConstantAuth";
 
 export const CoreRequest = {
     fetchGet: fetchGet,
-    fetchPost: fetchPost
+    fetchPost: fetchPost,
 }
 
 /**
@@ -82,6 +82,8 @@ async function _query(
         const result = await response.json()
         if (response.ok) {
             return result
+        } else if (result.code === 401) {
+            ConstantAuth.logout()
         } else {
             throw new ErrorRequest(result)
         }
@@ -96,4 +98,3 @@ _query.propTypes = {
         PropTypes.oneOf([null]).isRequired,
     ]).isRequired
 };
-

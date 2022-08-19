@@ -47,7 +47,6 @@ export function AppTopBarPopper() {
                         </ListItemButton>
                         <ListItemButton onClick={() => {
                             ConstantAuth.logout()
-                            route.toLocation(conf.routes.common.signIn)
                         }}>
                             <ListItemIcon>
                                 <ExitToAppOutlined/>

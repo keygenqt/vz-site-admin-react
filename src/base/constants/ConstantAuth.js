@@ -16,8 +16,12 @@ export const ConstantAuth = {
         return ConstantAuth.getData('id') !== undefined
     },
     logout: () => {
+        // clear app data
         ConstantAuth.clearData()
+        // clear cookies
         MethodsRequest.common.logout()
+        // restart app
+        window.location.href = '/'
     },
 
     // get values
