@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useContext, useEffect} from 'react';
-import {FormControlLabel, FormGroup, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
+import {FormControlLabel, FormGroup, FormHelperText, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
 import {
     AlertError,
     AlertSuccess,
@@ -51,6 +51,7 @@ const BusinessLogic = ({id, onError, onLoading}) => {
                 title: data.title,
                 description: data.description,
                 content: data.content,
+                isPublished: data.isPublished,
             });
         }
         setTimeout(function () {
@@ -93,6 +94,7 @@ export function BlogPage() {
                                 title: '',
                                 description: '',
                                 content: '',
+                                isPublished: false,
                                 submit: null
                             }}
                             validationSchema={Yup.object().shape({
@@ -113,14 +115,16 @@ export function BlogPage() {
                                                 category: values.category,
                                                 title: values.title,
                                                 description: values.description,
-                                                content: values.content
+                                                content: values.content,
+                                                isPublished: values.isPublished,
                                             })
                                         ) : (
                                             await MethodsRequest.ps.articleCreate({
                                                 category: values.category,
                                                 title: values.title,
                                                 description: values.description,
-                                                content: values.content
+                                                content: values.content,
+                                                isPublished: values.isPublished,
                                             })
                                         )
 
@@ -131,10 +135,18 @@ export function BlogPage() {
                                     setStatus({success: true});
                                     setSubmitting(false);
                                 } catch (error) {
+
+                                    setErrors({
+                                        category: error.findError('category'),
+                                        title: error.findError('title'),
+                                        description: error.findError('description'),
+                                        content: error.findError('content'),
+                                        isPublished: error.findError('isPublished'),
+                                        submit: error.message
+                                    });
+
                                     setStatus({success: false});
-                                    setErrors({submit: error.message});
                                     setSubmitting(false);
-                                    console.error(error);
                                 }
                             }}
                         >
@@ -146,7 +158,8 @@ export function BlogPage() {
                                   handleSubmit,
                                   isSubmitting,
                                   touched,
-                                  values
+                                  values,
+                                  setFieldValue
                               }) => (
                                 <form noValidate onSubmit={handleSubmit}>
 
@@ -239,8 +252,14 @@ export function BlogPage() {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <FormControlLabel
-                                                    control={<Switch defaultChecked/>}
-                                                    label="Post published"
+                                                    sx={{
+                                                        color: errors.isPublished ? '#d32f2f' : 'auto'
+                                                    }}
+                                                    control={<Switch
+                                                        checked={values.isPublished}
+                                                        onChange={(event, checked) => setFieldValue('isPublished', checked)}
+                                                    />}
+                                                    label={"Post published" + (errors.isPublished ? ` (${errors.isPublished})` : '')}
                                                 />
                                             </Grid>
                                             <Grid item xs={12} sx={{

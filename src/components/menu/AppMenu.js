@@ -10,22 +10,21 @@ import {
     ListItemIcon,
     ListItemText,
     ListSubheader,
-    Typography, useMediaQuery,
+    Typography,
+    useMediaQuery,
     useTheme
 } from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
 import {NavigateContext} from "../../base";
 import {web} from "./elements/web";
-import {pc} from "./elements/pc";
-import {android} from "./elements/android";
 import PropTypes from "prop-types";
 
 /**
  * Data menu
  */
 export const menuItems = {
-    items: [web, pc, android]
+    items: [web]
 };
 
 /**

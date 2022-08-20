@@ -70,30 +70,5 @@ export const web = {
                 },
             ]
         },
-        {
-            icon: icons.YouTube,
-            title: 'YT Download',
-            color: '#ff4545',
-            children: [
-                {
-                    type: 'primary',
-                    icon: icons.DashboardOutlined,
-                    title: 'Dashboard',
-                },
-                {
-                    type: 'primary',
-                    icon: icons.SettingsOutlined,
-                    title: 'Settings',
-                },
-                {
-                    type: 'driver'
-                },
-                {
-                    type: 'secondary',
-                    icon: icons.LinkOutlined,
-                    title: 'Go to App',
-                },
-            ]
-        },
     ]
 };
