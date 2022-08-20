@@ -49,6 +49,10 @@ const categories = [
 
 const BusinessLogic = ({id, onError, onLoading}) => {
 
+    console.log("-------------")
+    console.log(id)
+    console.log("-------------")
+
     const {values, setValues} = useFormikContext();
     const {loading, data, error} = useRequest(MethodsRequest.ps.article, {id: id});
 
@@ -79,6 +83,8 @@ export function BlogPage() {
     const {route, conf} = useContext(NavigateContext)
 
     let {id} = useParams();
+
+    console.log(id)
 
     const [submitLoader, setSubmitLoader] = React.useState(false);
     const [loading, setLoading] = React.useState(id !== undefined);
