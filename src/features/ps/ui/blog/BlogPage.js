@@ -1,6 +1,15 @@
 import * as React from 'react';
 import {useContext, useEffect} from 'react';
-import {FormControlLabel, FormGroup, FormHelperText, Grid, MenuItem, Switch, TextField, useTheme} from "@mui/material";
+import {
+    CircularProgress,
+    FormControlLabel,
+    FormGroup,
+    Grid,
+    MenuItem,
+    Switch,
+    TextField,
+    useTheme
+} from "@mui/material";
 import {
     AlertError,
     AlertSuccess,
@@ -8,12 +17,12 @@ import {
     MarkdownEditorFilled,
     SnackbarError,
     SplitButton
-} from "../../../../../components";
+} from "../../../../components";
 import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
 import {Formik, useFormikContext} from "formik";
 import * as Yup from 'yup';
-import {MethodsRequest, NavigateContext, useRequest} from "../../../../../base";
+import {MethodsRequest, NavigateContext, useRequest} from "../../../../base";
 
 const categories = [
     {
@@ -71,6 +80,7 @@ export function BlogPage() {
 
     let {id} = useParams();
 
+    const [submitLoader, setSubmitLoader] = React.useState(false);
     const [loading, setLoading] = React.useState(id !== undefined);
     const [errorPage, setErrorPage] = React.useState(null);
 
@@ -85,8 +95,10 @@ export function BlogPage() {
                         type={'page'}
                         color={'blueLight'}
                         variant={'circles4'}
-                        icon={<ViewListOutlined/>}
-                        title={id ? 'Here you can edit the post' : 'Here you can create a new post'}
+                        icon={submitLoader ? <CircularProgress color="primary" size={20} sx={{
+                            padding: '3px'
+                        }}/> : <ViewListOutlined/>}
+                        title={id ? 'Here you can edit the article' : 'Here you can create a new article'}
                     >
                         <Formik
                             initialValues={{
@@ -105,10 +117,14 @@ export function BlogPage() {
                             })}
                             onSubmit={async (values, {setErrors, setStatus, setSubmitting}) => {
 
+                                setSubmitLoader(true);
                                 setStatus({success: null});
                                 setErrors({submit: null});
 
                                 try {
+
+                                    await new Promise(r => setTimeout(r, 1000));
+
                                     const response = id ?
                                         (
                                             await MethodsRequest.ps.articleUpdate(id, {
@@ -133,6 +149,7 @@ export function BlogPage() {
                                     }
 
                                     setStatus({success: true});
+                                    setSubmitLoader(false);
                                     setSubmitting(false);
                                 } catch (error) {
 
@@ -146,6 +163,7 @@ export function BlogPage() {
                                     });
 
                                     setStatus({success: false});
+                                    setSubmitLoader(false);
                                     setSubmitting(false);
                                 }
                             }}
@@ -189,6 +207,7 @@ export function BlogPage() {
                                         <Grid container spacing={2}>
                                             <Grid item xs={12}>
                                                 <TextField
+                                                    disabled={isSubmitting}
                                                     type={'text'}
                                                     name={'category'}
                                                     value={values.category}
@@ -210,6 +229,7 @@ export function BlogPage() {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
+                                                    disabled={isSubmitting}
                                                     type={'text'}
                                                     name={'title'}
                                                     value={values.title}
@@ -224,6 +244,7 @@ export function BlogPage() {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
+                                                    disabled={isSubmitting}
                                                     type={'text'}
                                                     name={'description'}
                                                     value={values.description}
@@ -234,12 +255,14 @@ export function BlogPage() {
                                                     fullWidth
                                                     multiline
                                                     minRows={4}
+                                                    maxRows={10}
                                                     label="Description"
                                                     variant="filled"
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <MarkdownEditorFilled
+                                                    disabled={isSubmitting}
                                                     loading={loading}
                                                     name={'content'}
                                                     value={values.content}
@@ -256,6 +279,7 @@ export function BlogPage() {
                                                         color: errors.isPublished ? '#d32f2f' : 'auto'
                                                     }}
                                                     control={<Switch
+                                                        disabled={isSubmitting}
                                                         checked={values.isPublished}
                                                         onChange={(event, checked) => setFieldValue('isPublished', checked)}
                                                     />}

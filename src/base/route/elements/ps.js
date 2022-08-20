@@ -1,6 +1,6 @@
 import {Route} from "react-router-dom";
 import {BaseLayout} from "../../../layouts";
-import {BlogPage, BlogsPage, DashboardPage, ProjectPage, ProjectsPage} from "../../../features/web/ps/ui";
+import {BlogPage, BlogsPage, DashboardPage, ProjectPage, ProjectsPage} from "../../../features/ps/ui";
 import * as React from "react";
 import {RouteType} from "../RouteType";
 

@@ -1,4 +1,4 @@
-import {CoreRequest} from "../../../../../base";
+import {CoreRequest} from "../../../../base";
 import PropTypes from "prop-types";
 
 /**

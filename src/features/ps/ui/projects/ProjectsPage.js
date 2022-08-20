@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Avatar, Grid, useTheme} from "@mui/material";
 import PropTypes from "prop-types";
-import {AppCard, AppGridData, SplitButton} from "../../../../../components";
+import {AppCard, AppGridData, SplitButton} from "../../../../components";
 import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
 
 const rows = [

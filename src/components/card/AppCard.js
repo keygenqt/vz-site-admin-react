@@ -108,6 +108,7 @@ export function AppCard(props) {
         color = 'blue',
         variant = 'circles3',
         backdrop,
+        loading = false,
         style,
         icon,
         title,

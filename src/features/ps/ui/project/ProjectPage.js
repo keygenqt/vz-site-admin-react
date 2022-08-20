@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Grid, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 import {useEffect} from "react";
-import {AppCard} from "../../../../../components";
+import {AppCard} from "../../../../components";
 import {ViewListOutlined} from "@mui/icons-material";
 
 

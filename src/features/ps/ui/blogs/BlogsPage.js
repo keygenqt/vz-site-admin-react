@@ -2,8 +2,8 @@ import * as React from 'react';
 import {useContext} from 'react';
 import {Avatar, Grid, useTheme} from "@mui/material";
 import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
-import {AppCard, AppGridData, SnackbarError, SplitButton} from "../../../../../components";
-import {ConstantOther, MethodsRequest, NavigateContext, useRequest} from "../../../../../base";
+import {AppCard, AppGridData, SnackbarError, SplitButton} from "../../../../components";
+import {ConstantOther, MethodsRequest, NavigateContext, useRequest} from "../../../../base";
 
 
 export function BlogsPage() {
@@ -35,9 +35,7 @@ export function BlogsPage() {
                         color={'blueLight'}
                         variant={'circles4'}
                         icon={<ViewListOutlined/>}
-                        title={'Blogs Page'}
-                        actionMenu={() => {
-                        }}
+                        title={'Articles'}
                     >
                         <AppGridData
                             loading={loading}

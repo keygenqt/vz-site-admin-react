@@ -1,16 +1,12 @@
 import {Divider, List, ListItemButton, ListItemIcon, ListItemText, Stack} from "@mui/material";
-import {ExitToAppOutlined, SettingsOutlined} from "@mui/icons-material";
+import {ExitToAppOutlined, ManageAccounts, Person, SettingsOutlined} from "@mui/icons-material";
 import {AppCard} from "../../card/AppCard";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {isMobile} from 'react-device-detect';
-import {useContext} from "react";
-import {ConstantAuth, NavigateContext} from "../../../base";
+import {ConstantAuth} from "../../../base";
 
 export function AppTopBarPopper() {
-
-    const {route, conf} = useContext(NavigateContext)
-
     return (
         <React.Fragment>
             <AppCard
@@ -18,6 +14,8 @@ export function AppTopBarPopper() {
                 color={'blue'}
                 variant={'circles3'}
                 title={'Good Morning!'}
+                icon={ConstantAuth.getRole() === 'ADMIN' ? <ManageAccounts/> : <Person/>}
+                subheader={ConstantAuth.getEmail()}
                 style={{
                     border: 'none',
                     minWidth: isMobile ? 250 : 300
@@ -39,7 +37,7 @@ export function AppTopBarPopper() {
 
                         }}
                     >
-                        <ListItemButton>
+                        <ListItemButton sx={{display: 'none' /* @todo */}}>
                             <ListItemIcon>
                                 <SettingsOutlined/>
                             </ListItemIcon>

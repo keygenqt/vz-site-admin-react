@@ -44,12 +44,14 @@ const colors = {
         active: '#2196f3',
         default: '#808080',
         background: '#0000000f',
+        disabled: '#0000001f'
     },
     dark: {
         error: '#d32f2f',
         active: '#2196f3',
         default: '#bebebe',
         background: '#0D1117',
+        disabled: '#0d1117b8'
     }
 }
 
@@ -57,6 +59,7 @@ export function MarkdownEditorFilled(props) {
 
     const {
         name,
+        disabled = false,
         loading = true,
         error = false,
         helperText = "",
@@ -162,11 +165,18 @@ export function MarkdownEditorFilled(props) {
             lineNumbers: false,
             foldGutter: false,
         },
+        editable: !disabled,
         extensions: [langs.markdown()],
         height: '450px',
         value: valueInner,
         onChange: onChangeInner
     });
+
+    useEffect(() => {
+        if (disabled) {
+            setSettings(settings.includes('dark') ? ['dark'] : [])
+        }
+    }, [disabled]);
 
     useEffect(() => {
         if (loading) {
@@ -201,12 +211,24 @@ export function MarkdownEditorFilled(props) {
 
     return (
         <Grid container spacing={1} sx={{
+            // disable
+            '& .cm-theme.cm-disable .cm-editor': {
+                backgroundColor: getColor().disabled,
+                borderBottom: 'none',
+            },
+            '& .cm-theme.cm-disable .cm-editor .cm-scroller': {
+                opacity: 0.5
+            },
+            '& .cm-theme.cm-disable .cm-editor:after': {
+                borderBottom: '1px dotted ' + getColor().default,
+                width: '100%',
+            },
             '&.cm-focused .cm-editor, & .cm-editor.cm-focused': {
                 outline: 'none'
             },
             '& .cm-theme': {
                 width: '100%',
-                maxWidth: 'calc(100% - 48px)',
+                maxWidth: 'calc(100% - 48px)'
             },
             '& .react-markdown': {
                 backgroundColor: getColor().background,
@@ -310,7 +332,7 @@ export function MarkdownEditorFilled(props) {
                     spacing={1}
                 >
                     <div
-                        className={'cm-theme' + (isFocus ? ' cm-focused' : '') + (errorInner ? ' cm-error' : '')}
+                        className={'cm-theme' + (isFocus ? ' cm-focused' : '') + (errorInner ? ' cm-error' : '') + (disabled ? ' cm-disable' : '')}
                         ref={editor}
                         onBlur={() => {
                             if (onBlur) {
@@ -335,6 +357,7 @@ export function MarkdownEditorFilled(props) {
                     >
                         {/*Group settings*/}
                         <ToggleButtonGroup
+                            disabled={disabled}
                             value={settings}
                             onChange={handleSettings}
                             orientation="vertical"
@@ -381,8 +404,13 @@ export function MarkdownEditorFilled(props) {
                             spacing={1}
                         >
                             {/*Group format text*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="Group format text">
+                            <ButtonGroup
+                                disabled={disabled}
+                                orientation="vertical"
+                                size="small"
+                                color={'info'}
+                                aria-label="Group format text"
+                            >
                                 <Button key="item-bold" onBlur={onFocus} onFocus={onFocus} onClick={() => {
                                     addFormatWithSelect('**', '**')
                                 }}>
@@ -396,8 +424,13 @@ export function MarkdownEditorFilled(props) {
                             </ButtonGroup>
 
                             {/*Group add links*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="Group add links">
+                            <ButtonGroup
+                                disabled={disabled}
+                                orientation="vertical"
+                                size="small"
+                                color={'info'}
+                                aria-label="Group add links"
+                            >
                                 <Button key="item-link" onBlur={onFocus} onFocus={onFocus} onClick={() => {
                                     addFormatSpace(
                                         "[Link text]()",
@@ -419,8 +452,13 @@ export function MarkdownEditorFilled(props) {
                             </ButtonGroup>
 
                             {/*Group add headers*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="Group add headers">
+                            <ButtonGroup
+                                disabled={disabled}
+                                orientation="vertical"
+                                size="small"
+                                color={'info'}
+                                aria-label="Group add headers"
+                            >
                                 <Button key="item-title-big" onBlur={onFocus} onFocus={onFocus} onClick={() => {
                                     addFormatSpace("\n===============")
                                 }}>
@@ -439,8 +477,13 @@ export function MarkdownEditorFilled(props) {
                             </ButtonGroup>
 
                             {/*Group add components*/}
-                            <ButtonGroup orientation="vertical" size="small" color={'info'}
-                                         aria-label="Group add components">
+                            <ButtonGroup
+                                disabled={disabled}
+                                orientation="vertical"
+                                size="small"
+                                color={'info'}
+                                aria-label="Group add components"
+                            >
                                 <Button key="item-point-list" onBlur={onFocus} onFocus={onFocus} onClick={() => {
                                     addFormatSpace(
                                         "- \n" +
@@ -491,6 +534,7 @@ export function MarkdownEditorFilled(props) {
 
 MarkdownEditorFilled.propTypes = {
     error: PropTypes.bool,
+    disabled: PropTypes.bool,
     loading: PropTypes.bool,
     name: PropTypes.string,
     helperText: PropTypes.string,
