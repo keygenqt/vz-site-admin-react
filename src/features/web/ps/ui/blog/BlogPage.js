@@ -66,7 +66,7 @@ const BusinessLogic = ({id, onError, onLoading}) => {
 export function BlogPage() {
 
     const theme = useTheme()
-    const {route, navigate} = useContext(NavigateContext)
+    const {route, conf} = useContext(NavigateContext)
 
     let {id} = useParams();
 
@@ -125,7 +125,7 @@ export function BlogPage() {
                                         )
 
                                     if (!id) {
-                                        navigate(`/ps/blog/${response.id}`)
+                                        route.toLocation(route.createLink(conf.routes.ps.blogUpdate, response.id))
                                     }
 
                                     setStatus({success: true});
