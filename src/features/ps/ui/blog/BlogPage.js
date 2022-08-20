@@ -54,7 +54,7 @@ const BusinessLogic = ({id, onError, onLoading}) => {
     console.log("-------------")
 
     const {values, setValues} = useFormikContext();
-    const {loading, data, error} = useRequest(MethodsRequest.ps.article, {id: id});
+    const {loading, data, error} = useRequest(MethodsRequest.ps.article, id);
 
     useEffect(() => {
         if (data) {

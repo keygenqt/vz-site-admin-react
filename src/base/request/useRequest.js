@@ -10,7 +10,7 @@ import {NavigateContext} from "../contexts/NavigateContext";
  * @param params
  * @return {never}
  */
-export const useRequest = (method, params = {}) => {
+export const useRequest = (method, ...params) => {
 
     const {type} = useContext(NavigateContext)
 
@@ -55,13 +55,7 @@ export const useRequest = (method, params = {}) => {
                     // @todo
                     // await new Promise(r => setTimeout(r, 2000));
 
-                    let sortedArgs = [];
-
-                    _getParameterNames(method).forEach(function (item) {
-                        sortedArgs.push(params[item]);
-                    });
-
-                    const response = await method.apply(this, sortedArgs)
+                    const response = await method.apply(this, params)
 
                     localStorage.setItem(key, JSON.stringify(response))
                     if (cancelRequest) return;
@@ -81,16 +75,6 @@ export const useRequest = (method, params = {}) => {
     }, [key, type]);
 
     return state;
-}
-
-/**
- * Get fun names arguments
- * @param fn
- * @return {string[]}
- * @private
- */
-function _getParameterNames(fn) {
-    return fn.toString().match(/\(.*?\)/)[0].replace(/[()]/gi, '').replace(/\s/gi, '').split(',');
 }
 
 useRequest.propTypes = {
