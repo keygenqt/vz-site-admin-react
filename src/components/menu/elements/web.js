@@ -55,6 +55,11 @@ export const web = {
                 },
                 {
                     route: RouteConf.routes.ps.projects,
+                    actions: [
+                        RouteConf.routes.ps.projects,
+                        RouteConf.routes.ps.projectUpdate,
+                        RouteConf.routes.ps.projectCreate,
+                    ],
                     type: 'primary',
                     icon: icons.ViewListOutlined,
                     title: 'Projects',

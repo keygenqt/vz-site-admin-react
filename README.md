@@ -10,7 +10,7 @@ projects.
 
 ### Demo
 
-* admin@keygenqt.com
+* guest@keygenqt.com
 * 12345678
 
 [https://adminka.keygenqt.com](https://adminka.keygenqt.com/)

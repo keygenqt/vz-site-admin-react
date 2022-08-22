@@ -108,11 +108,12 @@ export function AppCard(props) {
         color = 'blue',
         variant = 'circles3',
         backdrop,
-        loading = false,
         style,
         icon,
         title,
         subheader,
+        actionDisable = false,
+        actionIcon,
         actionMenu,
         chart,
         contentHeight = 0,
@@ -177,7 +178,7 @@ export function AppCard(props) {
                         }
                         action={
                             actionMenu ?
-                                <Fab size="small"
+                                <Fab disabled={actionDisable} size="small"
                                      sx={{
                                          '&': {
                                              backgroundColor: colors[color].bg,
@@ -185,11 +186,14 @@ export function AppCard(props) {
                                          '&:hover': {
                                              backgroundColor: colors[color].bg,
                                          },
+                                         '&.Mui-disabled': {
+                                             backgroundColor: 'white',
+                                         }
                                      }}
                                      aria-label="add"
                                      onClick={actionMenu}
                                 >
-                                    <MoreVert/>
+                                    {actionIcon ? actionIcon : <MoreVert/>}
                                 </Fab> : null
                         }
                         title={
@@ -263,6 +267,8 @@ AppCard.propTypes = {
     icon: PropTypes.node,
     title: PropTypes.string,
     subheader: PropTypes.string,
+    actionDisable: PropTypes.bool,
+    actionIcon: PropTypes.element,
     actionMenu: PropTypes.func,
     chart: PropTypes.object,
 };

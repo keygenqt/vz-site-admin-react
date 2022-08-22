@@ -68,8 +68,26 @@ export const routePS = {
             />
         }
     },
-    project: {
+    projectCreate: {
+        path: '/ps/project/add',
+        render: function (key, path) {
+            return <Route
+                key={key}
+                exact
+                path={path}
+                element={
+                    <BaseLayout>
+                        <ProjectPage/>
+                    </BaseLayout>
+                }
+            />
+        }
+    },
+    projectUpdate: {
         path: '/ps/project/:id',
+        match: {
+            id: RouteType.integer,
+        },
         render: function (key, path) {
             return <Route
                 key={key}

@@ -10,6 +10,9 @@ export class ErrorRequest extends Error {
     }
 
     findError(field) {
+        if (!this.validate) {
+            return null
+        }
         return this.validate.find(el => el['filed'] === field)?.errors.join(', ') ?? null
     }
 }

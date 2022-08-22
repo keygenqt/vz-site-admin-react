@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {useContext} from 'react';
-import {Avatar, Grid, useTheme} from "@mui/material";
-import {AddOutlined, ViewListOutlined} from "@mui/icons-material";
+import {useContext, useEffect, useState} from 'react';
+import {Avatar, CircularProgress, Grid, useTheme} from "@mui/material";
+import {AddOutlined, Refresh, ViewListOutlined} from "@mui/icons-material";
 import {AppCard, AppGridData, SnackbarError, SplitButton} from "../../../../components";
 import {ConstantOther, MethodsRequest, NavigateContext, useRequest} from "../../../../base";
 
@@ -10,7 +10,14 @@ export function BlogsPage() {
 
     const theme = useTheme()
     const {route, conf} = useContext(NavigateContext)
-    const {loading, data, error} = useRequest(MethodsRequest.ps.articles, 1000);
+    const [refresh, setRefresh] = useState(false)
+    const {loading, data, error} = useRequest(MethodsRequest.ps.articles, refresh);
+
+    useEffect(() => {
+        if (!loading && refresh) {
+            setRefresh(false)
+        }
+    }, [loading]);
 
     return (
         <>
@@ -36,6 +43,13 @@ export function BlogsPage() {
                         variant={'circles4'}
                         icon={<ViewListOutlined/>}
                         title={'Articles'}
+                        actionDisable={refresh}
+                        actionIcon={refresh ? <CircularProgress color="primary" size={18} sx={{
+                            padding: '3px'
+                        }}/> : <Refresh/>}
+                        actionMenu={() => {
+                            setRefresh(true)
+                        }}
                     >
                         <AppGridData
                             loading={loading}

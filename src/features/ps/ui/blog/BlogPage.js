@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import {
     AlertError,
+    AlertInfo,
     AlertSuccess,
     AppCard,
     MarkdownEditorFilled,
@@ -22,7 +23,7 @@ import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
 import {Formik, useFormikContext} from "formik";
 import * as Yup from 'yup';
-import {MethodsRequest, NavigateContext, useRequest} from "../../../../base";
+import {ConstantAuth, MethodsRequest, NavigateContext, useRequest} from "../../../../base";
 
 const categories = [
     {
@@ -50,7 +51,7 @@ const categories = [
 const BusinessLogic = ({id, onError, onLoading}) => {
 
     const {values, setValues} = useFormikContext();
-    const {loading, data, error} = useRequest(MethodsRequest.ps.article, id);
+    const {loading, data, error} = useRequest(MethodsRequest.ps.article, false, id);
 
     useEffect(() => {
         if (data) {
@@ -145,7 +146,7 @@ export function BlogPage() {
                                         )
 
                                     if (!id) {
-                                        route.toLocation(route.createLink(conf.routes.ps.blogUpdate, response.id))
+                                        route.toLocationReplace(route.createLink(conf.routes.ps.blogUpdate, response.id))
                                     }
 
                                     setStatus({success: true});
@@ -190,6 +191,12 @@ export function BlogPage() {
                                             setLoading(state)
                                         }}
                                     /> : null}
+
+                                    {ConstantAuth.isGuest() && (
+                                        <AlertInfo>
+                                            {id ? "This is demo mode. Guest cannot update article" : "This is demo mode. Guest cannot create article"}
+                                        </AlertInfo>
+                                    )}
 
                                     {errors.submit && (
                                         <AlertError>

@@ -35,6 +35,14 @@ export const ConstantAuth = {
         return ConstantAuth.getData('email')
     },
 
+    // check role
+    isGuest: () => {
+        return ConstantAuth.getRole() === 'GUEST'
+    },
+    isAdmin: () => {
+        return ConstantAuth.getRole() === 'ADMIN'
+    },
+
     getData: (key) => {
         try {
             const item = localStorage.getItem(ConstantAuth.key)

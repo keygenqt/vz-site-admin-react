@@ -1,4 +1,4 @@
-import {useContext, useEffect, useReducer} from "react";
+import {useContext, useEffect, useReducer, useState} from "react";
 import PropTypes from "prop-types";
 import {MD5} from "crypto-js";
 import {NavigateContext} from "../contexts/NavigateContext";
@@ -7,12 +7,15 @@ import {NavigateContext} from "../contexts/NavigateContext";
  * Request reducer
  *
  * @param method
+ * @param refresh
  * @param params
  * @return {never}
  */
-export const useRequest = (method, ...params) => {
+export const useRequest = (method, refresh, ...params) => {
 
     const {type} = useContext(NavigateContext)
+    const [arg] = useState(params)
+    const [update, setUpdate] = useState(refresh)
 
     const key = `request-${MD5(method.toString())}`
 
@@ -37,14 +40,20 @@ export const useRequest = (method, ...params) => {
     }, initialState);
 
     useEffect(() => {
+
         let cancelRequest = false;
         if (!key) return;
 
-        if (type === 'PUSH') {
-            localStorage.removeItem(key)
-        }
-
         const fetchData = async () => {
+
+            if (type === 'PUSH' || update) {
+                localStorage.removeItem(key)
+                if (update) {
+                    await new Promise(r => setTimeout(r, 500));
+                }
+                setUpdate(false)
+            }
+
             if (localStorage.getItem(key)) {
                 const data = JSON.parse(localStorage.getItem(key));
                 dispatch({type: 'FETCHED', payload: data});
@@ -52,14 +61,13 @@ export const useRequest = (method, ...params) => {
                 dispatch({type: 'FETCHING'});
                 try {
 
-                    // @todo
-                    // await new Promise(r => setTimeout(r, 2000));
-
-                    const response = await method.apply(this, params)
-
-                    localStorage.setItem(key, JSON.stringify(response))
+                    await new Promise(r => setTimeout(r, 100));
                     if (cancelRequest) return;
+
+                    const response = await method.apply(this, arg)
+                    localStorage.setItem(key, JSON.stringify(response))
                     dispatch({type: 'FETCHED', payload: response});
+
                 } catch (error) {
                     if (cancelRequest) return;
                     dispatch({type: 'FETCH_ERROR', payload: error});
@@ -72,7 +80,13 @@ export const useRequest = (method, ...params) => {
         return function cleanup() {
             cancelRequest = true;
         };
-    }, [key, type]);
+    }, [key, type, method, arg, update]);
+
+    useEffect(() => {
+        if (refresh) {
+            setUpdate(true)
+        }
+    }, [refresh])
 
     return state;
 }

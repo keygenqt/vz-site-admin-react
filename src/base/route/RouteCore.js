@@ -63,6 +63,28 @@ export default class RouteCore {
     }
 
     /**
+     * Open page with replace
+     *
+     * @param route {String | Object}
+     * @param arg
+     */
+    toLocationReplace(route, ...arg) {
+        const path = this.getPathFromObject(route)
+        this.navigate(this.createLink(path, arg), {replace: true});
+    }
+
+    /**
+     * Open page with new stack
+     *
+     * @param route {String | Object}
+     * @param arg
+     */
+    toLocationReset(route, ...arg) {
+        const path = this.getPathFromObject(route)
+        this.navigate(this.createLink(path, arg), {reset: true});
+    }
+
+    /**
      * Open page with delay
      *
      * @param route {String | Object}
