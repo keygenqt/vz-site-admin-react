@@ -12,7 +12,6 @@ import {
     KeyboardArrowUpOutlined,
     NavigateNext
 } from "@mui/icons-material";
-import PropTypes from "prop-types";
 import {AppCardChart} from "./elements/AppCardChart";
 import Chart from 'react-apexcharts';
 

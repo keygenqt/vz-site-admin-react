@@ -74,6 +74,9 @@ export function AppTopBarSettings(props) {
                     disablePortal
                     placement="bottom-end"
                     role={undefined}
+                    sx={{
+                        zIndex: 2
+                    }}
                     popperOptions={{
                         modifiers: [
                             {

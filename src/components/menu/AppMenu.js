@@ -236,7 +236,9 @@ export function AppMenu(props) {
     return (
         <React.Fragment>
             <Grid container spacing={2} style={{
-                padding: 20
+                paddingTop: 20,
+                paddingRight: 20,
+                paddingBottom: 20
             }}>
                 <Grid item xs={12}>
                     {listGroups}

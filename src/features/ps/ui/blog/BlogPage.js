@@ -24,6 +24,7 @@ import {useParams} from "react-router-dom";
 import {Formik, useFormikContext} from "formik";
 import * as Yup from 'yup';
 import {ConstantAuth, MethodsRequest, NavigateContext, useRequest} from "../../../../base";
+import {MultipleFiles} from "../../../../components/dropzone/MultipleFiles";
 
 const categories = [
     {
@@ -279,6 +280,9 @@ export function BlogPage() {
                                                     onBlur={handleBlur}
                                                     label="Post content"
                                                 />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <MultipleFiles/>
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <FormControlLabel

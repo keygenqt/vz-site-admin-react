@@ -10,9 +10,7 @@ function App() {
 
     return (
         <ThemeProvider theme={AppTheme}>
-            <div className={"App"}>
-                {route.render()}
-            </div>
+            {route.render()}
         </ThemeProvider>
     );
 }

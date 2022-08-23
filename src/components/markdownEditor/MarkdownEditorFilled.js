@@ -167,7 +167,7 @@ export function MarkdownEditorFilled(props) {
         },
         editable: !disabled,
         extensions: [langs.markdown()],
-        height: '450px',
+        height: '370px',
         value: valueInner,
         onChange: onChangeInner
     });
@@ -241,7 +241,7 @@ export function MarkdownEditorFilled(props) {
                 margin: 0,
                 overflow: 'auto',
                 borderBottom: (errorInner ? 2 : 1) + 'px solid ' + (errorInner ? getColor().error : '#c5c5c5'),
-                height: '429px'
+                height: '349px'
             },
             '& .react-markdown a': {
                 color: getColor().active,

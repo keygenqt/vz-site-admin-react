@@ -28,14 +28,11 @@ export function AppTopBar(props) {
 
     return (
         <Box sx={{flexGrow: 0}} style={{
-            zIndex: 2000,
             position: 'relative'
         }}>
             <AppBar position="static" color={'inherit'} elevation={0}>
                 <Toolbar disableGutters sx={{
                     minHeight: 64,
-                    paddingLeft: '20px',
-                    paddingRight: '20px',
                 }}>
                     <IconButton
                         size="large"
