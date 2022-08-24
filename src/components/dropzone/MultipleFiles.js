@@ -71,7 +71,8 @@ export function MultipleFiles(props) {
                 setErrorText(null)
                 setLoading(false)
                 setIsError(false)
-                setFiles(responses)
+                setFiles(files.concat(responses).reverse())
+                document.getElementById('chips').scrollTo(0, 0)
             })
         } else {
             setLoading(false)
@@ -151,7 +152,13 @@ export function MultipleFiles(props) {
                 }
             </Box>
 
-            {files.length !== 0 ? <Stack direction={'row'} spacing={1} className={'section'} sx={{
+            {helperText ? <FormHelperText error={isError} sx={{
+                paddingLeft: 1
+            }}>
+                {helperText}
+            </FormHelperText> : null}
+
+            {files.length !== 0 ? <Stack direction={'row'} spacing={1} id={'chips'} className={'section'} sx={{
                 padding: '8px 0'
             }}>
                 {files.map((file) => (
@@ -162,13 +169,6 @@ export function MultipleFiles(props) {
                     />
                 ))}
             </Stack> : null}
-
-            {helperText ? <FormHelperText error={isError} sx={{
-                paddingLeft: 1
-            }}>
-                {helperText}
-            </FormHelperText> : null}
-
 
         </Stack>
     );
