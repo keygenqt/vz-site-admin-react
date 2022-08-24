@@ -84,6 +84,7 @@ export function BlogPage() {
 
     const [submitLoader, setSubmitLoader] = React.useState(false);
     const [loading, setLoading] = React.useState(id !== undefined);
+    const [filesUpload, setFilesUpload] = React.useState(false);
     const [errorPage, setErrorPage] = React.useState(null);
 
     return (
@@ -282,7 +283,12 @@ export function BlogPage() {
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <MultipleFiles/>
+                                                <MultipleFiles
+                                                    disabled={isSubmitting}
+                                                    onLoading={(state) => {
+                                                        setFilesUpload((state))
+                                                    }}
+                                                />
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <FormControlLabel
@@ -301,7 +307,7 @@ export function BlogPage() {
                                                 textAlign: 'end'
                                             }}>
                                                 <SplitButton
-                                                    disabled={isSubmitting}
+                                                    disabled={isSubmitting || filesUpload}
                                                     type="submit"
                                                     color={theme.palette.success.main}
                                                     size={'medium'}

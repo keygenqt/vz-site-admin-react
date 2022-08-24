@@ -6,6 +6,8 @@ import projects from "./impl/projects/projects";
 import project from "./impl/projects/project";
 import projectCreate from "./impl/projects/projectCreate";
 import projectUpdate from "./impl/projects/projectUpdate";
+import uploadFile from "./impl/files/uploadFile";
+import deleteFile from "./impl/files/deleteFile";
 
 export const MethodsPS = {
     //////////////////////
@@ -29,4 +31,11 @@ export const MethodsPS = {
     projectCreate: projectCreate,
     // update article
     projectUpdate: projectUpdate,
+
+    //////////////////////
+    // Files
+    // upload
+    uploadFile: uploadFile,
+    // delete
+    deleteFile: deleteFile,
 }

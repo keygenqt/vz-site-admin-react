@@ -5,6 +5,7 @@ import {ConstantAuth} from "../constants/ConstantAuth";
 export const CoreRequest = {
     fetchGet: fetchGet,
     fetchPost: fetchPost,
+    fetchDelete: fetchDelete,
     fetchPut: fetchPut,
 }
 
@@ -25,16 +26,38 @@ const methods = {
  *
  * @param path
  * @param body
+ * @param contentType
  * @return {Promise<*>}
  */
 async function fetchPost(
     path,
-    body
+    body,
+    contentType = 'application/json'
 ) {
     return await _query(
         methods.post,
         path,
-        body
+        body,
+        contentType
+    );
+}
+
+/**
+ * Post query fetch
+ *
+ * @param path
+ * @param contentType
+ * @return {Promise<*>}
+ */
+async function fetchDelete(
+    path,
+    contentType = 'application/json'
+) {
+    return await _query(
+        methods.delete,
+        path,
+        null,
+        contentType
     );
 }
 
@@ -43,44 +66,40 @@ async function fetchPost(
  *
  * @param path
  * @param body
+ * @param contentType
  * @return {Promise<*>}
  */
 async function fetchPut(
     path,
-    body
+    body,
+    contentType = 'application/json'
 ) {
     return await _query(
         methods.put,
         path,
-        body
+        body,
+        contentType
     );
 }
-
-fetchPost.propTypes = {
-    path: PropTypes.string,
-    body: PropTypes.object
-};
 
 /**
  * Post query fetch
  *
  * @param path
+ * @param contentType
  * @return {Promise<*>}
  */
 async function fetchGet(
-    path
+    path,
+    contentType = 'application/json'
 ) {
     return await _query(
         methods.get,
         path,
-        null
+        null,
+        contentType
     );
 }
-
-fetchPost.propTypes = {
-    path: PropTypes.string,
-    body: PropTypes.object
-};
 
 /**
  * Base query functions
@@ -89,15 +108,24 @@ fetchPost.propTypes = {
 async function _query(
     method,
     path,
-    body
+    body,
+    contentType
 ) {
-    return await fetch(path, {
-        method: method,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: body ? JSON.stringify(body) : null
-    }).then(async (response) => {
+    let params = {
+        method: method
+    }
+
+    if (body) {
+        params['body'] = contentType === 'application/json' ? JSON.stringify(body) : body
+    }
+
+    if (contentType) {
+        params['headers'] = {
+            'Content-Type': contentType
+        }
+    }
+
+    return await fetch(path, params).then(async (response) => {
         const result = await response.json()
         if (response.ok) {
             return result
