@@ -59,10 +59,12 @@ const BusinessLogic = ({id, onError, onLoading}) => {
             setValues({
                 ...values,
                 category: data.category,
+                publicImage: data.publicImage,
                 title: data.title,
                 description: data.description,
                 content: data.content,
                 isPublished: data.isPublished,
+                uploads: data.uploads,
             });
         }
         setTimeout(function () {
@@ -82,6 +84,7 @@ export function BlogPage() {
 
     let {id} = useParams();
 
+    const [modelId, setModelId] = React.useState(id);
     const [submitLoader, setSubmitLoader] = React.useState(false);
     const [loading, setLoading] = React.useState(id !== undefined);
     const [filesUpload, setFilesUpload] = React.useState(false);
@@ -101,19 +104,22 @@ export function BlogPage() {
                         icon={submitLoader ? <CircularProgress color="primary" size={20} sx={{
                             padding: '3px'
                         }}/> : <ViewListOutlined/>}
-                        title={id ? 'Here you can edit the article' : 'Here you can create a new article'}
+                        title={modelId ? 'Here you can edit the article' : 'Here you can create a new article'}
                     >
                         <Formik
                             initialValues={{
                                 category: '',
+                                publicImage: '',
                                 title: '',
                                 description: '',
                                 content: '',
                                 isPublished: false,
+                                uploads: [],
                                 submit: null
                             }}
                             validationSchema={Yup.object().shape({
                                 category: Yup.string().required('Category is required'),
+                                publicImage: Yup.string().required('Public Image is required'),
                                 title: Yup.string().required('Title is required'),
                                 description: Yup.string().required('Description is required'),
                                 content: Yup.string().required('Content is required'),
@@ -128,27 +134,33 @@ export function BlogPage() {
 
                                     await new Promise(r => setTimeout(r, 1000));
 
-                                    const response = id ?
+                                    const response = modelId ?
                                         (
-                                            await MethodsRequest.ps.articleUpdate(id, {
+                                            await MethodsRequest.ps.articleUpdate(modelId, {
                                                 category: values.category,
+                                                publicImage: values.publicImage,
                                                 title: values.title,
                                                 description: values.description,
                                                 content: values.content,
                                                 isPublished: values.isPublished,
+                                                uploads: values.uploads.map((file) => file.id),
                                             })
                                         ) : (
                                             await MethodsRequest.ps.articleCreate({
                                                 category: values.category,
+                                                publicImage: values.publicImage,
                                                 title: values.title,
                                                 description: values.description,
                                                 content: values.content,
                                                 isPublished: values.isPublished,
+                                                uploads: values.uploads.map((file) => file.id),
                                             })
                                         )
 
-                                    if (!id) {
-                                        route.toLocationReplace(route.createLink(conf.routes.ps.blogUpdate, response.id))
+                                    setModelId(response.id)
+
+                                    if (!modelId) {
+                                        route.toLocationPush(route.createLink(conf.routes.ps.blogUpdate, response.id))
                                     }
 
                                     setStatus({success: true});
@@ -158,6 +170,7 @@ export function BlogPage() {
 
                                     setErrors({
                                         category: error.findError('category'),
+                                        publicImage: error.findError('publicImage'),
                                         title: error.findError('title'),
                                         description: error.findError('description'),
                                         content: error.findError('content'),
@@ -184,8 +197,8 @@ export function BlogPage() {
                               }) => (
                                 <form noValidate onSubmit={handleSubmit}>
 
-                                    {id ? <BusinessLogic
-                                        id={id}
+                                    {modelId ? <BusinessLogic
+                                        id={modelId}
                                         onError={(error) => {
                                             setErrorPage(error)
                                         }}
@@ -196,7 +209,7 @@ export function BlogPage() {
 
                                     {ConstantAuth.isGuest() && (
                                         <AlertInfo>
-                                            {id ? "This is demo mode. Guest cannot update article" : "This is demo mode. Guest cannot create article"}
+                                            {modelId ? "This is demo mode. Guest cannot update article" : "This is demo mode. Guest cannot create article"}
                                         </AlertInfo>
                                     )}
 
@@ -235,6 +248,21 @@ export function BlogPage() {
                                                         </MenuItem>
                                                     ))}
                                                 </TextField>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
+                                                    name={'publicImage'}
+                                                    value={values.publicImage}
+                                                    helperText={touched.publicImage ? errors.publicImage : ''}
+                                                    error={Boolean(touched.publicImage && errors.publicImage)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="Public Image"
+                                                    variant="filled"
+                                                />
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <TextField
@@ -285,9 +313,9 @@ export function BlogPage() {
                                             <Grid item xs={12}>
                                                 <MultipleFiles
                                                     disabled={isSubmitting}
-                                                    onLoading={(state) => {
-                                                        setFilesUpload((state))
-                                                    }}
+                                                    value={values.uploads}
+                                                    onChange={(files) => setFieldValue('uploads', files)}
+                                                    onLoading={(state) => setFilesUpload((state))}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -316,7 +344,7 @@ export function BlogPage() {
                                                         route.scrollToTop()
                                                     }}
                                                 >
-                                                    {id ? 'Update' : 'Add'}
+                                                    {modelId ? 'Update' : 'Add'}
                                                 </SplitButton>
                                             </Grid>
                                         </Grid>

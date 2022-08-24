@@ -7,6 +7,7 @@ import {ConstantConf} from "../../../ConstantConf";
 export function ChipDropzone(props) {
 
     const {
+        disabled = false,
         response,
         onDeleteFile
     } = props
@@ -23,6 +24,7 @@ export function ChipDropzone(props) {
     return (
         <>
             <Chip
+                disabled={disabled}
                 key={'chip' + key}
                 avatar={<Avatar alt={response.originalFileName} src={url} sx={{
                     border: '1px solid #bfbfbf'
@@ -78,6 +80,7 @@ export function ChipDropzone(props) {
 }
 
 ChipDropzone.propTypes = {
+    disabled: PropTypes.bool.isRequired,
     response: PropTypes.object.isRequired,
     onDeleteFile: PropTypes.func.isRequired
 };

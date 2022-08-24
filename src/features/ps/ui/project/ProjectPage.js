@@ -20,6 +20,7 @@ import {ConstantAuth, MethodsRequest, NavigateContext, useRequest} from "../../.
 import {useParams} from "react-router-dom";
 import {Formik, useFormikContext} from "formik";
 import * as Yup from "yup";
+import {MultipleFiles} from "../../../../components/dropzone/MultipleFiles";
 
 const categories = [
     {
@@ -86,10 +87,12 @@ const BusinessLogic = ({id, onError, onLoading}) => {
                 ...values,
                 category: data.category,
                 language: data.language,
+                publicImage: data.publicImage,
                 title: data.title,
                 url: data.url,
                 description: data.description,
                 isPublished: data.isPublished,
+                uploads: data.uploads,
             });
         }
         setTimeout(function () {
@@ -97,7 +100,7 @@ const BusinessLogic = ({id, onError, onLoading}) => {
             onLoading(loading)
         }, 50);
 
-    }, [loading, data, error]);
+    }, [loading, data]);
 
     return null;
 };
@@ -109,9 +112,11 @@ export function ProjectPage() {
 
     let {id} = useParams();
 
+    const [modelId, setModelId] = React.useState(id);
     const [submitLoader, setSubmitLoader] = React.useState(false);
     const [loading, setLoading] = React.useState(id !== undefined);
     const [errorPage, setErrorPage] = React.useState(null);
+    const [filesUpload, setFilesUpload] = React.useState(false);
 
     return (
         <>
@@ -127,21 +132,24 @@ export function ProjectPage() {
                         icon={submitLoader ? <CircularProgress color="primary" size={20} sx={{
                             padding: '3px'
                         }}/> : <ViewListOutlined/>}
-                        title={id ? 'Here you can edit the project' : 'Here you can create a new project'}
+                        title={modelId ? 'Here you can edit the project' : 'Here you can create a new project'}
                     >
                         <Formik
                             initialValues={{
                                 category: '',
                                 language: '',
+                                publicImage: '',
                                 title: '',
                                 url: '',
                                 description: '',
                                 isPublished: false,
+                                uploads: [],
                                 submit: null
                             }}
                             validationSchema={Yup.object().shape({
                                 category: Yup.string().required('Category is required'),
                                 language: Yup.string().required('Language is required'),
+                                publicImage: Yup.string().required('Public Image is required'),
                                 title: Yup.string().required('Title is required'),
                                 url: Yup.string().url("Doesn't look like link"),
                                 description: Yup.string().required('Description is required'),
@@ -156,29 +164,35 @@ export function ProjectPage() {
 
                                     await new Promise(r => setTimeout(r, 1000));
 
-                                    const response = id ?
+                                    const response = modelId ?
                                         (
-                                            await MethodsRequest.ps.projectUpdate(id, {
+                                            await MethodsRequest.ps.projectUpdate(modelId, {
                                                 category: values.category,
                                                 language: values.language,
+                                                publicImage: values.publicImage,
                                                 title: values.title,
                                                 url: values.url,
                                                 description: values.description,
                                                 isPublished: values.isPublished,
+                                                uploads: values.uploads.map((file) => file.id),
                                             })
                                         ) : (
                                             await MethodsRequest.ps.projectCreate({
                                                 category: values.category,
                                                 language: values.language,
+                                                publicImage: values.publicImage,
                                                 title: values.title,
                                                 url: values.url,
                                                 description: values.description,
                                                 isPublished: values.isPublished,
+                                                uploads: values.uploads.map((file) => file.id),
                                             })
                                         )
 
-                                    if (!id) {
-                                        route.toLocationReplace(route.createLink(conf.routes.ps.projectUpdate, response.id))
+                                    setModelId(response.id)
+
+                                    if (!modelId) {
+                                        route.toLocationPush(route.createLink(conf.routes.ps.projectUpdate, response.id))
                                     }
 
                                     setStatus({success: true});
@@ -189,6 +203,7 @@ export function ProjectPage() {
                                     setErrors({
                                         category: error.findError('category'),
                                         language: error.findError('language'),
+                                        publicImage: error.findError('publicImage'),
                                         title: error.findError('title'),
                                         url: error.findError('url'),
                                         description: error.findError('description'),
@@ -215,8 +230,8 @@ export function ProjectPage() {
                               }) => (
                                 <form noValidate onSubmit={handleSubmit}>
 
-                                    {id ? <BusinessLogic
-                                        id={id}
+                                    {modelId ? <BusinessLogic
+                                        id={modelId}
                                         onError={(error) => {
                                             setErrorPage(error)
                                         }}
@@ -227,7 +242,7 @@ export function ProjectPage() {
 
                                     {ConstantAuth.isGuest() && (
                                         <AlertInfo>
-                                            {id ? "This is demo mode. Guest cannot update project" : "This is demo mode. Guest cannot create project"}
+                                            {modelId ? "This is demo mode. Guest cannot update project" : "This is demo mode. Guest cannot create project"}
                                         </AlertInfo>
                                     )}
 
@@ -317,6 +332,22 @@ export function ProjectPage() {
                                                 <TextField
                                                     disabled={isSubmitting}
                                                     type={'text'}
+                                                    name={'publicImage'}
+                                                    value={values.publicImage}
+                                                    helperText={touched.publicImage ? errors.publicImage : ''}
+                                                    error={Boolean(touched.publicImage && errors.publicImage)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="Public Image"
+                                                    variant="filled"
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
                                                     name={'title'}
                                                     value={values.title}
                                                     helperText={touched.title ? errors.title : ''}
@@ -363,6 +394,16 @@ export function ProjectPage() {
                                                     variant="filled"
                                                 />
                                             </Grid>
+
+                                            <Grid item xs={12}>
+                                                <MultipleFiles
+                                                    disabled={isSubmitting}
+                                                    value={values.uploads}
+                                                    onChange={(files) => setFieldValue('uploads', files)}
+                                                    onLoading={(state) => setFilesUpload((state))}
+                                                />
+                                            </Grid>
+
                                             <Grid item xs={12}>
                                                 <FormControlLabel
                                                     sx={{
@@ -380,7 +421,7 @@ export function ProjectPage() {
                                                 textAlign: 'end'
                                             }}>
                                                 <SplitButton
-                                                    disabled={isSubmitting}
+                                                    disabled={isSubmitting || filesUpload}
                                                     type="submit"
                                                     color={theme.palette.success.main}
                                                     size={'medium'}
@@ -389,7 +430,7 @@ export function ProjectPage() {
                                                         route.scrollToTop()
                                                     }}
                                                 >
-                                                    {id ? 'Update' : 'Add'}
+                                                    {modelId ? 'Update' : 'Add'}
                                                 </SplitButton>
                                             </Grid>
                                         </Grid>

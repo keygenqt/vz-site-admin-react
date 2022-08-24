@@ -63,14 +63,14 @@ export function ProjectsPage() {
                                     sortable: false,
                                 },
                                 {
-                                    field: 'icon',
+                                    field: 'publicImage',
                                     headerName: 'Icon',
                                     width: 80,
                                     disableColumnMenu: true,
                                     sortable: false,
                                     renderCell: (params) => <Avatar
                                         alt={params.row.title}
-                                        src={params.row.icon}
+                                        src={params.row.publicImage}
                                         sx={{width: 24, height: 24}}
                                     />
                                 },

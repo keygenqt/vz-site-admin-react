@@ -9,8 +9,10 @@ import {MethodsRequest} from "../../base";
 export function MultipleFiles(props) {
 
     const {
+        value = [],
         disabled = false,
-        onLoading
+        onLoading,
+        onChange
     } = props
 
     const {palette} = useTheme();
@@ -67,12 +69,16 @@ export function MultipleFiles(props) {
 
         if (uploadFiles.length > 0) {
             uploadData(uploadFiles).then((responses) => {
+                const result = files.concat(responses).reverse()
+
                 setHelperText(null)
                 setErrorText(null)
                 setLoading(false)
                 setIsError(false)
-                setFiles(files.concat(responses).reverse())
-                document.getElementById('chips').scrollTo(0, 0)
+
+                // update data
+                setFiles(result)
+                onChange(result.map((file) => file.response))
             })
         } else {
             setLoading(false)
@@ -81,15 +87,25 @@ export function MultipleFiles(props) {
     }, [files])
 
     const onDelete = response => {
-        setFiles(files.filter(function (value) {
+        const result = files.filter(function (value) {
             if (value.response.id !== response.id) {
                 URL.revokeObjectURL(value.file)
                 return true
             } else {
                 return false
             }
-        }))
+        })
+        setFiles(result)
+        onChange(result.map((file) => file.response))
     }
+
+    useEffect(() => {
+        setFiles(value.map((file) => {
+            return {
+                response: file
+            }
+        }))
+    }, [value])
 
     useEffect((f = onLoading) => {
         f(loading)
@@ -163,6 +179,7 @@ export function MultipleFiles(props) {
             }}>
                 {files.map((file) => (
                     <ChipDropzone
+                        disabled={disabled}
                         key={file.response.id}
                         response={file.response}
                         onDeleteFile={onDelete}
@@ -175,6 +192,8 @@ export function MultipleFiles(props) {
 }
 
 MultipleFiles.propTypes = {
+    value: PropTypes.array,
     disabled: PropTypes.bool,
     onLoading: PropTypes.func,
+    onChange: PropTypes.func,
 };
