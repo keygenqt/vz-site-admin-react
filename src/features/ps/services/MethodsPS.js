@@ -8,6 +8,12 @@ import projectCreate from "./impl/projects/projectCreate";
 import projectUpdate from "./impl/projects/projectUpdate";
 import uploadFile from "./impl/files/uploadFile";
 import deleteFile from "./impl/files/deleteFile";
+import projectsInfo from "./impl/dashboard/projectsInfo";
+import articlesInfo from "./impl/dashboard/articlesInfo";
+import followersInfo from "./impl/dashboard/followersInfo";
+import publicReposInfo from "./impl/dashboard/publicReposInfo";
+import reposTypes from "./impl/dashboard/reposTypes";
+import reposPopular from "./impl/dashboard/reposPopular";
 
 export const MethodsPS = {
     //////////////////////
@@ -38,4 +44,19 @@ export const MethodsPS = {
     uploadFile: uploadFile,
     // delete
     deleteFile: deleteFile,
+
+    //////////////////////
+    // Dashboard
+    // Get info about projects
+    projectsInfo: projectsInfo,
+    // Get info about articles
+    articlesInfo: articlesInfo,
+    // Get info about GitHub followers
+    followersInfo: followersInfo,
+    // Get info about GitHub repos
+    publicReposInfo: publicReposInfo,
+    // Get info about GitHub repos by month
+    reposTypes: reposTypes,
+    // Get list GitHub repos mast popular
+    reposPopular: reposPopular,
 }

@@ -5,7 +5,15 @@ import PropTypes from "prop-types";
 import {Grid, LinearProgress, Typography, useTheme} from "@mui/material";
 import {MenuLayout} from "./MenuLayout";
 import {linearProgressClasses} from "@mui/material/LinearProgress";
-import {useWindowResize} from "../base";
+import {MethodsRequest, useRequest, useWindowResize} from "../base";
+import {Save} from "@mui/icons-material";
+
+function bytesToSize(bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
 
 export function BaseLayout(props) {
 
@@ -13,6 +21,12 @@ export function BaseLayout(props) {
     const {palette} = useTheme();
 
     const [isOpenMenu, setIsOpenMenu] = React.useState(sizeWindow.width > 1400);
+
+    const {
+        loading: loadingDiskSize,
+        data: dataDiskSize,
+        error: errorDiskSize,
+    } = useRequest(MethodsRequest.common.diskSize);
 
     useEffect(() => {
         setIsOpenMenu(sizeWindow.width > 1400)
@@ -45,13 +59,15 @@ export function BaseLayout(props) {
                             setIsOpenMenu(isOpen)
                         }}
                     >
-                        <AppCard
+                        {!errorDiskSize ? <AppCard
                             type={'inline'}
                             color={'blueLight'}
                             variant={'circles2'}
-                            isLoading={false}
-                            title={'Total Income'}
-                            subheader={'100GB'}
+                            isLoading={loadingDiskSize}
+                            title={'Hard disk'}
+                            subheader={bytesToSize(dataDiskSize?.blocks ?? 0)}
+                            contentHeight={44}
+                            icon={<Save/>}
                         >
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
@@ -59,18 +75,18 @@ export function BaseLayout(props) {
                                         fontWeight: 'bold',
                                         color: palette.primary.dark
                                     }}>
-                                        Progress
+                                        Space used
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={6} sx={{
                                     textAlign: 'right'
                                 }}>
                                     <Typography component="div" variant="caption">
-                                        70%
+                                        {dataDiskSize?.use ?? 0}%
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <LinearProgress variant="determinate" value={70} sx={{
+                                    <LinearProgress variant="determinate" value={dataDiskSize?.use ?? 0} sx={{
                                         height: 10,
                                         borderRadius: 5,
                                         [`&.${linearProgressClasses.colorPrimary}`]: {
@@ -83,7 +99,8 @@ export function BaseLayout(props) {
                                     }}/>
                                 </Grid>
                             </Grid>
-                        </AppCard>
+                        </AppCard> : null}
+
                     </AppMenu>
                 </MenuLayout>
             </Grid>

@@ -265,7 +265,10 @@ AppCard.propTypes = {
     isLoading: PropTypes.bool,
     backdrop: PropTypes.bool,
     icon: PropTypes.node,
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
     subheader: PropTypes.string,
     actionDisable: PropTypes.bool,
     actionIcon: PropTypes.element,
