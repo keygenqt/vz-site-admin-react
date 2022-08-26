@@ -129,7 +129,7 @@ export function DashboardPage() {
                     actionMenu={() => {
                         setRefreshRepos(true)
                     }}
-                    chart={{
+                    chart={(dataRepos?.data ?? []).length > 1 ? {
                         type: 'line',
                         height: 90,
                         options: {
@@ -177,7 +177,7 @@ export function DashboardPage() {
                                 data: dataRepos?.data ?? []
                             }
                         ]
-                    }}
+                    } : null}
                 />
             </Grid>
             <Grid item xl={4} lg={6} md={6} sm={6} xs={12}>
@@ -195,7 +195,7 @@ export function DashboardPage() {
                     actionMenu={() => {
                         setRefreshFollowers(true)
                     }}
-                    chart={{
+                    chart={(dataFollowers?.data ?? []).length > 1 ? {
                         type: 'line',
                         height: 90,
                         options: {
@@ -243,7 +243,7 @@ export function DashboardPage() {
                                 data: dataFollowers?.data ?? []
                             }
                         ]
-                    }}
+                    } : null}
                 />
             </Grid>
             <Grid item xl={4} lg={12} md={12} sm={12} xs={12}>
