@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import {
     Box,
     Button,
@@ -21,13 +21,11 @@ import {
     useTheme
 } from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {ConstantAuth, ConstantLottie, MethodsRequest, NavigateContext} from "../../../../base";
+import {ConstantAuth, MethodsRequest, NavigateContext} from "../../../../base";
 import {Formik} from "formik";
 import * as Yup from "yup";
 import Typography from "@mui/material/Typography";
-import {AlertError} from "../../../../components/alerts/AlertError";
-import {AlertSuccess} from "../../../../components/alerts/AlertSuccess";
-import Lottie from "lottie-react";
+import {AlertError, AlertSuccess} from "../../../../components";
 
 export function SignInPage() {
 
@@ -37,12 +35,6 @@ export function SignInPage() {
 
     const [isLoading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
-    // useEffect(() => {
-    //     if (ConstantAuth.isAuth()) {
-    //         route.toLocation(conf.routes.ps.dashboard)
-    //     }
-    // });
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);

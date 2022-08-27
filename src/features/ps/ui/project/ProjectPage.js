@@ -28,10 +28,6 @@ const categories = [
         label: 'Android',
     },
     {
-        value: 'PC',
-        label: 'PC',
-    },
-    {
         value: 'WEB',
         label: 'Web',
     },

@@ -15,11 +15,11 @@ export const ConstantAuth = {
     isAuth: () => {
         return ConstantAuth.getData('id') !== undefined
     },
-    logout: () => {
+    logout: async () => {
         // clear app data
         ConstantAuth.clearData()
         // clear cookies
-        MethodsRequest.common.logout()
+        await MethodsRequest.common.logout()
         // restart app
         window.location.href = '/'
     },

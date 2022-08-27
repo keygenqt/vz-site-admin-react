@@ -130,7 +130,7 @@ async function _query(
         if (response.ok) {
             return result
         } else if (result.code === 401) {
-            ConstantAuth.logout()
+            await ConstantAuth.logout()
         } else {
             throw new ErrorRequest(result)
         }
