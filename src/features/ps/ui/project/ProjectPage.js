@@ -41,37 +41,6 @@ const categories = [
     },
 ];
 
-const languages = [
-    {
-        value: 'KOTLIN',
-        label: 'Kotlin',
-    },
-    {
-        value: 'JAVASCRIPT',
-        label: 'Java Script',
-    },
-    {
-        value: 'SWIFT',
-        label: 'Swift',
-    },
-    {
-        value: 'PHP',
-        label: 'PHP',
-    },
-    {
-        value: 'PYTHON',
-        label: 'Python',
-    },
-    {
-        value: 'BASH',
-        label: 'Bash',
-    },
-    {
-        value: 'OTHER',
-        label: 'Other',
-    },
-];
-
 const BusinessLogic = ({id, onError, onLoading}) => {
 
     const {values, setValues} = useFormikContext();
@@ -82,10 +51,10 @@ const BusinessLogic = ({id, onError, onLoading}) => {
             setValues({
                 ...values,
                 category: data.category,
-                language: data.language,
                 publicImage: data.publicImage,
                 title: data.title,
                 url: data.url,
+                urlGitHub: data.urlGitHub,
                 description: data.description,
                 isPublished: data.isPublished,
                 uploads: data.uploads,
@@ -137,6 +106,7 @@ export function ProjectPage() {
                                 publicImage: '',
                                 title: '',
                                 url: '',
+                                urlGitHub: '',
                                 description: '',
                                 isPublished: false,
                                 uploads: [],
@@ -144,10 +114,10 @@ export function ProjectPage() {
                             }}
                             validationSchema={Yup.object().shape({
                                 category: Yup.string().required('Category is required'),
-                                language: Yup.string().required('Language is required'),
                                 publicImage: Yup.string().required('Public Image is required'),
                                 title: Yup.string().required('Title is required'),
                                 url: Yup.string().url("Doesn't look like link"),
+                                urlGitHub: Yup.string().url("Doesn't look like link"),
                                 description: Yup.string().required('Description is required'),
                             })}
                             onSubmit={async (values, {setErrors, setStatus, setSubmitting}) => {
@@ -164,10 +134,10 @@ export function ProjectPage() {
                                         (
                                             await MethodsRequest.ps.projectUpdate(modelId, {
                                                 category: values.category,
-                                                language: values.language,
                                                 publicImage: values.publicImage,
                                                 title: values.title,
                                                 url: values.url,
+                                                urlGitHub: values.urlGitHub,
                                                 description: values.description,
                                                 isPublished: values.isPublished,
                                                 uploads: values.uploads.map((file) => file.id),
@@ -175,10 +145,10 @@ export function ProjectPage() {
                                         ) : (
                                             await MethodsRequest.ps.projectCreate({
                                                 category: values.category,
-                                                language: values.language,
                                                 publicImage: values.publicImage,
                                                 title: values.title,
                                                 url: values.url,
+                                                urlurlGitHub: values.urlGitHub,
                                                 description: values.description,
                                                 isPublished: values.isPublished,
                                                 uploads: values.uploads.map((file) => file.id),
@@ -198,10 +168,10 @@ export function ProjectPage() {
 
                                     setErrors({
                                         category: error.findError('category'),
-                                        language: error.findError('language'),
                                         publicImage: error.findError('publicImage'),
                                         title: error.findError('title'),
                                         url: error.findError('url'),
+                                        urlGitHub: error.findError('urlGitHub'),
                                         description: error.findError('description'),
                                         isPublished: error.findError('isPublished'),
                                         submit: error.message
@@ -291,40 +261,6 @@ export function ProjectPage() {
                                             </Grid>
 
                                             <Grid item xs={12}>
-                                                <FormControl
-                                                    error={Boolean(touched.language && errors.language)}
-                                                    fullWidth
-                                                    variant="filled"
-                                                >
-                                                    <InputLabel htmlFor="filled-language">Base language</InputLabel>
-                                                    <Select
-                                                        id="filled-language"
-                                                        disabled={isSubmitting}
-                                                        name={'language'}
-                                                        value={values.language}
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        fullWidth
-                                                        variant="filled"
-                                                    >
-                                                        {languages.map((option) => (
-                                                            <MenuItem key={`lang-${option.value}`} value={option.value}>
-                                                                {option.label}
-                                                            </MenuItem>
-                                                        ))}
-                                                        <MenuItem value="">
-                                                            <em>None</em>
-                                                        </MenuItem>
-                                                    </Select>
-                                                    {touched.language && errors.language && (
-                                                        <FormHelperText error>
-                                                            {errors.language}
-                                                        </FormHelperText>
-                                                    )}
-                                                </FormControl>
-                                            </Grid>
-
-                                            <Grid item xs={12}>
                                                 <TextField
                                                     disabled={isSubmitting}
                                                     type={'text'}
@@ -368,6 +304,22 @@ export function ProjectPage() {
                                                     onChange={handleChange}
                                                     fullWidth
                                                     label="Project link (optional)"
+                                                    variant="filled"
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
+                                                    name={'urlGitHub'}
+                                                    value={values.urlGitHub}
+                                                    helperText={touched.urlGitHub ? errors.urlGitHub : ''}
+                                                    error={Boolean(touched.urlGitHub && errors.urlGitHub)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="GitHub link (optional)"
                                                     variant="filled"
                                                 />
                                             </Grid>

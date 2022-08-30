@@ -6,7 +6,7 @@ import {CoreRequest} from "../../../../../base";
  * @return {Promise<*>}
  */
 export default async function projects() {
-    return await CoreRequest.fetchGet('/api/ps/projects')
+    return await CoreRequest.fetchGet('/api/ps/projects/all')
 }
 
 projects.propTypes = {};

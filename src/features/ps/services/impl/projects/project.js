@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
  * @return {Promise<*>}
  */
 export default async function project(id) {
-    return await CoreRequest.fetchGet(`/api/ps/projects/${id}`)
+    return await CoreRequest.fetchGet(`/api/ps/projects/all/${id}`)
 }
 
 project.propTypes = {
