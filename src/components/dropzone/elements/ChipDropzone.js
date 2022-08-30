@@ -15,7 +15,7 @@ export function ChipDropzone(props) {
     const [open, setOpen] = React.useState(false);
 
     const key = md5(response.fileName)
-    const url = `${ConstantConf.publicPath}/api/ps/file/${response.fileName}`
+    const url = `${ConstantConf.apiPath}/api/ps/file/${response.fileName}`
 
     const handleClose = () => {
         setOpen(false);
