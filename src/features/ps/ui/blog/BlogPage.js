@@ -55,7 +55,8 @@ const BusinessLogic = ({id, onError, onLoading}) => {
             setValues({
                 ...values,
                 category: data.category,
-                publicImage: data.publicImage,
+                listImage: data.listImage,
+                viewImage: data.viewImage,
                 title: data.title,
                 description: data.description,
                 content: data.content,
@@ -105,7 +106,8 @@ export function BlogPage() {
                         <Formik
                             initialValues={{
                                 category: '',
-                                publicImage: '',
+                                listImage: '',
+                                viewImage: '',
                                 title: '',
                                 description: '',
                                 content: '',
@@ -115,7 +117,8 @@ export function BlogPage() {
                             }}
                             validationSchema={Yup.object().shape({
                                 category: Yup.string().required('Category is required'),
-                                publicImage: Yup.string().required('Public Image is required'),
+                                listImage: Yup.string().required('Image is required'),
+                                viewImage: Yup.string().required('Image is required'),
                                 title: Yup.string().required('Title is required'),
                                 description: Yup.string().required('Description is required'),
                                 content: Yup.string().required('Content is required'),
@@ -134,7 +137,8 @@ export function BlogPage() {
                                         (
                                             await MethodsRequest.ps.articleUpdate(modelId, {
                                                 category: values.category,
-                                                publicImage: values.publicImage,
+                                                listImage: values.listImage,
+                                                viewImage: values.viewImage,
                                                 title: values.title,
                                                 description: values.description,
                                                 content: values.content,
@@ -144,7 +148,8 @@ export function BlogPage() {
                                         ) : (
                                             await MethodsRequest.ps.articleCreate({
                                                 category: values.category,
-                                                publicImage: values.publicImage,
+                                                listImage: values.listImage,
+                                                viewImage: values.viewImage,
                                                 title: values.title,
                                                 description: values.description,
                                                 content: values.content,
@@ -166,7 +171,8 @@ export function BlogPage() {
 
                                     setErrors({
                                         category: error.findError('category'),
-                                        publicImage: error.findError('publicImage'),
+                                        listImage: error.findError('listImage'),
+                                        viewImage: error.findError('viewImage'),
                                         title: error.findError('title'),
                                         description: error.findError('description'),
                                         content: error.findError('content'),
@@ -249,14 +255,29 @@ export function BlogPage() {
                                                 <TextField
                                                     disabled={isSubmitting}
                                                     type={'text'}
-                                                    name={'publicImage'}
-                                                    value={values.publicImage}
-                                                    helperText={touched.publicImage ? errors.publicImage : ''}
-                                                    error={Boolean(touched.publicImage && errors.publicImage)}
+                                                    name={'listImage'}
+                                                    value={values.listImage}
+                                                    helperText={touched.listImage ? errors.listImage : ''}
+                                                    error={Boolean(touched.listImage && errors.listImage)}
                                                     onBlur={handleBlur}
                                                     onChange={handleChange}
                                                     fullWidth
-                                                    label="Public Image"
+                                                    label="Image for list articles"
+                                                    variant="filled"
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
+                                                    name={'viewImage'}
+                                                    value={values.viewImage}
+                                                    helperText={touched.viewImage ? errors.viewImage : ''}
+                                                    error={Boolean(touched.viewImage && errors.viewImage)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="Image for view article"
                                                     variant="filled"
                                                 />
                                             </Grid>
