@@ -64,14 +64,14 @@ export function BlogsPage() {
                                     sortable: false,
                                 },
                                 {
-                                    field: 'publicImage',
+                                    field: 'listImage',
                                     headerName: 'Icon',
                                     width: 80,
                                     disableColumnMenu: true,
                                     sortable: false,
                                     renderCell: (params) => <Avatar
                                         alt={params.row.title}
-                                        src={params.row.publicImage}
+                                        src={params.row.listImage}
                                         sx={{width: 24, height: 24}}
                                     />
                                 },
