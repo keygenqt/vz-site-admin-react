@@ -55,6 +55,9 @@ const BusinessLogic = ({id, onError, onLoading}) => {
                 title: data.title,
                 url: data.url,
                 urlGitHub: data.urlGitHub,
+                urlSnapcraft: data.urlSnapcraft,
+                urlDownload: data.urlDownload,
+                urlYouTube: data.urlYouTube,
                 description: data.description,
                 isPublished: data.isPublished,
                 uploads: data.uploads,
@@ -107,6 +110,9 @@ export function ProjectPage() {
                                 title: '',
                                 url: '',
                                 urlGitHub: '',
+                                urlSnapcraft: '',
+                                urlDownload: '',
+                                urlYouTube: '',
                                 description: '',
                                 isPublished: false,
                                 uploads: [],
@@ -118,6 +124,8 @@ export function ProjectPage() {
                                 title: Yup.string().required('Title is required'),
                                 url: Yup.string().url("Doesn't look like link"),
                                 urlGitHub: Yup.string().url("Doesn't look like link"),
+                                urlSnapcraft: Yup.string().url("Doesn't look like link"),
+                                urlYouTube: Yup.string().url("Doesn't look like link"),
                                 description: Yup.string().required('Description is required'),
                             })}
                             onSubmit={async (values, {setErrors, setStatus, setSubmitting}) => {
@@ -138,6 +146,9 @@ export function ProjectPage() {
                                                 title: values.title,
                                                 url: values.url,
                                                 urlGitHub: values.urlGitHub,
+                                                urlSnapcraft: values.urlSnapcraft,
+                                                urlDownload: values.urlDownload,
+                                                urlYouTube: values.urlYouTube,
                                                 description: values.description,
                                                 isPublished: values.isPublished,
                                                 uploads: values.uploads.map((file) => file.id),
@@ -149,6 +160,9 @@ export function ProjectPage() {
                                                 title: values.title,
                                                 url: values.url,
                                                 urlurlGitHub: values.urlGitHub,
+                                                urlSnapcraft: values.urlSnapcraft,
+                                                urlDownload: values.urlDownload,
+                                                urlYouTube: values.urlYouTube,
                                                 description: values.description,
                                                 isPublished: values.isPublished,
                                                 uploads: values.uploads.map((file) => file.id),
@@ -172,6 +186,9 @@ export function ProjectPage() {
                                         title: error.findError('title'),
                                         url: error.findError('url'),
                                         urlGitHub: error.findError('urlGitHub'),
+                                        urlSnapcraft: error.findError('urlSnapcraft'),
+                                        urlDownload: error.findError('urlDownload'),
+                                        urlYouTube: error.findError('urlYouTube'),
                                         description: error.findError('description'),
                                         isPublished: error.findError('isPublished'),
                                         submit: error.message
@@ -320,6 +337,54 @@ export function ProjectPage() {
                                                     onChange={handleChange}
                                                     fullWidth
                                                     label="GitHub link (optional)"
+                                                    variant="filled"
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
+                                                    name={'urlSnapcraft'}
+                                                    value={values.urlSnapcraft}
+                                                    helperText={touched.urlSnapcraft ? errors.urlSnapcraft : ''}
+                                                    error={Boolean(touched.urlSnapcraft && errors.urlSnapcraft)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="Snapcraft link (optional)"
+                                                    variant="filled"
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
+                                                    name={'urlDownload'}
+                                                    value={values.urlDownload}
+                                                    helperText={touched.urlDownload ? errors.urlDownload : ''}
+                                                    error={Boolean(touched.urlDownload && errors.urlDownload)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="Download link (optional)"
+                                                    variant="filled"
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
+                                                    name={'urlYouTube'}
+                                                    value={values.urlYouTube}
+                                                    helperText={touched.urlYouTube ? errors.urlYouTube : ''}
+                                                    error={Boolean(touched.urlYouTube && errors.urlYouTube)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="YouTube link (optional)"
                                                     variant="filled"
                                                 />
                                             </Grid>

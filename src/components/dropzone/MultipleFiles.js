@@ -112,9 +112,9 @@ export function MultipleFiles(props) {
     }, [loading])
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
-        accept: {
-            'image/*': []
-        },
+        // accept: {
+        //     'image/*': []
+        // },
         disabled: loading || disabled,
         onDrop: onUpload,
         noClick: true
@@ -163,7 +163,7 @@ export function MultipleFiles(props) {
                             <div style={{padding: 8}}>{errorText}</div> : <CircularProgress color="primary" size={31}/>
                     ) : (
                         <div
-                            style={{padding: 8}}>{isDragActive ? "Drop the images here ..." : "Drag 'n' drop some images here"}</div>
+                            style={{padding: 8}}>{isDragActive ? "Drop the files here ..." : "Drag 'n' drop some files here"}</div>
                     )
                 }
             </Box>

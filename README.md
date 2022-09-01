@@ -17,7 +17,7 @@ projects.
 
 ### Preview
 
-![alt text](data/preview.png)
+![alt text](data/preview-1000.png)
 
 # License
 
