@@ -210,7 +210,7 @@ export function MarkdownEditorFilled(props) {
     }, [field.current]);
 
     return (
-        <Grid container spacing={1} sx={{
+        <Grid container spacing={0} sx={{
             // disable
             '& .cm-theme.cm-disable .cm-editor': {
                 backgroundColor: getColor().disabled,

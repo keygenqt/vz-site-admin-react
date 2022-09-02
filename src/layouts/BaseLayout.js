@@ -33,7 +33,7 @@ export function BaseLayout(props) {
     }, [sizeWindow])
 
     return (
-        <Grid className={"App section"} container spacing={0} rowSpacing={0} style={{
+        <Grid id={'pageSelection'} className={"App section"} container spacing={0} rowSpacing={0} style={{
             height: '100%'
         }}>
             <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>

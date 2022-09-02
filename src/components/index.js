@@ -9,3 +9,4 @@ export * from './alerts/AlertInfo';
 export * from './alerts/AlertError';
 export * from './alerts/AlertSuccess';
 export * from './alerts/SnackbarError';
+export * from './tabs/TabPanel';

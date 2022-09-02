@@ -363,6 +363,8 @@ export default class RouteCore {
      */
     scrollToTop() {
         window.scrollTo(0, 0);
+        const el = document.getElementById("pageSelection")
+        el.scrollTo(0, 0);
     }
 
     /**

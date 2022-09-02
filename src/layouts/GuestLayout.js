@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export function GuestLayout(props) {
     return (
-        <div className={"section"} style={{
+        <div id={'pageSelection'} className={'section'} style={{
             height: '100%'
         }}>
             <div className={"AppTable"} style={{

@@ -1,12 +1,16 @@
 import * as React from 'react';
 import {useContext, useEffect} from 'react';
 import {
+    Box,
     CircularProgress,
     FormControlLabel,
     FormGroup,
     Grid,
     MenuItem,
+    Stack,
     Switch,
+    Tab,
+    Tabs,
     TextField,
     useTheme
 } from "@mui/material";
@@ -17,7 +21,8 @@ import {
     AppCard,
     MarkdownEditorFilled,
     SnackbarError,
-    SplitButton
+    SplitButton,
+    TabPanel
 } from "../../../../components";
 import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
@@ -54,12 +59,15 @@ const BusinessLogic = ({id, onError, onLoading}) => {
         if (data) {
             setValues({
                 ...values,
-                category: data.category,
-                listImage: data.listImage,
-                viewImage: data.viewImage,
                 title: data.title,
                 description: data.description,
                 content: data.content,
+                titleRu: data.titleRu ?? '',
+                descriptionRu: data.descriptionRu ?? '',
+                contentRu: data.contentRu ?? '',
+                category: data.category,
+                listImage: data.listImage,
+                viewImage: data.viewImage,
                 isPublished: data.isPublished,
                 uploads: data.uploads,
             });
@@ -86,6 +94,7 @@ export function ArticlePage() {
     const [loading, setLoading] = React.useState(id !== undefined);
     const [filesUpload, setFilesUpload] = React.useState(false);
     const [errorPage, setErrorPage] = React.useState(null);
+    const [valueTab, setValueTab] = React.useState(0);
 
     return (
         <>
@@ -105,12 +114,15 @@ export function ArticlePage() {
                     >
                         <Formik
                             initialValues={{
-                                category: '',
-                                listImage: '',
-                                viewImage: '',
                                 title: '',
                                 description: '',
                                 content: '',
+                                titleRu: '',
+                                descriptionRu: '',
+                                contentRu: '',
+                                category: '',
+                                listImage: '',
+                                viewImage: '',
                                 isPublished: false,
                                 uploads: [],
                                 submit: null
@@ -136,25 +148,46 @@ export function ArticlePage() {
                                     const response = modelId ?
                                         (
                                             await MethodsRequest.ps.articleUpdate(modelId, {
-                                                category: values.category,
-                                                listImage: values.listImage,
-                                                viewImage: values.viewImage,
                                                 title: values.title,
                                                 description: values.description,
                                                 content: values.content,
+                                                category: values.category,
+                                                listImage: values.listImage,
+                                                viewImage: values.viewImage,
                                                 isPublished: values.isPublished,
                                                 uploads: values.uploads.map((file) => file.id),
+                                                ...values.titleRu.length > 0 ? {
+                                                    titleRu: values.titleRu,
+                                                } : {},
+                                                ...values.descriptionRu.length > 0 ? {
+                                                    descriptionRu: values.descriptionRu,
+                                                } : {},
+                                                ...values.contentRu.length > 0 ? {
+                                                    contentRu: values.contentRu,
+                                                } : {}
                                             })
                                         ) : (
                                             await MethodsRequest.ps.articleCreate({
-                                                category: values.category,
-                                                listImage: values.listImage,
-                                                viewImage: values.viewImage,
                                                 title: values.title,
                                                 description: values.description,
                                                 content: values.content,
+                                                titleRu: values.titleRu,
+                                                descriptionRu: values.descriptionRu,
+                                                contentRu: values.contentRu,
+                                                category: values.category,
+                                                listImage: values.listImage,
+                                                viewImage: values.viewImage,
                                                 isPublished: values.isPublished,
                                                 uploads: values.uploads.map((file) => file.id),
+                                                ...values.titleRu.length > 0 ? {
+                                                    titleRu: values.titleRu,
+                                                } : {},
+                                                ...values.descriptionRu.length > 0 ? {
+                                                    descriptionRu: values.descriptionRu,
+                                                } : {},
+                                                ...values.contentRu.length > 0 ? {
+                                                    contentRu: values.contentRu,
+                                                } : {}
                                             })
                                         )
 
@@ -167,22 +200,37 @@ export function ArticlePage() {
                                     setStatus({success: true});
                                     setSubmitLoader(false);
                                     setSubmitting(false);
+
                                 } catch (error) {
 
-                                    setErrors({
-                                        category: error.findError('category'),
-                                        listImage: error.findError('listImage'),
-                                        viewImage: error.findError('viewImage'),
+                                    const errors = {
                                         title: error.findError('title'),
                                         description: error.findError('description'),
                                         content: error.findError('content'),
+                                        titleRu: error.findError('titleRu'),
+                                        descriptionRu: error.findError('descriptionRu'),
+                                        contentRu: error.findError('contentRu'),
+                                        category: error.findError('category'),
+                                        listImage: error.findError('listImage'),
+                                        viewImage: error.findError('viewImage'),
                                         isPublished: error.findError('isPublished'),
                                         submit: error.message
-                                    });
+                                    }
+
+                                    setErrors(errors);
+
+                                    if (errors.titleRu || errors.descriptionRu || errors.contentRu) {
+                                        setValueTab(1)
+                                    }
+
+                                    if (errors.title || errors.description || errors.content) {
+                                        setValueTab(0)
+                                    }
 
                                     setStatus({success: false});
                                     setSubmitLoader(false);
                                     setSubmitting(false);
+
                                 }
                             }}
                         >
@@ -281,51 +329,127 @@ export function ArticlePage() {
                                                     variant="filled"
                                                 />
                                             </Grid>
+
                                             <Grid item xs={12}>
-                                                <TextField
-                                                    disabled={isSubmitting}
-                                                    type={'text'}
-                                                    name={'title'}
-                                                    value={values.title}
-                                                    helperText={touched.title ? errors.title : ''}
-                                                    error={Boolean(touched.title && errors.title)}
-                                                    onBlur={handleBlur}
-                                                    onChange={handleChange}
-                                                    fullWidth
-                                                    label="Title"
-                                                    variant="filled"
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <TextField
-                                                    disabled={isSubmitting}
-                                                    type={'text'}
-                                                    name={'description'}
-                                                    value={values.description}
-                                                    helperText={touched.description ? errors.description : ''}
-                                                    error={Boolean(touched.description && errors.description)}
-                                                    onBlur={handleBlur}
-                                                    onChange={handleChange}
-                                                    fullWidth
-                                                    multiline
-                                                    minRows={4}
-                                                    maxRows={10}
-                                                    label="Description"
-                                                    variant="filled"
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <MarkdownEditorFilled
-                                                    disabled={isSubmitting}
-                                                    loading={loading}
-                                                    name={'content'}
-                                                    value={values.content}
-                                                    helperText={touched.content ? errors.content : ''}
-                                                    error={Boolean(touched.content && errors.content)}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    label="Post content"
-                                                />
+
+                                                <Box sx={{
+                                                    borderBottom: 1,
+                                                    borderColor: 'divider',
+                                                    '& .MuiButtonBase-root': {
+                                                        borderTopLeftRadius: 4,
+                                                        borderTopRightRadius: 4
+                                                    }
+                                                }}>
+                                                    <Tabs
+                                                        value={valueTab}
+                                                        onChange={(event, newValue) => {
+                                                            setValueTab(newValue);
+                                                        }}
+                                                        aria-label="basic tabs example"
+                                                    >
+                                                        <Tab label="Locale Default"/>
+                                                        <Tab label="Locale Ru"/>
+                                                    </Tabs>
+                                                </Box>
+
+                                                <TabPanel value={valueTab} index={0}>
+                                                    <Stack spacing={2}>
+
+                                                        <TextField
+                                                            disabled={isSubmitting}
+                                                            type={'text'}
+                                                            name={'title'}
+                                                            value={values.title}
+                                                            helperText={touched.title ? errors.title : ''}
+                                                            error={Boolean(touched.title && errors.title)}
+                                                            onBlur={handleBlur}
+                                                            onChange={handleChange}
+                                                            fullWidth
+                                                            label="Title"
+                                                            variant="filled"
+                                                        />
+
+                                                        <TextField
+                                                            disabled={isSubmitting}
+                                                            type={'text'}
+                                                            name={'description'}
+                                                            value={values.description}
+                                                            helperText={touched.description ? errors.description : ''}
+                                                            error={Boolean(touched.description && errors.description)}
+                                                            onBlur={handleBlur}
+                                                            onChange={handleChange}
+                                                            fullWidth
+                                                            multiline
+                                                            minRows={4}
+                                                            maxRows={10}
+                                                            label="Description"
+                                                            variant="filled"
+                                                        />
+
+                                                        <MarkdownEditorFilled
+                                                            disabled={isSubmitting}
+                                                            loading={loading}
+                                                            name={'content'}
+                                                            value={values.content}
+                                                            helperText={touched.content ? errors.content : ''}
+                                                            error={Boolean(touched.content && errors.content)}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            label="Post content"
+                                                        />
+
+                                                    </Stack>
+                                                </TabPanel>
+                                                <TabPanel value={valueTab} index={1}>
+                                                    <Stack spacing={2}>
+
+                                                        <TextField
+                                                            disabled={isSubmitting}
+                                                            type={'text'}
+                                                            name={'titleRu'}
+                                                            value={values.titleRu}
+                                                            helperText={touched.titleRu ? errors.titleRu : ''}
+                                                            error={Boolean(touched.titleRu && errors.titleRu)}
+                                                            onBlur={handleBlur}
+                                                            onChange={handleChange}
+                                                            fullWidth
+                                                            label="Title"
+                                                            variant="filled"
+                                                        />
+
+                                                        <TextField
+                                                            disabled={isSubmitting}
+                                                            type={'text'}
+                                                            name={'descriptionRu'}
+                                                            value={values.descriptionRu}
+                                                            helperText={touched.descriptionRu ? errors.descriptionRu : ''}
+                                                            error={Boolean(touched.descriptionRu && errors.descriptionRu)}
+                                                            onBlur={handleBlur}
+                                                            onChange={handleChange}
+                                                            fullWidth
+                                                            multiline
+                                                            minRows={4}
+                                                            maxRows={10}
+                                                            label="Description"
+                                                            variant="filled"
+                                                        />
+
+                                                        <MarkdownEditorFilled
+                                                            disabled={isSubmitting}
+                                                            loading={loading}
+                                                            name={'contentRu'}
+                                                            value={values.contentRu}
+                                                            helperText={touched.contentRu ? errors.contentRu : ''}
+                                                            error={Boolean(touched.contentRu && errors.contentRu)}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            label="Post content"
+                                                        />
+
+                                                    </Stack>
+
+                                                </TabPanel>
+
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <MultipleFiles
@@ -358,6 +482,9 @@ export function ArticlePage() {
                                                     size={'medium'}
                                                     endIcon={<Done/>}
                                                     onClick={() => {
+                                                        if (errors.title || errors.description || errors.content) {
+                                                            setValueTab(0)
+                                                        }
                                                         route.scrollToTop()
                                                     }}
                                                 >
