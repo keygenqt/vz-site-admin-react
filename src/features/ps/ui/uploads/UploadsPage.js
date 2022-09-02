@@ -1,6 +1,16 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {Avatar, Box, CircularProgress, Grid, Stack} from "@mui/material";
+import {
+    Avatar,
+    Box, Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    Stack
+} from "@mui/material";
 import {
     Adjust, AdjustOutlined,
     CheckCircle,
@@ -16,6 +26,7 @@ import {MethodsRequest, useRequest} from "../../../../base";
 import {MultipleFiles} from "../../../../components/dropzone/MultipleFiles";
 import {AppUtils} from "../../../../base/utils/AppUtils";
 import {FileDialog} from "../../../../components/dialogs/FileDialog";
+import Typography from "@mui/material/Typography";
 
 
 export function UploadsPage() {
@@ -26,6 +37,7 @@ export function UploadsPage() {
     const [loadingUpload, setLoadingUpload] = useState(false)
 
     const [response, setResponse] = React.useState(null);
+    const [responseDelete, setResponseDelete] = React.useState(null);
 
     useEffect(() => {
         if (!loading) {
@@ -47,6 +59,41 @@ export function UploadsPage() {
                     setResponse(null)
                 }}
             />
+
+            <Dialog
+                open={Boolean(responseDelete)}
+                onClose={() => { setResponseDelete(null) }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Delete "{responseDelete?.originalFileName ?? ''}"
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1">
+                        Are you sure you want to delete the file and all its relations?
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setResponseDelete(null)
+                            MethodsRequest.ps.deleteFile(responseDelete.fileName)
+                            setRows(rows.filter(function (e) {
+                                return e !== responseDelete
+                            }))
+                        }}>
+                        Delete
+                    </Button>
+                    <Button
+                        color={'inherit'}
+                        onClick={() => { setResponseDelete(null) }}
+                        autoFocus
+                    >
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -193,10 +240,7 @@ export function UploadsPage() {
                                     setResponse(row)
                                 }}
                                 onClickDelete={(e, id, row) => {
-                                    MethodsRequest.ps.deleteFile(row.fileName)
-                                    setRows(rows.filter(function (e) {
-                                        return e !== row
-                                    }))
+                                    setResponseDelete(row)
                                 }}
                             />
                         </Stack>
