@@ -40,7 +40,8 @@ export function FileDialog(props) {
                 <Stack spacing={2}>
                     {isImage ? (
                         <img alt={file.originalFileName} src={url} style={{
-                            width: '500px'
+                            width: '500px',
+                            border: '1px dotted #808080'
                         }}/>
                     ) : (
                         <Stack direction={'row'} spacing={1} sx={{
