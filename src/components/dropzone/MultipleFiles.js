@@ -11,6 +11,7 @@ export function MultipleFiles(props) {
     const {
         value = [],
         disabled = false,
+        disabledChips = false,
         onLoading,
         onChange
     } = props
@@ -174,7 +175,7 @@ export function MultipleFiles(props) {
                 {helperText}
             </FormHelperText> : null}
 
-            {files.length !== 0 ? <Stack direction={'row'} spacing={1} id={'chips'} className={'section'} sx={{
+            {files.length !== 0 && !disabledChips ? <Stack direction={'row'} spacing={1} id={'chips'} className={'section'} sx={{
                 padding: '8px 0'
             }}>
                 {files.map((file) => (
@@ -187,6 +188,7 @@ export function MultipleFiles(props) {
                 ))}
             </Stack> : null}
 
+
         </Stack>
     );
 }
@@ -194,6 +196,7 @@ export function MultipleFiles(props) {
 MultipleFiles.propTypes = {
     value: PropTypes.array,
     disabled: PropTypes.bool,
+    disabledChips: PropTypes.bool,
     onLoading: PropTypes.func,
     onChange: PropTypes.func,
 };

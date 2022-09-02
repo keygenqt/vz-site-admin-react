@@ -263,12 +263,17 @@ export default class RouteCore {
      */
     render() {
 
+        const userRole = ConstantAuth.getRole()
         const pages = []
 
         Object.keys(this.conf.routes).forEach((group, groupIndex) => {
             Object.keys(this.conf.routes[group]).forEach((page, pageIndex) => {
 
-                const {path, render, match} = this.conf.routes[group][page]
+                const {path, render, match, role} = this.conf.routes[group][page]
+
+                if (role && role !== userRole) {
+                    return
+                }
 
                 if (render !== undefined) {
                     if (this.isRunStart || !ConstantAuth.isAuth() && this.location.pathname !== this.pathLogin) {

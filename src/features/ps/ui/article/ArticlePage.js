@@ -74,7 +74,7 @@ const BusinessLogic = ({id, onError, onLoading}) => {
     return null;
 };
 
-export function BlogPage() {
+export function ArticlePage() {
 
     const theme = useTheme()
     const {route, conf} = useContext(NavigateContext)
@@ -377,4 +377,4 @@ export function BlogPage() {
     );
 }
 
-BlogPage.propTypes = {};
+ArticlePage.propTypes = {};

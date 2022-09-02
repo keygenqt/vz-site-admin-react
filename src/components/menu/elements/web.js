@@ -8,9 +8,13 @@ import {
     LinkOutlined,
     SettingsOutlined,
     VerticalSplit,
+    CloudUpload,
     ViewListOutlined,
+    ArticleOutlined,
+    CellTower,
     YouTube
 } from "@mui/icons-material";
+
 import {RouteConf} from "../../../base/route/RouteConf";
 
 // constant
@@ -23,7 +27,10 @@ const icons = {
     VerticalSplit,
     DashboardOutlined,
     ViewListOutlined,
+    CloudUpload,
     SettingsOutlined,
+    ArticleOutlined,
+    CellTower,
     LinkOutlined,
 };
 
@@ -50,8 +57,8 @@ export const web = {
                         RouteConf.routes.ps.blogCreate,
                     ],
                     type: 'primary',
-                    icon: icons.ViewListOutlined,
-                    title: 'Blog',
+                    icon: icons.ArticleOutlined,
+                    title: 'Articles',
                 },
                 {
                     route: RouteConf.routes.ps.projects,
@@ -63,6 +70,26 @@ export const web = {
                     type: 'primary',
                     icon: icons.ViewListOutlined,
                     title: 'Projects',
+                },
+                {
+                    role: 'ADMIN',
+                    route: RouteConf.routes.ps.connects,
+                    actions: [
+                        RouteConf.routes.ps.connects,
+                    ],
+                    type: 'primary',
+                    icon: icons.CellTower,
+                    title: 'Connects',
+                },
+                {
+                    role: 'ADMIN',
+                    route: RouteConf.routes.ps.uploads,
+                    actions: [
+                        RouteConf.routes.ps.uploads,
+                    ],
+                    type: 'primary',
+                    icon: icons.CloudUpload,
+                    title: 'Uploads',
                 },
                 {
                     type: 'driver'

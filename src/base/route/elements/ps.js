@@ -1,6 +1,14 @@
 import {Route} from "react-router-dom";
 import {BaseLayout} from "../../../layouts";
-import {BlogPage, BlogsPage, DashboardPage, ProjectPage, ProjectsPage} from "../../../features/ps/ui";
+import {
+    ArticlePage,
+    ArticlesPage,
+    ConnectsPage,
+    DashboardPage,
+    ProjectPage,
+    ProjectsPage,
+    UploadsPage
+} from "../../../features/ps/ui";
 import * as React from "react";
 import {RouteType} from "../RouteType";
 
@@ -21,7 +29,7 @@ export const routePS = {
         }
     },
     blogCreate: {
-        path: '/ps/blog/add',
+        path: '/ps/article/add',
         render: function (key, path) {
             return <Route
                 key={key}
@@ -29,14 +37,14 @@ export const routePS = {
                 path={path}
                 element={
                     <BaseLayout>
-                        <BlogPage/>
+                        <ArticlePage/>
                     </BaseLayout>
                 }
             />
         }
     },
     blogUpdate: {
-        path: '/ps/blog/:id',
+        path: '/ps/article/:id',
         match: {
             id: RouteType.integer,
         },
@@ -47,14 +55,14 @@ export const routePS = {
                 path={path}
                 element={
                     <BaseLayout>
-                        <BlogPage/>
+                        <ArticlePage/>
                     </BaseLayout>
                 }
             />
         }
     },
     blogs: {
-        path: '/ps/blog',
+        path: '/ps/articles',
         render: function (key, path) {
             return <Route
                 key={key}
@@ -62,7 +70,7 @@ export const routePS = {
                 path={path}
                 element={
                     <BaseLayout>
-                        <BlogsPage/>
+                        <ArticlesPage/>
                     </BaseLayout>
                 }
             />
@@ -111,6 +119,38 @@ export const routePS = {
                 element={
                     <BaseLayout>
                         <ProjectsPage/>
+                    </BaseLayout>
+                }
+            />
+        }
+    },
+    uploads: {
+        role: 'ADMIN',
+        path: '/ps/uploads',
+        render: function (key, path) {
+            return <Route
+                key={key}
+                exact
+                path={path}
+                element={
+                    <BaseLayout>
+                        <UploadsPage/>
+                    </BaseLayout>
+                }
+            />
+        }
+    },
+    connects: {
+        role: 'ADMIN',
+        path: '/ps/connects',
+        render: function (key, path) {
+            return <Route
+                key={key}
+                exact
+                path={path}
+                element={
+                    <BaseLayout>
+                        <ConnectsPage/>
                     </BaseLayout>
                 }
             />

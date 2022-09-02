@@ -28,9 +28,11 @@ export function AppGridData(props) {
         checkboxSelection = true,
         columns = [],
         rows = [],
+        pageSize = 12,
         onClickView,
         onClickEdit,
         onClickDelete,
+        onCustom,
     } = props
 
     const {type} = useContext(NavigateContext)
@@ -49,11 +51,25 @@ export function AppGridData(props) {
         }
     });
 
-    if (onClickView || onClickEdit || onClickDelete) {
+    if (onClickView || onClickEdit || onClickDelete || onCustom) {
         let actions = [];
+        if (onCustom) {
+            const CustomIcon = onCustom.icon
+            actions.push(<GridActionsCellItem onClick={(event) => {
+                const id = event.target.closest('.MuiDataGrid-row').dataset.id
+                onCustom.onClick(event, id, rows.find(el => `${el.id}` === id))
+            }} sx={{
+                backgroundColor: onCustom.backgroundColor,
+                transitionDuration: '300ms',
+                '&:hover': {
+                    backgroundColor: onCustom.backgroundColorHover,
+                }
+            }} icon={<CustomIcon sx={{color: onCustom.iconColor}}/>} label={onCustom.label}/>)
+        }
         if (onClickView) {
             actions.push(<GridActionsCellItem color="success" onClick={(event) => {
-                onClickView(event, event.target.closest('.MuiDataGrid-row').dataset.id)
+                const id = event.target.closest('.MuiDataGrid-row').dataset.id
+                onClickView(event, id, rows.find(el => `${el.id}` === id))
             }} sx={{
                 backgroundColor: '#07a94a14',
                 transitionDuration: '300ms',
@@ -64,7 +80,8 @@ export function AppGridData(props) {
         }
         if (onClickEdit) {
             actions.push(<GridActionsCellItem color="primary" onClick={(event) => {
-                onClickEdit(event, event.target.closest('.MuiDataGrid-row').dataset.id)
+                const id = event.target.closest('.MuiDataGrid-row').dataset.id
+                onClickEdit(event, id, rows.find(el => `${el.id}` === id))
             }} sx={{
                 backgroundColor: '#2196f314',
                 transitionDuration: '300ms',
@@ -75,7 +92,8 @@ export function AppGridData(props) {
         }
         if (onClickDelete) {
             actions.push(<GridActionsCellItem color="error" onClick={(event) => {
-                onClickDelete(event, event.target.closest('.MuiDataGrid-row').dataset.id)
+                const id = event.target.closest('.MuiDataGrid-row').dataset.id
+                onClickDelete(event, id, rows.find(el => `${el.id}` === id))
             }} sx={{
                 backgroundColor: '#d32f2f14',
                 transitionDuration: '300ms',
@@ -105,7 +123,7 @@ export function AppGridData(props) {
             autoHeight
             rows={rows}
             columns={columnsMap}
-            pageSize={12}
+            pageSize={pageSize}
             page={actionPage}
             onPageChange={(page) => {
                 setActionPage(page)
@@ -186,7 +204,9 @@ AppGridData.propTypes = {
     checkboxSelection: PropTypes.bool,
     columns: PropTypes.array,
     rows: PropTypes.array,
+    pageSize: PropTypes.number,
     onClickView: PropTypes.func,
     onClickEdit: PropTypes.func,
     onClickDelete: PropTypes.func,
+    onCustom: PropTypes.object,
 };

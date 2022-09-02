@@ -11,5 +11,5 @@ export default async function articleCreate(data) {
 }
 
 articleCreate.propTypes = {
-    id: PropTypes.string,
+    data: PropTypes.object,
 };

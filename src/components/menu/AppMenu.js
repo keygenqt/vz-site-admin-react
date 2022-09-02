@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 
-import {NavigateContext} from "../../base";
+import {ConstantAuth, NavigateContext} from "../../base";
 import {web} from "./elements/web";
 import PropTypes from "prop-types";
 
@@ -38,6 +38,7 @@ export function AppMenu(props) {
         onChangeMenu
     } = props
 
+    const userRole = ConstantAuth.getRole()
     const {route} = useContext(NavigateContext)
     const {palette, breakpoints} = useTheme();
     const isMD = useMediaQuery(breakpoints.down('md'));
@@ -60,6 +61,7 @@ export function AppMenu(props) {
             data.children.forEach((app, indexApp) => {
                 const idApp = `app-item-${indexGroup}-${indexApp}`
                 app.children.forEach((page, indexPage) => {
+
                     const idPage = `icon-page-item-${indexGroup}-${indexApp}-${indexPage}`
                     const isSelected = page.actions ? page.actions.map((item) => {
                         return route.isPage(item)
@@ -92,6 +94,10 @@ export function AppMenu(props) {
 
             if (app.children) {
                 app.children.forEach((page, indexPage) => {
+
+                    if (page.role && page.role !== userRole) {
+                        return
+                    }
 
                     const IconPage = page.icon;
                     const idPage = `icon-page-item-${indexGroup}-${indexApp}-${indexPage}`

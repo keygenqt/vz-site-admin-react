@@ -126,7 +126,12 @@ async function _query(
     }
 
     return await fetch(path, params).then(async (response) => {
-        const result = await response.json()
+        let result
+        try {
+            result = await response.json()
+        } catch (e) {
+            result = response
+        }
         if (response.ok) {
             return result
         } else if (result.code === 401) {

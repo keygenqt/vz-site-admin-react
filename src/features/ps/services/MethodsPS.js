@@ -7,6 +7,7 @@ import project from "./impl/projects/project";
 import projectCreate from "./impl/projects/projectCreate";
 import projectUpdate from "./impl/projects/projectUpdate";
 import uploadFile from "./impl/files/uploadFile";
+import uploadFiles from "./impl/files/uploadFiles";
 import deleteFile from "./impl/files/deleteFile";
 import projectsInfo from "./impl/dashboard/projectsInfo";
 import articlesInfo from "./impl/dashboard/articlesInfo";
@@ -14,6 +15,8 @@ import followersInfo from "./impl/dashboard/followersInfo";
 import publicReposInfo from "./impl/dashboard/publicReposInfo";
 import reposTypes from "./impl/dashboard/reposTypes";
 import reposPopular from "./impl/dashboard/reposPopular";
+import connects from "./impl/connects/connects";
+import connectUpdate from "./impl/connects/connectUpdate";
 
 export const MethodsPS = {
     //////////////////////
@@ -40,6 +43,8 @@ export const MethodsPS = {
 
     //////////////////////
     // Files
+    // uploads
+    uploadFiles: uploadFiles,
     // upload
     uploadFile: uploadFile,
     // delete
@@ -59,4 +64,11 @@ export const MethodsPS = {
     reposTypes: reposTypes,
     // Get list GitHub repos mast popular
     reposPopular: reposPopular,
+
+    //////////////////////
+    // Connects
+    // Get list connects
+    connects: connects,
+    // Update connect
+    connectUpdate: connectUpdate,
 }

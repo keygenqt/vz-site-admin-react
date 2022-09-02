@@ -6,7 +6,7 @@ import {AppCard, AppGridData, SnackbarError, SplitButton} from "../../../../comp
 import {ConstantOther, MethodsRequest, NavigateContext, useRequest} from "../../../../base";
 
 
-export function BlogsPage() {
+export function ArticlesPage() {
 
     const theme = useTheme()
     const {route, conf} = useContext(NavigateContext)
@@ -85,7 +85,7 @@ export function BlogsPage() {
                                 {
                                     field: 'createAt',
                                     headerName: 'Created',
-                                    width: 170,
+                                    width: 180,
                                     valueGetter: (params) => new Intl
                                         .DateTimeFormat('en-US', {
                                             year: 'numeric',
@@ -111,4 +111,4 @@ export function BlogsPage() {
     );
 }
 
-BlogsPage.propTypes = {};
+ArticlesPage.propTypes = {};

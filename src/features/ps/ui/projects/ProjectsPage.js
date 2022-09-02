@@ -84,7 +84,7 @@ export function ProjectsPage() {
                                 {
                                     field: 'createAt',
                                     headerName: 'Created',
-                                    width: 170,
+                                    width: 180,
                                     valueGetter: (params) => new Intl
                                         .DateTimeFormat('en-US', {
                                             year: 'numeric',
