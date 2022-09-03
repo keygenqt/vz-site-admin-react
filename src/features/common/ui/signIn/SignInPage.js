@@ -71,71 +71,77 @@ export function SignInPage() {
                         Hi, Welcome Back
                     </Typography>
 
-                    <Typography
-                        variant="caption"
-                        noWrap
-                        component="div"
-                        color={theme.palette.grey[600]}
-                    >
-                        Enter your credentials to continue
-                    </Typography>
-
-                    <Button
-                        disabled={isLoading}
-                        variant={'outlined'}
-                        fullWidth
-                        size={'large'}
-                        sx={{
-                            fontSize: 16,
-                            fontWeight: 'normal',
-                            textTransform: 'none',
-                            '& svg': {
-                                color: '#4285F4',
-                            },
-                            '& span': {
-                                fontSize: 18,
-                                fontWeight: 'bold'
-                            }
-                        }}
-                    >
-                        Sign in with&nbsp;
-                        <span style={{color: isLoading ? '#BDBDBD' : '#4285F4'}}>G</span>
-                        <span style={{color: isLoading ? '#BDBDBD' : '#EA4335'}}>o</span>
-                        <span style={{color: isLoading ? '#BDBDBD' : '#FBBC05'}}>o</span>
-                        <span style={{color: isLoading ? '#BDBDBD' : '#4285F4'}}>g</span>
-                        <span style={{color: isLoading ? '#BDBDBD' : '#34A853'}}>l</span>
-                        <span style={{color: isLoading ? '#BDBDBD' : '#EA4335'}}>e</span>
-                    </Button>
-
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            display: 'flex',
-                            width: '100%'
-                        }}
-                    >
-                        <Divider sx={{flexGrow: 1}} orientation="horizontal"/>
+                    <Stack spacing={2} sx={{
+                        width: '100%',
+                        textAlign: 'center',
+                        display: 'none' // TODO: if google login
+                    }}>
+                        <Typography
+                            variant="caption"
+                            noWrap
+                            component="div"
+                            color={theme.palette.grey[600]}
+                        >
+                            Enter your credentials to continue
+                        </Typography>
 
                         <Button
-                            variant="outlined"
-                            disabled
+                            disabled={isLoading}
+                            variant={'outlined'}
+                            fullWidth
+                            size={'large'}
                             sx={{
-                                cursor: 'unset',
-                                m: 2,
-                                py: 0.5,
-                                px: 7,
-                                borderColor: `${theme.palette.grey[300]} !important`,
-                                color: `${theme.palette.grey[700]}!important`,
-                                fontWeight: 500,
-                                borderRadius: 2
+                                fontSize: 16,
+                                fontWeight: 'normal',
+                                textTransform: 'none',
+                                '& svg': {
+                                    color: '#4285F4',
+                                },
+                                '& span': {
+                                    fontSize: 18,
+                                    fontWeight: 'bold'
+                                }
                             }}
-                            disableRipple
                         >
-                            OR
+                            Sign in with&nbsp;
+                            <span style={{color: isLoading ? '#BDBDBD' : '#4285F4'}}>G</span>
+                            <span style={{color: isLoading ? '#BDBDBD' : '#EA4335'}}>o</span>
+                            <span style={{color: isLoading ? '#BDBDBD' : '#FBBC05'}}>o</span>
+                            <span style={{color: isLoading ? '#BDBDBD' : '#4285F4'}}>g</span>
+                            <span style={{color: isLoading ? '#BDBDBD' : '#34A853'}}>l</span>
+                            <span style={{color: isLoading ? '#BDBDBD' : '#EA4335'}}>e</span>
                         </Button>
 
-                        <Divider sx={{flexGrow: 1}} orientation="horizontal"/>
-                    </Box>
+                        <Box
+                            sx={{
+                                alignItems: 'center',
+                                display: 'flex',
+                                width: '100%'
+                            }}
+                        >
+                            <Divider sx={{flexGrow: 1}} orientation="horizontal"/>
+
+                            <Button
+                                variant="outlined"
+                                disabled
+                                sx={{
+                                    cursor: 'unset',
+                                    m: 2,
+                                    py: 0.5,
+                                    px: 7,
+                                    borderColor: `${theme.palette.grey[300]} !important`,
+                                    color: `${theme.palette.grey[700]}!important`,
+                                    fontWeight: 500,
+                                    borderRadius: 2
+                                }}
+                                disableRipple
+                            >
+                                OR
+                            </Button>
+
+                            <Divider sx={{flexGrow: 1}} orientation="horizontal"/>
+                        </Box>
+                    </Stack>
 
                     <Typography
                         variant="caption"
@@ -259,7 +265,7 @@ export function SignInPage() {
                                                     htmlFor="filled-password-login">Password</InputLabel>
                                                 <FilledInput
                                                     id="filled-password-login"
-                                                    type={'password'}
+                                                    type={showPassword ? 'text' : 'password'}
                                                     name={'password'}
                                                     value={values.password}
                                                     onBlur={handleBlur}
@@ -275,7 +281,7 @@ export function SignInPage() {
                                                                 onMouseDown={handleMouseDownPassword}
                                                                 edge="end"
                                                             >
-                                                                {values.showPassword ? <VisibilityOff/> :
+                                                                {showPassword ? <VisibilityOff/> :
                                                                     <Visibility/>}
                                                             </IconButton>
                                                         </InputAdornment>
