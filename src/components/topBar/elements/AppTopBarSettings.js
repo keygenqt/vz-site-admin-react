@@ -1,10 +1,9 @@
 import {Avatar, Chip, ClickAwayListener, Fade, Paper, Popper, useTheme} from "@mui/material";
-import {ConstantImage} from "../../../base/constants/ConstantImage";
+import {ConstantImage, useWindowResize} from "../../../base";
 import {SettingsOutlined} from "@mui/icons-material";
 import * as React from "react";
-import {useWindowResize} from "../../../base";
-import PropTypes from "prop-types";
 import {useEffect} from "react";
+import PropTypes from "prop-types";
 
 export function AppTopBarSettings(props) {
 

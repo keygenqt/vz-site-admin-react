@@ -95,7 +95,7 @@ export const web = {
                     type: 'driver'
                 },
                 {
-                    link: 'https://version2.keygenqt.com/',
+                    link: 'https://keygenqt.com/',
                     type: 'secondary',
                     icon: icons.LinkOutlined,
                     title: 'Go To',
