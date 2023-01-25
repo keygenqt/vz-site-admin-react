@@ -118,6 +118,7 @@ export function AppCard(props) {
         chart,
         contentHeight = 0,
         isLoading = false,
+        hideButton = false
     } = props
 
     return (
@@ -177,7 +178,7 @@ export function AppCard(props) {
                             </Avatar>
                         }
                         action={
-                            actionMenu ?
+                            actionMenu && !hideButton ?
                                 <Fab disabled={actionDisable} size="small"
                                      sx={{
                                          '&': {
@@ -262,6 +263,7 @@ AppCard.propTypes = {
     variant: PropTypes.oneOf(['circles1', 'circles2', 'circles3', 'circles4']),
     style: PropTypes.object,
     contentHeight: PropTypes.number,
+    hideButton: PropTypes.bool,
     isLoading: PropTypes.bool,
     backdrop: PropTypes.bool,
     icon: PropTypes.node,

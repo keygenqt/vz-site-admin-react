@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useContext, useEffect, useState} from 'react';
-import {Avatar, Button, CircularProgress, Divider, Grid, Stack, Typography, useTheme} from "@mui/material";
+import {Avatar, Button, CircularProgress, Divider, Fab, Grid, Stack, Typography, useTheme} from "@mui/material";
 import {AppCard} from "../../../../components";
 import {
     AccountTree,
@@ -12,7 +12,7 @@ import {
     OpenInNew,
     Refresh,
     Star,
-    TrendingUp
+    TrendingUp, VisibilityOffRounded, VisibilityRounded
 } from "@mui/icons-material";
 import Chart from 'react-apexcharts';
 import {MethodsRequest, NavigateContext, useRequest} from "../../../../base";
@@ -24,6 +24,7 @@ export function DashboardPage() {
 
     // Projects
     const [refreshProjects, setRefreshProjects] = useState(false)
+    const [hideButtons, setHideButtons] = useState(false)
 
     const {
         loading: loadingProjects,
@@ -123,6 +124,7 @@ export function DashboardPage() {
                     isLoading={(loadingRepos || errorRepos) && !refreshRepos}
                     title={refreshRepos ? '∞' : dataRepos?.count ?? '∞'}
                     subheader={'Public Repos'}
+                    hideButton={hideButtons}
                     actionIcon={refreshRepos ? <CircularProgress color="primary" size={18} sx={{
                         padding: '3px'
                     }}/> : <Refresh/>}
@@ -189,6 +191,7 @@ export function DashboardPage() {
                     isLoading={(loadingFollowers || errorFollowers) && !refreshFollowers}
                     title={refreshFollowers ? '∞' : dataFollowers?.count ?? '∞'}
                     subheader={'GitHub Followers'}
+                    hideButton={hideButtons}
                     actionIcon={refreshFollowers ? <CircularProgress color="primary" size={18} sx={{
                         padding: '3px'
                     }}/> : <Refresh/>}
@@ -255,9 +258,10 @@ export function DashboardPage() {
                             variant={'circles2'}
                             size={'small'}
                             icon={<Interests/>}
+                            hideButton={hideButtons}
                             isLoading={(loadingProjects || errorProjects) && !refreshProjects}
                             title={refreshProjects ? '∞' : dataProjects?.count ?? '∞'}
-                            subheader={'Published Projects'}
+                            subheader={'Published projects on the website'}
                             actionIcon={refreshProjects ? <CircularProgress color="primary" size={18} sx={{
                                 padding: '3px'
                             }}/> : <Refresh/>}
@@ -273,9 +277,10 @@ export function DashboardPage() {
                             variant={'circles2'}
                             size={'small'}
                             icon={<Description/>}
+                            hideButton={hideButtons}
                             isLoading={(loadingArticles || errorArticles) && !refreshArticles}
                             title={refreshArticles ? '∞' : dataArticles?.count ?? '∞'}
-                            subheader={'Published Articles'}
+                            subheader={'Published articles on the website'}
                             actionIcon={refreshArticles ? <CircularProgress color="secondary" size={18} sx={{
                                 padding: '3px'
                             }}/> : <Refresh/>}
@@ -292,6 +297,7 @@ export function DashboardPage() {
                     color={'green'}
                     variant={'circles3'}
                     icon={<CalendarMonth/>}
+                    hideButton={hideButtons}
                     isLoading={(loadingReposTypes || errorReposTypes) && !refreshReposTypes}
                     title={'Repos Types by Month'}
                     size={'small'}
@@ -304,7 +310,7 @@ export function DashboardPage() {
                     }}
                 >
                     <Chart {...{
-                        height: 517,
+                        height: hideButtons ? 486 : 517,
                         type: 'bar',
                         options: {
                             colors: ['#008FFB', '#00E396', '#787878', '#FF4560'],
@@ -398,6 +404,7 @@ export function DashboardPage() {
                     icon={<TrendingUp/>}
                     size={'small'}
                     contentHeight={531}
+                    hideButton={hideButtons}
                     isLoading={(loadingReposPopular || errorReposPopular)}
                     title={'Popular Repos'}
                     actionIcon={refreshReposPopular ? <CircularProgress color="primary" size={18} sx={{
@@ -487,24 +494,60 @@ export function DashboardPage() {
                                 ))}
                             </Stack>
                         </Grid>
-                        <Grid item xs={12} sx={{
-                            textAlign: 'center'
-                        }}>
-                            <div style={{height: '5px'}}/>
-                            <Button
-                                size={"small"}
-                                variant="outlined"
-                                endIcon={<NavigateNext/>}
-                                onClick={() => {
-                                    route.openUrlNewTab('https://github.com/keygenqt?tab=repositories')
-                                }}
-                            >
-                                View All
-                            </Button>
-                        </Grid>
+
+                        {hideButtons ? (
+                            <Grid item xs={12} sx={{
+                                textAlign: 'center'
+                            }}>
+                                <div style={{height: '5px'}}/>
+                            </Grid>
+                        ): (
+                            <Grid item xs={12} sx={{
+                                textAlign: 'center'
+                            }}>
+                                <div style={{height: '5px'}}/>
+                                <Button
+                                    size={"small"}
+                                    variant="outlined"
+                                    endIcon={<NavigateNext/>}
+                                    onClick={() => {
+                                        route.openUrlNewTab('https://github.com/keygenqt?tab=repositories')
+                                    }}
+                                >
+                                    View All
+                                </Button>
+                            </Grid>
+                        )}
+
                     </Grid>
                 </AppCard>
             </Grid>
+
+            <Grid item xs={12} sx={{
+                textAlign: 'right',
+                'svg': {
+                    paddingRight: '7px'
+                }
+            }}>
+                <Fab variant="extended" size="small" color="primary" onClick={() => {
+                    setHideButtons(!hideButtons)
+                }}>
+                    {hideButtons ? (
+                        <VisibilityRounded />
+                    ) : (
+                        <VisibilityOffRounded />
+                    )}
+
+                    {hideButtons ? (
+                        "Show buttons"
+                    ) : (
+                        "Hide buttons"
+                    )}
+
+                </Fab>
+            </Grid>
+
+
         </Grid>
     );
 }
