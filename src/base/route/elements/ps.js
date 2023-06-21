@@ -3,6 +3,8 @@ import {BaseLayout} from "../../../layouts";
 import {
     ArticlePage,
     ArticlesPage,
+    VideoPage,
+    VideosPage,
     ConnectsPage,
     DashboardPage,
     ProjectPage,
@@ -71,6 +73,54 @@ export const routePS = {
                 element={
                     <BaseLayout>
                         <ArticlesPage/>
+                    </BaseLayout>
+                }
+            />
+        }
+    },
+    videoCreate: {
+        path: '/ps/video/add',
+        render: function (key, path) {
+            return <Route
+                key={key}
+                exact
+                path={path}
+                element={
+                    <BaseLayout>
+                        <VideoPage/>
+                    </BaseLayout>
+                }
+            />
+        }
+    },
+    videoUpdate: {
+        path: '/ps/video/:id',
+        match: {
+            id: RouteType.integer,
+        },
+        render: function (key, path) {
+            return <Route
+                key={key}
+                exact
+                path={path}
+                element={
+                    <BaseLayout>
+                        <VideoPage/>
+                    </BaseLayout>
+                }
+            />
+        }
+    },
+    videos: {
+        path: '/ps/videos',
+        render: function (key, path) {
+            return <Route
+                key={key}
+                exact
+                path={path}
+                element={
+                    <BaseLayout>
+                        <VideosPage/>
                     </BaseLayout>
                 }
             />

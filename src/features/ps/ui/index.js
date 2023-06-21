@@ -1,5 +1,7 @@
 export * from './article/ArticlePage';
 export * from './articles/ArticlesPage';
+export * from './video/VideoPage';
+export * from './videos/VideosPage';
 export * from './dashboard/DashboardPage';
 export * from './project/ProjectPage';
 export * from './projects/ProjectsPage';

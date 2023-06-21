@@ -61,6 +61,17 @@ export const web = {
                     title: 'Articles',
                 },
                 {
+                    route: RouteConf.routes.ps.videos,
+                    actions: [
+                        RouteConf.routes.ps.videos,
+                        RouteConf.routes.ps.videoUpdate,
+                        RouteConf.routes.ps.videoCreate,
+                    ],
+                    type: 'primary',
+                    icon: icons.YouTube,
+                    title: 'Videos',
+                },
+                {
                     route: RouteConf.routes.ps.projects,
                     actions: [
                         RouteConf.routes.ps.projects,

@@ -17,6 +17,10 @@ import reposTypes from "./impl/dashboard/reposTypes";
 import reposPopular from "./impl/dashboard/reposPopular";
 import connects from "./impl/connects/connects";
 import connectUpdate from "./impl/connects/connectUpdate";
+import videos from "./impl/videos/videos";
+import video from "./impl/videos/video";
+import videoCreate from "./impl/videos/videoCreate";
+import videoUpdate from "./impl/videos/videoUpdate";
 
 export const MethodsPS = {
     //////////////////////
@@ -71,4 +75,15 @@ export const MethodsPS = {
     connects: connects,
     // Update connect
     connectUpdate: connectUpdate,
+
+    //////////////////////
+    // Videos
+    // get list
+    videos: videos,
+    // get by id
+    video: video,
+    // add video
+    videoCreate: videoCreate,
+    // update video
+    videoUpdate: videoUpdate,
 }
