@@ -97,8 +97,9 @@ export function ArticlesPage() {
                                         .format(params.row.createAt)
                                 }
                             ]}
-                            onClickView={(e, id) => {
-                                route.openUrlNewTab(route.createLink(ConstantOther.psBlogViewUrl, id))
+                            onClickView={(e, id, row) => {
+                                let url = route.createLink(ConstantOther.psBlogViewUrl, id);
+                                route.openUrlNewTab(row.url.length === 0 ? url : row.url)
                             }}
                             onClickEdit={(e, id) => {
                                 route.toLocation(route.createLink(conf.routes.ps.blogUpdate, id))

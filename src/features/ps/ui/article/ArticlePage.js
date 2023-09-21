@@ -28,7 +28,7 @@ import {Done, ViewListOutlined} from "@mui/icons-material";
 import {useParams} from "react-router-dom";
 import {Formik, useFormikContext} from "formik";
 import * as Yup from 'yup';
-import {ConstantAuth, MethodsRequest, NavigateContext, useRequest} from "../../../../base";
+import {ConstantOther, ConstantAuth, MethodsRequest, NavigateContext, useRequest} from "../../../../base";
 import {MultipleFiles} from "../../../../components/dropzone/MultipleFiles";
 
 const categories = [
@@ -50,10 +50,24 @@ const categories = [
     },
 ];
 
-const BusinessLogic = ({id, onError, onLoading}) => {
+const types = [
+    {
+        value: 'BLOG',
+        label: 'Blog',
+    },
+    {
+        value: 'HABR',
+        label: 'Habr',
+    },
+];
 
+const BusinessLogic = ({id, onError, onLoading, onChangeType}) => {
+
+    const {route} = useContext(NavigateContext)
     const {values, setValues} = useFormikContext();
-    const {loading, data, error} = useRequest(MethodsRequest.ps.article, false, id);
+    const {loading, data, error} = useRequest(MethodsRequest.ps.article, false, id);    
+
+    const url = route.createLink(ConstantOther.psBlogViewUrl, id)
 
     useEffect(() => {
         if (data) {
@@ -66,11 +80,14 @@ const BusinessLogic = ({id, onError, onLoading}) => {
                 descriptionRu: data.descriptionRu ?? '',
                 contentRu: data.contentRu ?? '',
                 category: data.category,
+                type: data.type,
+                url: data.url.length === 0 ? url : data.url,
                 listImage: data.listImage,
                 viewImage: data.viewImage,
                 isPublished: data.isPublished,
                 uploads: data.uploads,
             });
+            onChangeType(data.type)
         }
         setTimeout(function () {
             onError(error)
@@ -89,12 +106,43 @@ export function ArticlePage() {
 
     let {id} = useParams();
 
+    let validationSchemaBlog = Yup.object().shape({
+        category: Yup.string().required('Category is required'),
+        type: Yup.string().required('Type is required'),
+        url: Yup.string().required('Url is required'),
+        listImage: Yup.string().required('Image is required'),
+        viewImage: Yup.string().required('Image is required'),
+        title: Yup.string().required('Title is required'),
+        description: Yup.string().required('Description is required'),
+        content: Yup.string().required('Content is required'),
+    });
+
+    let validationSchemaHabr = Yup.object().shape({
+        category: Yup.string().required('Category is required'),
+        type: Yup.string().required('Type is required'),
+        url: Yup.string().required('Url is required'),
+        listImage: Yup.string().required('Image is required'),
+        title: Yup.string().required('Title is required'),
+        description: Yup.string().required('Description is required'),
+    });
+
     const [modelId, setModelId] = React.useState(id);
     const [submitLoader, setSubmitLoader] = React.useState(false);
     const [loading, setLoading] = React.useState(id !== undefined);
     const [filesUpload, setFilesUpload] = React.useState(false);
     const [errorPage, setErrorPage] = React.useState(null);
     const [valueTab, setValueTab] = React.useState(0);
+    const [stateType, setStateType] = React.useState(null);
+    const [validationSchema, setValidationSchema] = React.useState(validationSchemaBlog);
+
+    useEffect(() => {
+        if (stateType === 'BLOG') {
+            setValidationSchema(validationSchemaBlog)
+        }
+        else if (stateType === 'HABR') {
+            setValidationSchema(validationSchemaHabr)
+        }
+    }, [stateType]);
 
     return (
         <>
@@ -121,20 +169,15 @@ export function ArticlePage() {
                                 descriptionRu: '',
                                 contentRu: '',
                                 category: '',
+                                type: '',
+                                url: '',
                                 listImage: '',
                                 viewImage: '',
                                 isPublished: false,
                                 uploads: [],
                                 submit: null
                             }}
-                            validationSchema={Yup.object().shape({
-                                category: Yup.string().required('Category is required'),
-                                listImage: Yup.string().required('Image is required'),
-                                viewImage: Yup.string().required('Image is required'),
-                                title: Yup.string().required('Title is required'),
-                                description: Yup.string().required('Description is required'),
-                                content: Yup.string().required('Content is required'),
-                            })}
+                            validationSchema={validationSchema}
                             onSubmit={async (values, {setErrors, setStatus, setSubmitting}) => {
 
                                 setSubmitLoader(true);
@@ -152,6 +195,8 @@ export function ArticlePage() {
                                                 description: values.description,
                                                 content: values.content,
                                                 category: values.category,
+                                                type: values.type,
+                                                url: values.url,
                                                 listImage: values.listImage,
                                                 viewImage: values.viewImage,
                                                 isPublished: values.isPublished,
@@ -175,6 +220,8 @@ export function ArticlePage() {
                                                 descriptionRu: values.descriptionRu,
                                                 contentRu: values.contentRu,
                                                 category: values.category,
+                                                type: values.type,
+                                                url: values.url,
                                                 listImage: values.listImage,
                                                 viewImage: values.viewImage,
                                                 isPublished: values.isPublished,
@@ -211,6 +258,8 @@ export function ArticlePage() {
                                         descriptionRu: error.findError('descriptionRu'),
                                         contentRu: error.findError('contentRu'),
                                         category: error.findError('category'),
+                                        type: error.findError('type'),
+                                        url: error.findError('url'),
                                         listImage: error.findError('listImage'),
                                         viewImage: error.findError('viewImage'),
                                         isPublished: error.findError('isPublished'),
@@ -254,6 +303,9 @@ export function ArticlePage() {
                                         }}
                                         onLoading={(state) => {
                                             setLoading(state)
+                                        }}
+                                        onChangeType={(value) => {
+                                            setStateType(value)
                                         }}
                                     /> : null}
 
@@ -303,6 +355,46 @@ export function ArticlePage() {
                                                 <TextField
                                                     disabled={isSubmitting}
                                                     type={'text'}
+                                                    name={'type'}
+                                                    value={values.type}
+                                                    helperText={touched.type ? errors.type : ''}
+                                                    error={Boolean(touched.type && errors.type)}
+                                                    onBlur={handleBlur}
+                                                    onChange={(event, newValue) => {
+                                                        handleChange(event, newValue)
+                                                        setStateType(newValue.props.value)
+                                                    }}
+                                                    select
+                                                    fullWidth
+                                                    label='Type'
+                                                    variant="filled"
+                                                >
+                                                    {types.map((option) => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
+                                                    name={'url'}
+                                                    value={values.url}
+                                                    helperText={touched.url ? errors.url : ''}
+                                                    error={Boolean(touched.url && errors.url)}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    fullWidth
+                                                    label="Url article"
+                                                    variant="filled"
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    disabled={isSubmitting}
+                                                    type={'text'}
                                                     name={'listImage'}
                                                     value={values.listImage}
                                                     helperText={touched.listImage ? errors.listImage : ''}
@@ -314,21 +406,24 @@ export function ArticlePage() {
                                                     variant="filled"
                                                 />
                                             </Grid>
-                                            <Grid item xs={12}>
-                                                <TextField
-                                                    disabled={isSubmitting}
-                                                    type={'text'}
-                                                    name={'viewImage'}
-                                                    value={values.viewImage}
-                                                    helperText={touched.viewImage ? errors.viewImage : ''}
-                                                    error={Boolean(touched.viewImage && errors.viewImage)}
-                                                    onBlur={handleBlur}
-                                                    onChange={handleChange}
-                                                    fullWidth
-                                                    label="Image for view article"
-                                                    variant="filled"
-                                                />
-                                            </Grid>
+
+                                            {stateType === 'BLOG' ? (
+                                                <Grid item xs={12}>
+                                                    <TextField
+                                                        disabled={isSubmitting}
+                                                        type={'text'}
+                                                        name={'viewImage'}
+                                                        value={values.viewImage}
+                                                        helperText={touched.viewImage ? errors.viewImage : ''}
+                                                        error={Boolean(touched.viewImage && errors.viewImage)}
+                                                        onBlur={handleBlur}
+                                                        onChange={handleChange}
+                                                        fullWidth
+                                                        label="Image for view article"
+                                                        variant="filled"
+                                                    />
+                                                </Grid>
+                                            ) : null}
 
                                             <Grid item xs={12}>
 
@@ -386,17 +481,19 @@ export function ArticlePage() {
                                                             variant="filled"
                                                         />
 
-                                                        <MarkdownEditorFilled
-                                                            disabled={isSubmitting}
-                                                            loading={loading}
-                                                            name={'content'}
-                                                            value={values.content}
-                                                            helperText={touched.content ? errors.content : ''}
-                                                            error={Boolean(touched.content && errors.content)}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            label="Post content"
-                                                        />
+                                                        {stateType === 'BLOG' ? (
+                                                            <MarkdownEditorFilled
+                                                                disabled={isSubmitting}
+                                                                loading={loading}
+                                                                name={'content'}
+                                                                value={values.content}
+                                                                helperText={touched.content ? errors.content : ''}
+                                                                error={Boolean(touched.content && errors.content)}
+                                                                onChange={handleChange}
+                                                                onBlur={handleBlur}
+                                                                label="Post content"
+                                                            />
+                                                        ) : null}
 
                                                     </Stack>
                                                 </TabPanel>
@@ -434,17 +531,19 @@ export function ArticlePage() {
                                                             variant="filled"
                                                         />
 
-                                                        <MarkdownEditorFilled
-                                                            disabled={isSubmitting}
-                                                            loading={loading}
-                                                            name={'contentRu'}
-                                                            value={values.contentRu}
-                                                            helperText={touched.contentRu ? errors.contentRu : ''}
-                                                            error={Boolean(touched.contentRu && errors.contentRu)}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            label="Post content"
-                                                        />
+                                                        {stateType === 'BLOG' ? (
+                                                            <MarkdownEditorFilled
+                                                                disabled={isSubmitting}
+                                                                loading={loading}
+                                                                name={'contentRu'}
+                                                                value={values.contentRu}
+                                                                helperText={touched.contentRu ? errors.contentRu : ''}
+                                                                error={Boolean(touched.contentRu && errors.contentRu)}
+                                                                onChange={handleChange}
+                                                                onBlur={handleBlur}
+                                                                label="Post content"
+                                                            />
+                                                        ) : null}
 
                                                     </Stack>
 
