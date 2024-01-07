@@ -1,0 +1,4 @@
+COMPOSE_PROJECT_NAME=nwsa # new web site admin
+
+# Ports
+PORT_WEBSITE=4006

@@ -2,6 +2,6 @@
  * Base configuration
  */
 export const ConstantConf = {
-    publicPath: 'http://localhost:3002',
-    apiPath: 'http://localhost:8085'
+    publicPath: 'https://admin.keygenqt.com',
+    apiPath: 'https://api.keygenqt.com'
 };
