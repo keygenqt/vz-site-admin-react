@@ -1,9 +1,9 @@
 version: "3"
+name: new-admin-panel
 
 services:
-  # https://nodejs.org
   node:
-    container_name: nwsa-node
+    container_name: new-admin-panel-node
     restart: no
     build:
       context: .
@@ -17,10 +17,11 @@ services:
     working_dir: /var/www/src
     volumes:
       - ../:/var/www/src
+      # React configuration files
+      - ./configurations/admin-panel/ConstantConf.js:/var/www/src/src/ConstantConf.js
 
-  # https://nginx.org/
   nginx:
-    container_name: nwsa-nginx
+    container_name: new-admin-panel-nginx
     depends_on:
       - node
     build:
